@@ -4,10 +4,13 @@
 using namespace std;
 
 int main() {
-	s843::Solution solution;
-	s843::Master master("ccbazz");
-	vector<string> wordlist{ "acckzz","ccbazz","eiowzz","abcczz" };
-	vector<int> v{ 0 };
-	solution.findSecretWord(wordlist, master);
+	vector<int> v{ 1, 3 };
+	s528::Solution solution(v);
+	
+	
+	cout << solution.pickIndex() << endl;
+	cout << solution.pickIndex() << endl;
+	cout << solution.pickIndex() << endl;
+	cout << solution.pickIndex() << endl;
 	return 0;
 }

@@ -6,6 +6,7 @@
 #include <vector>
 using namespace std;
 
+
 //---------------------------------------------
 // @ID: #292
 // @Date: 2020/7/19 
@@ -21,6 +22,7 @@ namespace s292 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #312
@@ -49,6 +51,7 @@ namespace s312 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #319
 // @Date: 2020/7/19
@@ -60,10 +63,11 @@ namespace s319 {
     class Solution {
     public:
         int bulbSwitch(int n) {
-            return sqrt(n);
+            return int(sqrt(n));
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #375
@@ -89,6 +93,7 @@ namespace s375 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #382
@@ -133,6 +138,7 @@ namespace s382 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #398
 // @Date: 2020/7/19 
@@ -151,7 +157,7 @@ namespace s398 {
 
         int pick(int target) {
             int count = 0, ans = -1;
-            for (int i = 0; i < nums.size(); i++) {
+            for (unsigned int i = 0; i < nums.size(); i++) {
                 if (nums[i] == target) {
                     count++;
                     if (rand() % count == 0)
@@ -168,6 +174,7 @@ namespace s398 {
      * int param_1 = obj->pick(target);
      */
 }
+
 
 //---------------------------------------------
 // @ID: #470
@@ -199,6 +206,7 @@ namespace s470 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #478
@@ -238,6 +246,7 @@ namespace s478 {
      */
 }
 
+
 //---------------------------------------------
 // @ID: #486
 // @Date: 2020/7/19 
@@ -263,6 +272,47 @@ namespace s486 {
 
 
 //---------------------------------------------
+// @ID: #528
+// @Date: 2020/7/19 
+// @Algorithm: Random Algorithm
+// @Time: O(n)  O(lg n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s528 {
+    class Solution {
+    public:
+        vector<int> prefixSum;
+
+        Solution(vector<int>& w) {
+            prefixSum.resize(w.size());
+            prefixSum[0] = w[0];
+            for (unsigned int i = 1; i < w.size(); i++)
+                prefixSum[i] = prefixSum[i - 1] + w[i];
+            return;
+        }
+
+        int pickIndex() {
+            int l = 0, r = prefixSum.size() - 1;
+            int x = rand() % prefixSum[r];
+            while (l != r) {
+                int mid = (l + r) >> 1;
+                if (x >= prefixSum[mid])
+                    l = mid + 1;
+                else 
+                    r = mid;
+            }
+            return l;
+        }
+    };
+
+    /**
+     * Your Solution object will be instantiated and called as such:
+     * Solution* obj = new Solution(w);
+     * int param_1 = obj->pickIndex();
+     */
+}
+
+//---------------------------------------------
 // @ID: #777
 // @Date: 2020/7/19 
 // @Algorithm: Simple Algorithm
@@ -275,7 +325,7 @@ namespace s777 {
         bool canTransform(string start, string end) {
             if (start.length() != end.length())
                 return false;
-            int i = 0, j = 0;
+            unsigned int i = 0, j = 0;
             while (true) {
                 while (i < start.length() && start[i] == 'X')
                     i++;
@@ -342,7 +392,8 @@ namespace s843 {
     public:
         void findSecretWord(vector<string>& wordlist, Master& master) {
             int counter[7] = { 0 };
-            int i = 0, j = 0, k = 0, s = 0, ret = 0, max = 0, min = 0;
+            unsigned int i = 0, j = 0;
+            int k = 0, s = 0, ret = 0, max = 0, min = 0;
             string word;
             for (int t = 0; t < 10; t++) {
                 min = INT_MAX;
@@ -438,6 +489,7 @@ namespace s1033 {
 
 }
 
+
 //---------------------------------------------
 // @ID: #1227
 // @Date: 2020/7/19
@@ -453,6 +505,7 @@ namespace s1227 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #1503
