@@ -6,6 +6,21 @@
 using std::vector;
 
 
+namespace s292 {
+    //---------------------------------------------
+    // @Date: 2020/7/19 
+    // @Algorithm: Number Theory Algorithm
+    // @Time: O(1)  
+    // @Space: O(1)
+//---------------------------------------------
+    class Solution {
+    public:
+        bool canWinNim(int n) {
+            return n % 4;
+        }
+    };
+}
+
 namespace s382 {
     //---------------------------------------------
     // @Date: 2020/7/19 
