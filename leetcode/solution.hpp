@@ -217,3 +217,18 @@ namespace s1033 {
     };
 
 }
+
+//---------------------------------------------
+// @Date: 2020/7/19
+// @Algorithm: Number Theory Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1227 {
+    class Solution {
+    public:
+        double nthPersonGetsNthSeat(int n) {
+            return n > 1 ? 0.5 : 1.0;
+        }
+    };
+}
