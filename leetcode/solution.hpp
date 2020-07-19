@@ -12,7 +12,7 @@ namespace s292 {
     // @Algorithm: Number Theory Algorithm
     // @Time: O(1)  
     // @Space: O(1)
-//---------------------------------------------
+    //---------------------------------------------
     class Solution {
     public:
         bool canWinNim(int n) {
@@ -164,4 +164,41 @@ namespace s478 {
      * Solution* obj = new Solution(radius, x_center, y_center);
      * vector<double> param_1 = obj->randPoint();
      */
+}
+
+
+
+namespace s1033 {
+    //---------------------------------------------
+    // @Date: 2020/7/19
+    // @Algorithm: Simple Algorithm
+    // @Time: O(1)
+    // @Space: O(1)
+    //---------------------------------------------
+    class Solution {
+    public:
+        vector<int> numMovesStones(int a, int b, int c) {
+            int x, y, z;
+            if (b > c) {
+                if (a > b)
+                    x = c, y = b, z = a;
+                else if (a < c)
+                    x = a, y = c, z = b;
+                else
+                    x = c, y = a, z = b;
+            }
+            else {
+                if (a > c)
+                    x = b, y = c, z = a;
+                else if (a < b)
+                    x = a, y = b, z = c;
+                else
+                    x = b, y = a, z = c;
+            }
+            int maximum_moves = z - x - 2;
+            int minimum_moves = (z - y > 2 && y - x > 2) ? 2 : ((z - y == 1 && y - x == 1) ? 0 : 1);
+            return { minimum_moves, maximum_moves };
+        }
+    };
+
 }
