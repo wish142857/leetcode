@@ -5,6 +5,85 @@
 #include <vector>
 using std::vector;
 
+
+namespace s382 {
+    //---------------------------------------------
+    // @Date: 2020/7/19 
+    // @Algorithm: Reservoir Sampling Algorithm
+    // @Time: O(n)  
+    // @Space: O(1)
+    //---------------------------------------------
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        /** @param head The linked list's head.
+            Note that the head is guaranteed to be not null, so it contains at least one node. */
+        Solution(ListNode* head) {
+            this->head = head;
+            srand((unsigned)time(NULL));
+            return;
+        }
+
+        /** Returns a random node's value. */
+        int getRandom() {
+            ListNode* p = head;
+            int i = 1, v = p->val, d = 0;
+            p = p->next;
+            while (p != NULL) {
+                d = rand() % (i + 1);
+                if (d == 0)
+                    v = p->val;
+                i++;
+                p = p->next;
+            }
+            return v;
+        }
+    private:
+        ListNode* head;
+    };
+}
+
+namespace s398 {
+    //---------------------------------------------
+    // @Date: 2020/7/19 
+    // @Algorithm: Reservoir Sampling Algorithm
+    // @Time: O(n)  
+    // @Space: O(1)
+    //---------------------------------------------
+    class Solution {
+    public:
+        vector<int>& nums;
+        Solution(vector<int>& nums) : nums(nums) {
+            srand((unsigned)time(NULL));
+            return;
+        }
+
+        int pick(int target) {
+            int count = 0, ans = -1;
+            for (int i = 0; i < nums.size(); i++) {
+                if (nums[i] == target) {
+                    count++;
+                    if (rand() % count == 0)
+                        ans = i;
+                }
+            }
+            return ans;
+        }
+    };
+
+    /**
+     * Your Solution object will be instantiated and called as such:
+     * Solution* obj = new Solution(nums);
+     * int param_1 = obj->pick(target);
+     */
+}
+
+
 namespace s470 {
     //---------------------------------------------
     // @Date: 2020/7/19 
