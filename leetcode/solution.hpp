@@ -21,6 +21,21 @@ namespace s292 {
     };
 }
 
+namespace s319 {
+    //---------------------------------------------
+    // @Date: 2020/7/19
+    // @Algorithm: Number Theory Algorithm
+    // @Time: O(1)
+    // @Space: O(1)
+    //---------------------------------------------
+    class Solution {
+    public:
+        int bulbSwitch(int n) {
+            return sqrt(n);
+        }
+    };
+}
+
 namespace s382 {
     //---------------------------------------------
     // @Date: 2020/7/19 
