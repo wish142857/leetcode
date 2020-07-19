@@ -33,4 +33,8 @@
 
 # Others concerning IDE
 .vs/
+Debug/
+Release/
+leetcode/Debug/
+leetcode/Release/
 *.user
