@@ -4,9 +4,10 @@
 using namespace std;
 
 int main() {
-	s777::Solution solution;
-
-
-	cout << solution.canTransform("XXXXXLXXXLXXXX", "XXLXXXXXXXXLXX") << endl;
+	s843::Solution solution;
+	s843::Master master("ccbazz");
+	vector<string> wordlist{ "acckzz","ccbazz","eiowzz","abcczz" };
+	vector<int> v{ 0 };
+	solution.findSecretWord(wordlist, master);
 	return 0;
 }

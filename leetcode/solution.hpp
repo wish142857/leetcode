@@ -49,8 +49,6 @@ namespace s312 {
     };
 }
 
-
-
 //---------------------------------------------
 // @ID: #319
 // @Date: 2020/7/19
@@ -63,6 +61,31 @@ namespace s319 {
     public:
         int bulbSwitch(int n) {
             return sqrt(n);
+        }
+    };
+}
+
+//---------------------------------------------
+// @ID: #375
+// @Date: 2020/7/19 
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^3)  
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s375 {
+    class Solution {
+    public:
+        int getMoneyAmount(int n) {
+            vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+            for (int i = n; i >= 1; i--) {
+                for (int j = i + 1; j <= n; j++) {
+                    dp[i][j] = min(dp[i + 1][j] + i, dp[i][j - 1] + j);
+                    for (int k = i + 1; k < j; k++) {
+                        dp[i][j] = min(dp[i][j], max(dp[i][k - 1] + k, dp[k + 1][j] + k));
+                    }
+                }
+            }
+            return dp[1][n];
         }
     };
 }
@@ -216,6 +239,30 @@ namespace s478 {
 }
 
 //---------------------------------------------
+// @ID: #486
+// @Date: 2020/7/19 
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s486 {
+    class Solution {
+    public:
+        bool PredictTheWinner(vector<int>& nums) {
+            int n = nums.size();
+            vector<vector<int>> dp(n, vector<int>(n));
+            for (int i = n - 1; i >= 0; i--) {
+                dp[i][i] = nums[i];
+                for (int j = i + 1; j <= n - 1; j++)
+                    dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+            }
+            return dp[0][n - 1] >= 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #777
 // @Date: 2020/7/19 
 // @Algorithm: Simple Algorithm
@@ -260,6 +307,83 @@ namespace s777 {
         }
     };
 }
+
+
+//---------------------------------------------
+// @ID: #843
+// @Date: 2020/7/19 
+// @Algorithm: Minimax Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
+namespace s843 {
+    /**
+    * // This is the Master's API interface.
+    * // You should not implement it, or speculate about its implementation
+    * class Master {
+    *   public:
+    *     int guess(string word);
+    * };
+    */
+    class Master {
+        public:
+            string secret;
+            Master(string secret) : secret(secret) { }
+            int guess(string word) {
+                int s = 0;
+                for (int k = 0; k < 6; k++)
+                    if (secret[k] == word[k])
+                        s++;
+                cout << "Call guess: " << word << endl;
+                return s;
+            }
+    };
+    class Solution {
+    public:
+        void findSecretWord(vector<string>& wordlist, Master& master) {
+            int counter[7] = { 0 };
+            int i = 0, j = 0, k = 0, s = 0, ret = 0, max = 0, min = 0;
+            string word;
+            for (int t = 0; t < 10; t++) {
+                min = INT_MAX;
+                for (i = 0; i < wordlist.size(); i++) {
+                    memset(counter, 0, sizeof(counter));
+                    for (j = 0; j < wordlist.size(); j++) {
+                        s = 0;
+                        for (k = 0; k < 6; k++)
+                            if (wordlist[i][k] == wordlist[j][k])
+                                s++;
+                        counter[s]++;
+                    }
+                    max = 1;
+                    for (k = 0; k < 6; k++)
+                        if (counter[k] > max)
+                            max = counter[k];
+                    if (max < min) {
+                        min = max;
+                        word = wordlist[i];
+                    }
+                }
+                ret = master.guess(word);
+                if (ret == 6)
+                    break;
+                vector<string>::iterator it = wordlist.begin();
+                while (it != wordlist.end()) {
+                    s = 0;
+                    for (k = 0; k < 6; k++)
+                        if ((*it)[k] == word[k])
+                            s++;
+                    if (s != ret)
+                        it = wordlist.erase(it);
+                    else
+                        it++;
+                }
+            }
+            return;
+        }
+    };
+}
+
 
 //---------------------------------------------
 // @ID: #877
