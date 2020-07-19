@@ -23,6 +23,35 @@ namespace s292 {
 }
 
 //---------------------------------------------
+// @ID: #312
+// @Date: 2020/7/19 
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^3)  
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s312 {
+    class Solution {
+    public:
+        int maxCoins(vector<int>& nums) {
+            int n = nums.size();
+            vector<vector<int>> dp(n + 2, vector<int>(n + 2));
+            vector<int> v(n + 2);
+            v[0] = v[n + 1] = 1;
+            for (int i = 1; i <= n; i++)
+                v[i] = nums[i - 1];
+            for (int i = n - 1; i >= 0; i--)
+                for (int j = i + 2; j <= n + 1; j++)
+                    for (int k = i + 1; k < j; k++) {
+                        dp[i][j] = max(dp[i][j], dp[i][k] + dp[k][j] + v[i] * v[k] * v[j]);
+                    }
+            return dp[0][n + 1];
+        }
+    };
+}
+
+
+
+//---------------------------------------------
 // @ID: #319
 // @Date: 2020/7/19
 // @Algorithm: Number Theory Algorithm
@@ -233,6 +262,23 @@ namespace s777 {
 }
 
 //---------------------------------------------
+// @ID: #877
+// @Date: 2020/7/19
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s877 {
+    class Solution {
+    public:
+        bool stoneGame(vector<int>& piles) {
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1033
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
@@ -306,3 +352,23 @@ namespace s1503 {
 }
 
 
+//---------------------------------------------
+// @ID: #1512
+// @Date: 2020/7/19
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1512 {
+    class Solution {
+    public:
+        int numIdenticalPairs(vector<int>& nums) {
+            int counter[101] = { 0 }, ans = 0;
+            for (auto i : nums)
+                counter[i]++;
+            for (int i = 1; i <= 100; i++)
+                ans += (counter[i] > 1 ? ((counter[i] * (counter[i] - 1)) >> 1) : 0);
+            return ans;
+        }
+    };
+}
