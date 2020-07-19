@@ -1,18 +1,19 @@
 #pragma once
+#include <algorithm>
 #include <ctime>
 #include <iostream>
 #include <random>
 #include <vector>
-using std::vector;
+using namespace std;
 
-
+//---------------------------------------------
+// @ID: #292
+// @Date: 2020/7/19 
+// @Algorithm: Number Theory Algorithm
+// @Time: O(1)  
+// @Space: O(1)
+//---------------------------------------------
 namespace s292 {
-    //---------------------------------------------
-    // @Date: 2020/7/19 
-    // @Algorithm: Number Theory Algorithm
-    // @Time: O(1)  
-    // @Space: O(1)
-    //---------------------------------------------
     class Solution {
     public:
         bool canWinNim(int n) {
@@ -21,13 +22,14 @@ namespace s292 {
     };
 }
 
+//---------------------------------------------
+// @ID: #319
+// @Date: 2020/7/19
+// @Algorithm: Number Theory Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
 namespace s319 {
-    //---------------------------------------------
-    // @Date: 2020/7/19
-    // @Algorithm: Number Theory Algorithm
-    // @Time: O(1)
-    // @Space: O(1)
-    //---------------------------------------------
     class Solution {
     public:
         int bulbSwitch(int n) {
@@ -36,13 +38,14 @@ namespace s319 {
     };
 }
 
+//---------------------------------------------
+// @ID: #382
+// @Date: 2020/7/19 
+// @Algorithm: Reservoir Sampling Algorithm
+// @Time: O(n)  
+// @Space: O(1)
+//---------------------------------------------
 namespace s382 {
-    //---------------------------------------------
-    // @Date: 2020/7/19 
-    // @Algorithm: Reservoir Sampling Algorithm
-    // @Time: O(n)  
-    // @Space: O(1)
-    //---------------------------------------------
     struct ListNode {
         int val;
         ListNode* next;
@@ -78,13 +81,14 @@ namespace s382 {
     };
 }
 
+//---------------------------------------------
+// @ID: #398
+// @Date: 2020/7/19 
+// @Algorithm: Reservoir Sampling Algorithm
+// @Time: O(n)  
+// @Space: O(1)
+//---------------------------------------------
 namespace s398 {
-    //---------------------------------------------
-    // @Date: 2020/7/19 
-    // @Algorithm: Reservoir Sampling Algorithm
-    // @Time: O(n)  
-    // @Space: O(1)
-    //---------------------------------------------
     class Solution {
     public:
         vector<int>& nums;
@@ -113,14 +117,14 @@ namespace s398 {
      */
 }
 
-
+//---------------------------------------------
+// @ID: #470
+// @Date: 2020/7/19 
+// @Algorithm: Rejection Sampling Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
 namespace s470 {
-    //---------------------------------------------
-    // @Date: 2020/7/19 
-    // @Algorithm: Rejection Sampling Algorithm
-    // @Time: O(1)
-    // @Space: O(1)
-    //---------------------------------------------
     // The rand7() API is already defined for you.
     // int rand7();
     // @return a random integer in the range 1 to 7
@@ -144,13 +148,14 @@ namespace s470 {
     };
 }
 
+//---------------------------------------------
+// @ID: #478
+// @Date: 2020/7/19 
+// @Algorithm: Rejection Sampling Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
 namespace s478 {
-    //---------------------------------------------
-    // @Date: 2020/7/19 
-    // @Algorithm: Rejection Sampling Algorithm
-    // @Time: O(1)
-    // @Space: O(1)
-    //---------------------------------------------
     class Solution {
     public:
         std::mt19937 rng{ std::random_device{}() };
@@ -181,15 +186,60 @@ namespace s478 {
      */
 }
 
+//---------------------------------------------
+// @ID: #777
+// @Date: 2020/7/19 
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s777 {
+    class Solution {
+    public:
+        bool canTransform(string start, string end) {
+            if (start.length() != end.length())
+                return false;
+            int i = 0, j = 0;
+            while (true) {
+                while (i < start.length() && start[i] == 'X')
+                    i++;
+                while (j < end.length() && end[j] == 'X')
+                    j++;
+                if (i < start.length() && j < end.length()) {
+                    if (start[i] != end[j])
+                        return false;
+                    if (start[i] == 'L' && i < j)
+                        return false;
+                    if (start[i] == 'R' && i > j)
+                        return false;
+                    i++, j++;
+                }
+                else
+                    break;
+            }
+            while (i < start.length()) {
+                if (start[i] != 'X')
+                    return false;
+                i++;
+            }
+            while (j < end.length()) {
+                if (end[j] != 'X')
+                    return false;
+                j++;
+            }
+            return true;
+        }
+    };
+}
 
-
+//---------------------------------------------
+// @ID: #1033
+// @Date: 2020/7/19
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
 namespace s1033 {
-    //---------------------------------------------
-    // @Date: 2020/7/19
-    // @Algorithm: Simple Algorithm
-    // @Time: O(1)
-    // @Space: O(1)
-    //---------------------------------------------
     class Solution {
     public:
         vector<int> numMovesStones(int a, int b, int c) {
@@ -219,6 +269,7 @@ namespace s1033 {
 }
 
 //---------------------------------------------
+// @ID: #1227
 // @Date: 2020/7/19
 // @Algorithm: Number Theory Algorithm
 // @Time: O(1)
@@ -232,3 +283,26 @@ namespace s1227 {
         }
     };
 }
+
+//---------------------------------------------
+// @ID: #1503
+// @Date: 2020/7/19
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1503 {
+    class Solution {
+    public:
+        int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+            int m = 0;
+            for (auto i : left)
+                m = max(m, i);
+            for (auto i : right)
+                m = max(m, n - i);
+            return m;
+        }
+    };
+}
+
+
