@@ -8,6 +8,33 @@ using namespace std;
 
 
 //---------------------------------------------
+// @ID: #167
+// @Date: 2020/7/20 
+// @Algorithm: Two Pointers Algorithm
+// @Time: O(n)  
+// @Space: O(1)
+//---------------------------------------------
+namespace s167 {
+    class Solution {
+    public:
+        vector<int> twoSum(vector<int>& numbers, int target) {
+            int l = 0, r = numbers.size() - 1, sum = 0;
+            while (l != r) {
+                sum = numbers[l] + numbers[r];
+                if (sum < target)
+                    l++;
+                else if (sum > target)
+                    r--;
+                else
+                    return { l + 1, r + 1 };
+            }
+            return { 0, 0 };
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #292
 // @Date: 2020/7/19 
 // @Algorithm: Number Theory Algorithm
@@ -272,10 +299,52 @@ namespace s486 {
 
 
 //---------------------------------------------
+// @ID: #497
+// @Date: 2020/7/20 
+// @Algorithm: Random Algorithm
+// @Time: O(n)  O(log n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s497 {
+    class Solution {
+    public:
+        vector<int> prefixSum;
+        vector<vector<int>>& rects;
+        Solution(vector<vector<int>>& rects) : rects(rects) {
+            prefixSum.resize(rects.size());
+            prefixSum[0] = (rects[0][2] - rects[0][0] + 1) * (rects[0][3] - rects[0][1] + 1);
+            for (unsigned i = 1; i < rects.size(); i++)
+                prefixSum[i] = prefixSum[i - 1] + (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
+            return;
+        }
+
+        vector<int> pick() {
+            int l = 0, r = prefixSum.size() - 1, mid = 0;
+            int x = rand() % prefixSum[r];
+            while (l != r) {
+                int mid = (l + r) >> 1;
+                if (prefixSum[mid] > x)
+                    r = mid;
+                else
+                    l = mid + 1;
+            }
+            return { rects[l][0] + (rand() % (rects[l][2] - rects[l][0] + 1)), rects[l][1] + (rand() % (rects[l][3] - rects[l][1] + 1)) };
+        }
+    };
+
+    /**
+     * Your Solution object will be instantiated and called as such:
+     * Solution* obj = new Solution(rects);
+     * vector<int> param_1 = obj->pick();
+     */
+}
+
+
+//---------------------------------------------
 // @ID: #528
 // @Date: 2020/7/19 
 // @Algorithm: Random Algorithm
-// @Time: O(n)  O(lg n)
+// @Time: O(n)  O(log n)
 // @Space: O(n)
 //---------------------------------------------
 namespace s528 {
@@ -311,6 +380,7 @@ namespace s528 {
      * int param_1 = obj->pickIndex();
      */
 }
+
 
 //---------------------------------------------
 // @ID: #777
