@@ -4,6 +4,10 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
 using namespace std;
 
 
@@ -339,6 +343,39 @@ namespace s497 {
      */
 }
 
+namespace s519 {
+    class Solution {
+    public:
+
+        unordered_map<int, int> m;
+        int r, c, n;
+
+        Solution(int n_rows, int n_cols) {
+            r = n_rows, c = n_cols, n = r * c;
+        }
+
+        vector<int> flip() {
+            int k = rand() % n;
+            n--;
+            int x = m.count(k) ? m[k] : k;
+            m[k] = m.count(n) ? m[n] : n;
+            return { x / c, x % c };
+        }
+
+        void reset() {
+            n = c * r;
+            m.clear();
+        }
+    };
+
+    /**
+    * Your Solution object will be instantiated and called as such:
+    * Solution* obj = new Solution(n_rows, n_cols);
+    * vector<int> param_1 = obj->flip();
+    * obj->reset();
+    */
+}
+
 
 //---------------------------------------------
 // @ID: #528
@@ -379,6 +416,39 @@ namespace s528 {
      * Solution* obj = new Solution(w);
      * int param_1 = obj->pickIndex();
      */
+}
+
+
+//---------------------------------------------
+// @ID: #710
+// @Date: 2020/7/20
+// @Algorithm:  Blacklist Sampling Algorithm
+// @Time: O(b)  O(1)
+// @Space: O(b)
+//---------------------------------------------
+namespace s710 {
+    class Solution {
+    public:
+        unordered_map<int, int> m;
+        int l;
+        Solution(int n, vector<int> b) {
+            l = n - b.size();
+            unordered_set<int> s;
+            for (int i = l; i < n; i++)
+                s.insert(i);
+            for (int x : b)
+                s.erase(x);
+            auto si = s.begin();
+            for (int x : b)
+                if (x < l)
+                    m[x] = *si++;
+        }
+
+        int pick() {
+            int k = rand() % l;
+            return m.count(k) ? m[k] : k;
+        }
+    };
 }
 
 
@@ -616,6 +686,24 @@ namespace s1512 {
             for (int i = 1; i <= 100; i++)
                 ans += (counter[i] > 1 ? ((counter[i] * (counter[i] - 1)) >> 1) : 0);
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o64
+// @Date: 2020/7/20
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace o64 {
+    class Solution {
+    public:
+        int sumNums(int n) {
+            n && (n += sumNums(n - 1));
+            return n;
         }
     };
 }
