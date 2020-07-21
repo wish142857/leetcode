@@ -12,6 +12,50 @@ using namespace std;
 
 
 //---------------------------------------------
+// @ID: #95
+// @Date: 2020/7/21
+// @Algorithm: Tree Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s95 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        vector<TreeNode*> generateTrees(int l, int r) {
+            if (l > r)
+                return { nullptr };
+            vector<TreeNode*> ans;
+            for (int k = l; k <= r; k++) {
+                vector<TreeNode*> left = generateTrees(l, k - 1);
+                vector<TreeNode*> right = generateTrees(k + 1, r);
+                for (int i = 0; i < left.size(); i++)
+                    for (int j = 0; j < right.size(); j++) {
+                        TreeNode* tree = new TreeNode(k, left[i], right[j]);
+                        ans.push_back(tree);
+                    }
+            }
+            return ans;
+        }
+
+        vector<TreeNode*> generateTrees(int n) {
+            if (n > 0)
+                return generateTrees(1, n);
+            return {};
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #167
 // @Date: 2020/7/20 
 // @Algorithm: Two Pointers Algorithm
