@@ -12,6 +12,56 @@ using namespace std;
 
 
 //---------------------------------------------
+// @ID: #45
+// @Date: 2020/7/21
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s45 {
+    class Solution {
+    public:
+        int jump(vector<int>& nums) {
+            int i = 0, j = 0, k = 0, times = 0;
+            while (true) {
+                if (k >= int(nums.size()) - 1)
+                    return times;
+                times++;
+                while (i <= j)
+                    k = max(k, i + nums[i]), i++;
+                j = k;
+            }
+            return 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #55
+// @Date: 2020/7/21
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s55 {
+    class Solution {
+    public:
+        bool canJump(vector<int>& nums) {
+            int i = 0, j = 0;
+            while (i <= j) {
+                j = max(j, i + nums[i]);
+                if (j >= int(nums.size()) - 1)
+                    return true;
+                i++;
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #95
 // @Date: 2020/7/21
 // @Algorithm: Tree Algorithm
@@ -37,8 +87,8 @@ namespace s95 {
             for (int k = l; k <= r; k++) {
                 vector<TreeNode*> left = generateTrees(l, k - 1);
                 vector<TreeNode*> right = generateTrees(k + 1, r);
-                for (int i = 0; i < left.size(); i++)
-                    for (int j = 0; j < right.size(); j++) {
+                for (unsigned int i = 0; i < left.size(); i++)
+                    for (unsigned int j = 0; j < right.size(); j++) {
                         TreeNode* tree = new TreeNode(k, left[i], right[j]);
                         ans.push_back(tree);
                     }
@@ -50,6 +100,28 @@ namespace s95 {
             if (n > 0)
                 return generateTrees(1, n);
             return {};
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #122
+// @Date: 2020/7/21
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s122 {
+    class Solution {
+    public:
+        int maxProfit(vector<int>& prices) {
+            int profit = 0;
+            for (int i = 1; i < prices.size(); i++) {
+                if (prices[i] > prices[i - 1])
+                    profit += (prices[i] - prices[i - 1]);
+            }
+            return profit;
         }
     };
 }
@@ -619,6 +691,47 @@ namespace s843 {
     };
 }
 
+
+//---------------------------------------------
+// @ID: #860
+// @Date: 2020/7/21
+// @Algorithm: Greedy Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s860 {
+    class Solution {
+    public:
+        bool lemonadeChange(vector<int>& bills) {
+            int a = 0, b = 0;
+            for (unsigned int i = 0; i < bills.size(); i++) {
+                switch (bills[i])
+                {
+                case 5:
+                    a++;
+                    break;
+                case 10:
+                    if (--a < 0)
+                        return false;
+                    b++;
+                    break;
+                case 20:
+                    if (a > 0 && b > 0)
+                        a--, b--;
+                    else if (a >= 3)
+                        a -= 3;
+                    else
+                        return false;
+                    break;
+                default:
+                    break;
+                }
+            }
+            return true;
+
+        }
+    };
+}
 
 //---------------------------------------------
 // @ID: #877
