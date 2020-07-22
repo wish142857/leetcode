@@ -12,6 +12,163 @@ using namespace std;
 
 
 //---------------------------------------------
+// @ID: #2
+// @Date: 2020/7/21
+// @Algorithm: List Algorithm | Linked List
+// @Time: O(max(m, n))
+// @Space: O(max(m, n))
+//---------------------------------------------
+namespace s2 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+    class Solution {
+    public:
+        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+            ListNode* p = l1, * q = l2, * r = NULL, * t = NULL;
+            int n = 0;
+            r = new ListNode(p->val + q->val);
+            t = r;
+            p = p->next;
+            q = q->next;
+            while (p != NULL && q != NULL) {
+                t->next = new ListNode(p->val + q->val);
+                t = t->next;
+                p = p->next;
+                q = q->next;
+            }
+            while (p != NULL) {
+                t->next = new ListNode(p->val);
+                t = t->next;
+                p = p->next;
+            }
+            while (q != NULL) {
+                t->next = new ListNode(q->val);
+                t = t->next;
+                q = q->next;
+            }
+            t = r;
+            while (true) {
+                t->val = t->val + n;
+                n = t->val / 10;
+                t->val = t->val % 10;
+                if (t->next == NULL) {
+                    if (n > 0)
+                        t->next = new ListNode(n);
+                    break;
+                }
+                t = t->next;
+            }
+            return r;
+        }
+    };
+}
+
+
+// TODO
+namespace s5 {
+    class Solution {
+    public:
+        string longestPalindrome(string s) {
+            int ans = 0;
+            vector<vector<bool>> dp(s.size(), vector<bool>(s.size()));
+            for (int i = s.size() - 1; i >= 0; i--) {
+                dp[i][i] = true;
+                for (int j = i + 1; j < int(s.size()); j++) {
+                    dp[i][j] = dp[i + 1][j - 1] && s[i] == s[j];
+                    ans = max(ans, j - i + 1);
+                }
+            }
+            
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #19
+// @Date: 2020/7/21
+// @Algorithm: List Algorithm | Linked List, Two Points
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s19 {
+     struct ListNode {
+         int val;
+         ListNode *next;
+         ListNode(int x) : val(x), next(NULL) {}
+     };
+
+    class Solution {
+    public:
+        ListNode* removeNthFromEnd(ListNode* head, int n) {
+            ListNode* h = new ListNode(0);
+            h->next = head;
+            ListNode *slow = h, *fast = h;
+            for (int i = 0; i <= n; i++)
+                fast = fast->next;
+            while (fast)
+                fast = fast->next, slow = slow->next;
+            if (slow && slow->next)
+                slow->next = slow->next->next;
+            return h->next;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #21
+// @Date: 2020/7/21
+// @Algorithm: List Algorithm | Linked List
+// @Time: O(n + m)
+// @Space: O(1)
+//---------------------------------------------
+namespace s21 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+            ListNode *h, *p;
+            if (l1 && l2) {
+                if (l1->val <= l2->val)
+                    h = l1, l1 = l1->next;
+                else
+                    h = l2, l2 = l2->next;
+            }
+            else if (l1)
+                h = l1, l1 = l1->next;
+            else if (l2)
+                h = l2, l2 = l2->next;
+            else
+                return nullptr;
+            p = h;
+            while (l1 && l2) {
+                if (l1->val <= l2->val)
+                    p->next = l1, p = p->next, l1 = l1->next;
+                else
+                    p->next = l2, p = p->next, l2 = l2->next;
+            }
+            if (l1)
+                p->next = l1;
+            else if (l2)
+                p->next = l2;
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #45
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
@@ -117,11 +274,66 @@ namespace s122 {
     public:
         int maxProfit(vector<int>& prices) {
             int profit = 0;
-            for (int i = 1; i < prices.size(); i++) {
+            for (int i = 1; i < int(prices.size()); i++) {
                 if (prices[i] > prices[i - 1])
                     profit += (prices[i] - prices[i - 1]);
             }
             return profit;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #154
+// @Date: 2020/7/22
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s153 {
+    class Solution {
+    public:
+        int findMin(vector<int>& nums) {
+            int left = 0, right = nums.size() - 1, mid = 0;
+            while (left != right) {
+                mid = left + ((right - left) >> 1);
+                if (nums[mid] < nums[right])
+                    right = mid;
+                else
+                    left = mid + 1;
+            }
+            return nums[left];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #154
+// @Date: 2020/7/22
+// @Algorithm: Binary Search Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s154 {
+    class Solution {
+    public:
+        int findMin(vector<int>& nums) {
+            int i = 0, j = nums.size() - 1, mid = 0;
+            while (i != j) {
+                mid = i + ((j - i) >> 1);
+                if (nums[mid] < nums[j]) {
+                    j = mid;
+                }
+                else if (nums[mid] > nums[j]) {
+                    i = mid + 1;;
+                }
+                else {
+                    j--;
+                }
+            }
+            return nums[i];
         }
     };
 }
@@ -843,6 +1055,36 @@ namespace s1512 {
             for (int i = 1; i <= 100; i++)
                 ans += (counter[i] > 1 ? ((counter[i] * (counter[i] - 1)) >> 1) : 0);
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o11
+// @Date: 2020/7/22
+// @Algorithm: Binary Search Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o11 {
+    class Solution {
+    public:
+        int minArray(vector<int>& numbers) {
+            int i = 0, j = numbers.size() - 1, mid = 0;
+            while (i != j) {
+                mid = i + ((j - i) >> 1);
+                if (numbers[mid] < numbers[j]) {
+                    j = mid;
+                }
+                else if (numbers[mid] > numbers[j]) {
+                    i = mid + 1;;
+                }
+                else {
+                    j--;
+                }
+            }
+            return numbers[i];
         }
     };
 }
