@@ -991,6 +991,23 @@ namespace s877 {
 
 
 //---------------------------------------------
+// @ID: #1025
+// @Date: 2020/7/24
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1025 {
+    class Solution {
+    public:
+        bool divisorGame(int N) {
+            return N % 2 == 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1033
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
