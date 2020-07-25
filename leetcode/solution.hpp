@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <algorithm>
 #include <ctime>
 #include <iostream>
@@ -564,6 +564,54 @@ namespace s398 {
 
 
 //---------------------------------------------
+// @ID: #410
+// @Date: 2020/7/25
+// @Algorithm: Dynamic Algorithm
+// @Time: O(n log(sum−maxn))
+// @Space: O(1)
+//---------------------------------------------
+namespace s410 {
+    class Solution {
+    public:
+        bool check(vector<int>& nums, int x, int m) {
+            long long sum = 0;
+            int cnt = 1;
+            for (int i = 0; i < int(nums.size()); i++) {
+                if (sum + nums[i] > x) {
+                    cnt++;
+                    sum = nums[i];
+                }
+                else {
+                    sum += nums[i];
+                }
+            }
+            return cnt <= m;
+        }
+
+        int splitArray(vector<int>& nums, int m) {
+            long long left = 0, right = 0;
+            for (int i = 0; i < int(nums.size()); i++) {
+                right += nums[i];
+                if (left < nums[i]) {
+                    left = nums[i];
+                }
+            }
+            while (left < right) {
+                long long mid = (left + right) >> 1;
+                if (check(nums, int(mid), m)) {
+                    right = mid;
+                }
+                else {
+                    left = mid + 1;
+                }
+            }
+            return left;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #470
 // @Date: 2020/7/19 
 // @Algorithm: Rejection Sampling Algorithm
@@ -699,6 +747,14 @@ namespace s497 {
      */
 }
 
+
+//---------------------------------------------
+// @ID: #519
+// @Date: 2020/7/20 
+// @Algorithm: Random Algorithm
+// @Time: O(n)  O(log n)
+// @Space: O(n)
+//---------------------------------------------
 namespace s519 {
     class Solution {
     public:
@@ -972,6 +1028,7 @@ namespace s860 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #877
