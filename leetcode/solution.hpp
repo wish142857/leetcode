@@ -12,6 +12,35 @@ using namespace std;
 
 
 //---------------------------------------------
+// @ID: #1
+// @Date: 2020/7/21
+// @Algorithm: Hash Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1 {
+    class Solution {
+    public:
+        vector<int> twoSum(vector<int>& nums, int target) {
+            multiset<int> numSet;
+            for (int i = 0; i < int(nums.size()); i++) {
+                int n = target - nums[i];
+                if (numSet.count(n) > 0) {
+                    int j = 0;
+                    for (; j < i; j++)
+                        if (nums[j] == n)
+                            break;
+                    return { j, i };
+                }
+                numSet.insert(nums[i]);
+            }
+            return { };
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #2
 // @Date: 2020/7/21
 // @Algorithm: List Algorithm | Linked List
@@ -82,6 +111,56 @@ namespace s5 {
                 }
             }
             
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #7
+// @Date: 2020/7/26
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s7 {
+    class Solution {
+    public:
+        int reverse(int x) {
+            long y = 0;
+            while (x) {
+                y = y * 10 + x % 10;
+                x /= 10;
+            }
+            return y <= INT_MAX && y >= INT_MIN ? y : 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #11
+// @Date: 2020/7/26
+// @Algorithm: Greedy Algorithm | Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s11 {
+    class Solution {
+    public:
+        int maxArea(vector<int>& height) {
+            int i = 0, j = height.size() - 1;
+            int ans = 0;
+            while (i < j) {
+                ans = max(ans, min(height[i], height[j]) * (j - i));
+                if (height[i] < height[j])
+                    i++;
+                else if (height[i] > height[j])
+                    j--;
+                else
+                    i++, j--;
+            }
+            return ans;
         }
     };
 }
@@ -246,6 +325,38 @@ namespace s64 {
     };
 }
 
+
+//---------------------------------------------
+// @ID: #75
+// @Date: 2020/7/26
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s75 {
+    class Solution {
+    public:
+        void sortColors(vector<int>& nums) {
+            int i = 0, j = nums.size() - 1, k = 0;
+            while (k <= j) {
+                if (nums[k] == 0) {
+                    nums[k++] = nums[i];
+                    nums[i++] = 0;
+                }
+                else if (nums[k] == 2) {
+                    nums[k] = nums[j];
+                    nums[j--] = 2;
+                }
+                else {
+                    k++;
+                }
+            }
+            return;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #95
 // @Date: 2020/7/21
@@ -307,6 +418,31 @@ namespace s122 {
                     profit += (prices[i] - prices[i - 1]);
             }
             return profit;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #125
+// @Date: 2020/7/26
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s125 {
+    class Solution {
+    public:
+        bool isPalindrome(string s) {
+            string _s;
+            for (char c : s)
+                if (isalnum(c))
+                    _s += tolower(c);
+            int left = 0, right = _s.size() - 1;
+            while (left < right)
+                if (_s[left++] != _s[right--])
+                    return false;
+            return true;
         }
     };
 }

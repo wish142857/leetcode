@@ -4,8 +4,9 @@
 using namespace std;
 
 int main() {
+	vector<int> v{ 1,8,6,2,5,4,8,3,7 };
 	vector<vector<int>> matrix{ { 9, 9, 4 }, { 6, 6, 8 }, { 2, 1, 1 } };
-	auto solution = new s329::Solution();
-	cout << solution->longestIncreasingPath(matrix) << endl;
+	auto solution = new s11::Solution();
+	cout << solution->maxArea(v) << endl;
 	return 0;
 }
