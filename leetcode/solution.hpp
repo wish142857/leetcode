@@ -457,6 +457,51 @@ namespace s319 {
 
 
 //---------------------------------------------
+// @ID: #329
+// @Date: 2020/7/26
+// @Algorithm: Dynamic Algorithm
+// @Time: O(m * n)
+// @Space: O(m * n)
+//---------------------------------------------
+namespace s329 {
+    class Solution {
+    public:
+        int m = 0, n = 0;
+
+        int longestIncreasingPath(vector<vector<int>>& matrix) {
+            if (matrix.size() == 0 or matrix[0].size() == 0)
+                return 0;
+            m = matrix.size(), n = matrix[0].size();
+            vector<vector<int>> dp(m, vector<int>(n));
+            int ans = 0;
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    ans = max(ans, calculate(matrix, dp, i, j));
+            return ans;
+        }
+    private:
+        int calculate(vector<vector<int>>& matrix, vector<vector<int>>& dp, int x, int y) {
+            if (dp[x][y] > 0)
+                return dp[x][y];
+            int ans = 1;
+            if (x > 0 && matrix[x][y] > matrix[x - 1][y])
+                ans = max(ans, (dp[x - 1][y] > 0 ? dp[x - 1][y] : calculate(matrix, dp, x - 1, y)) + 1);
+            if (x < m - 1 && matrix[x][y] > matrix[x + 1][y])
+                ans = max(ans, (dp[x + 1][y] > 0 ? dp[x + 1][y] : calculate(matrix, dp, x + 1, y)) + 1);
+            if (y > 0 && matrix[x][y] > matrix[x][y - 1])
+                ans = max(ans, (dp[x][y - 1] > 0 ? dp[x][y - 1] : calculate(matrix, dp, x, y - 1)) + 1);
+            if (y < n - 1 && matrix[x][y] > matrix[x][y + 1])
+                ans = max(ans, (dp[x][y + 1] > 0 ? dp[x][y + 1] : calculate(matrix, dp, x, y + 1)) + 1);
+            dp[x][y] = ans;
+            return ans;
+        }
+    };
+    
+
+}
+
+
+//---------------------------------------------
 // @ID: #375
 // @Date: 2020/7/19 
 // @Algorithm: Dynamic Programming Algorithm
@@ -605,7 +650,7 @@ namespace s410 {
                     left = mid + 1;
                 }
             }
-            return left;
+            return int(left);
         }
     };
 }
