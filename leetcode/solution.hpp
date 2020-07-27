@@ -449,6 +449,39 @@ namespace s125 {
 
 
 //---------------------------------------------
+// @ID: #141
+// @Date: 2020/7/27
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s141 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        bool hasCycle(ListNode* head) {
+            ListNode *slow = head, *fast = head;
+            while (fast) {
+                fast = fast->next;
+                if (fast == slow)
+                    return true;
+                if (!fast)
+                    return false;
+                fast = fast->next;
+                slow = slow->next;
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #153
 // @Date: 2020/7/22
 // @Algorithm: Binary Search Algorithm
@@ -703,6 +736,30 @@ namespace s382 {
         }
     private:
         ListNode* head;
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #392
+// @Date: 2020/7/27
+// @Algorithm: Simple Algorithm
+// @Time: O(n)  
+// @Space: O(1)
+//---------------------------------------------
+namespace s392 {
+    class Solution {
+    public:
+        bool isSubsequence(string s, string t) {
+            int i = 0, j = 0, a = s.length(), b = t.length();
+            while (i < a && j < b) {
+                if (s[i] == t[j])
+                    i++, j++;
+                else
+                    j++;
+            }
+            return (i == a);
+        }
     };
 }
 
@@ -1091,6 +1148,43 @@ namespace s777 {
     };
 }
 
+
+// TODO
+/*
+namespace s838 {
+    class Solution {
+    public:
+        string pushDominoes(string dominoes) {
+            int i = 0, j = 0, x = 0, y = 0, k = 0, n = dominoes.size();
+            while (k < n && dominoes[k] == '.')
+                k++;
+            if (k < n)
+                for (x = 0; x < k; x++)
+                    dominoes[x] = dominoes[k];
+            while (k < n) {
+                i = k, k++;
+                while (k < n && dominoes[k] == '.')
+                    k++;
+                if (k < n) {
+                    j = k, x = i + 1, y = j - 1;
+                    while (x < y) {
+                        dominoes[x++] = dominoes[i];
+                        dominoes[y--] = dominoes[j];
+                    }
+                    if ()
+
+                }
+                else {
+                    for (x = i + 1; x < n; x++)
+                        dominoes[x] = dominoes[i];
+                    break;
+                }
+            }
+            return dominoes;
+        }
+    };
+}
+*/
 
 //---------------------------------------------
 // @ID: #843
