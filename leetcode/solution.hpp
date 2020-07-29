@@ -1555,7 +1555,7 @@ namespace lcp3 {
 // @Time: O(n)
 // @Space: O(1)
 //---------------------------------------------
-namespace lsp6 {
+namespace lcp6 {
     class Solution {
     public:
         int minCount(vector<int>& coins) {
