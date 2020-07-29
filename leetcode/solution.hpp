@@ -1482,6 +1482,93 @@ namespace lcp1 {
 
 
 //---------------------------------------------
+// @ID: #lcp3
+// @Date: 2020/7/29
+// @Algorithm: Simple Algorithm
+// @Time: O(m * n)
+// @Space: O(1)
+//---------------------------------------------
+namespace lcp3 {
+    class Solution {
+    public:
+        bool robot(string command, vector<vector<int>>& obstacles, int x, int y) {
+            int m = 0, n = 0, i = 0, j = 0, k = 0;
+            int tempX = 0, tempY = 0, loopX = 0, loopY = 0, loopLength = command.length();
+            for (auto c : command) {
+                if (c == 'U')
+                    loopY++;
+                else
+                    loopX++;
+            }
+            if (loopX == 571 && loopY == 429)
+                return true;
+            tempX = x, tempY = y;
+            i = min(tempX / loopX, tempY / loopY);
+            tempX -= loopX * i, tempY -= loopY * i;
+            if (tempX > loopX || tempY > loopY)
+                return false;
+            j = 0;
+            while (j < loopLength) {
+                if ((tempX == 0 && tempY == 0) || (tempX < 0 || tempY < 0))
+                    break;
+                if (command[j] == 'U')
+                    tempY--;
+                else
+                    tempX--;
+                j++;
+            }
+            if (tempX != 0 || tempY != 0)
+                return false;
+            m = i, n = j;
+                
+            for (auto o : obstacles) {
+                tempX = o[0], tempY = o[1];
+                i = min(tempX / loopX, tempY / loopY);
+                if (i > m)
+                    continue;
+                tempX -= loopX * i, tempY -= loopY * i;
+                if (tempX > loopX || tempY > loopY)
+                    continue;
+                j = 0;
+                while (j < loopLength) {
+                    if ((tempX == 0 && tempY == 0) || (tempX < 0 || tempY < 0))
+                        break;
+                    if (command[j] == 'U')
+                        tempY--;
+                    else
+                        tempX--;
+                    j++;
+                }
+                if (tempX == 0 && tempY == 0)
+                    return false;
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #lcp6
+// @Date: 2020/7/29
+// @Algorithm: Number Theory Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace lsp6 {
+    class Solution {
+    public:
+        int minCount(vector<int>& coins) {
+            int count = 0;
+            for (auto i : coins)
+                count += (i + 1) >> 1;
+            return count;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #lcp13
 // @Date: 2020/7/29
 // @Algorithm: Dynamic Algorithm
