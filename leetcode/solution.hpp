@@ -301,7 +301,7 @@ namespace s55 {
 //---------------------------------------------
 // @ID: #64
 // @Date: 2020/7/23
-// @Algorithm: Dynamic Algorithm
+// @Algorithm: Dynamic Programming Algorithm
 // @Time: O(n*m)
 // @Space: O(n*m)
 //---------------------------------------------
@@ -655,7 +655,7 @@ namespace s319 {
 //---------------------------------------------
 // @ID: #329
 // @Date: 2020/7/26
-// @Algorithm: Dynamic Algorithm
+// @Algorithm: Dynamic Programming Algorithm
 // @Time: O(m * n)
 // @Space: O(m * n)
 //---------------------------------------------
@@ -694,6 +694,32 @@ namespace s329 {
     };
     
 
+}
+
+
+//---------------------------------------------
+// @ID: #343
+// @Date: 2020/7/30
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s343 {
+    class Solution {
+    public:
+        int integerBreak(int n) {
+            vector<int> dp(n + 1);
+            for (int i = 0; i < n; i++) {
+                dp[i] = i;
+                for (int j = 1; j <= i / 2; j++)
+                    dp[i] = max(dp[i], dp[j] * dp[i - j]);
+            }
+            dp[n] = 0;
+            for (int j = 1; j <= n / 2; j++)
+                dp[n] = max(dp[n], dp[j] * dp[n - j]);
+            return dp[n];
+        }
+    };
 }
 
 
@@ -831,7 +857,7 @@ namespace s398 {
 //---------------------------------------------
 // @ID: #410
 // @Date: 2020/7/25
-// @Algorithm: Dynamic Algorithm
+// @Algorithm: Dynamic Programming Algorithm
 // @Time: O(n log(sum−maxn))
 // @Space: O(1)
 //---------------------------------------------
@@ -1571,7 +1597,7 @@ namespace lcp6 {
 //---------------------------------------------
 // @ID: #lcp13
 // @Date: 2020/7/29
-// @Algorithm: Dynamic Algorithm
+// @Algorithm: Dynamic Programming Algorithm
 // @Time: O(?)
 // @Space: O(?)
 // @Note: https://leetcode-cn.com/problems/xun-bao/solution/xun-bao-bfs-dp-by-leetcode-solution/
