@@ -1595,6 +1595,55 @@ namespace lcp6 {
 
 
 //---------------------------------------------
+// @ID: #lcp7
+// @Date: 2020/7/30
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(km)
+// @Space: O(kn)
+//---------------------------------------------
+namespace lcp7 {
+    class Solution {
+    public:
+        int numWays(int n, vector<vector<int>>& relation, int k) {
+            vector<vector<int>> dp(k + 1, vector<int>(n, 0));
+            
+            dp[0][0] = 1;
+            for (int i = 1; i <= k; i++)
+                for (auto r : relation)
+                    dp[i][r[1]] += dp[i - 1][r[0]];
+
+            return dp[k][n - 1];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #lcp11
+// @Date: 2020/7/30
+// @Algorithm: Math Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace lcp11 {
+    class Solution {
+    public:
+        int expectNumber(vector<int>& scores) {
+            sort(scores.begin(), scores.end());
+            int x = -1, counter = 0;
+            for (auto i : scores) {
+                if (i == x)
+                    continue;
+                x = i, counter++;
+            }
+            return counter;
+
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #lcp13
 // @Date: 2020/7/29
 // @Algorithm: Dynamic Programming Algorithm
