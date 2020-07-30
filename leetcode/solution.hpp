@@ -1123,6 +1123,48 @@ namespace s528 {
 
 
 //---------------------------------------------
+// @ID: #687
+// @Date: 2020/7/31
+// @Algorithm: Recursion Algorithm
+// @Time: O(n)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s687{
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        int longestUnivaluePath(TreeNode* root) {
+            ans = 0;
+            searchTree(root);
+            return ans;
+        }
+    private:
+        int ans = 0;
+        int searchTree(TreeNode* root) {
+            if (!root)
+                return 0;
+            int left = searchTree(root->left) + 1;
+            bool bleft = root->left && root->val == root->left->val;
+            int right = searchTree(root->right) + 1;
+            bool bright = root->right && root->val == root->right->val;
+            if (!bleft)
+                left = 0;
+            if (!bright)
+                right = 0;
+            ans = max(ans, left + right);
+            return max(left, right);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #710
 // @Date: 2020/7/20
 // @Algorithm:  Blacklist Sampling Algorithm
@@ -1822,6 +1864,27 @@ namespace o64 {
         int sumNums(int n) {
             n && (n += sumNums(n - 1));
             return n;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i08_03
+// @Date: 2020/7/31
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+// @Note: TODO logn solution using Binary Search Algorithm
+//---------------------------------------------
+namespace i08_03 {
+    class Solution {
+    public:
+        int findMagicIndex(vector<int>& nums) {
+            for (int i = 0; i < int(nums.size()); i++)
+                if (nums[i] == i)
+                    return i;
+            return -1;
         }
     };
 }
