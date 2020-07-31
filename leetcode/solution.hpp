@@ -328,6 +328,31 @@ namespace s64 {
 
 
 //---------------------------------------------
+// @ID: #70
+// @Date: 2020/7/31
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s70 {
+    class Solution {
+    public:
+        int climbStairs(int n) {
+            vector<int> dp(n + 1);
+            if (n == 1)
+                return 1;
+            if (n == 2)
+                return 2;
+            dp[1] = 1, dp[2] = 2;
+            for (int i = 3; i <= n; i++)
+                dp[i] = dp[i - 1] + dp[i - 2];
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #75
 // @Date: 2020/7/26
 // @Algorithm: Two Points Algorithm
@@ -1192,6 +1217,28 @@ namespace s710 {
         int pick() {
             int k = rand() % l;
             return m.count(k) ? m[k] : k;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #746
+// @Date: 2020/7/31 
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s746 {
+    class Solution {
+    public:
+        int minCostClimbingStairs(vector<int>& cost) {
+            int length = cost.size();
+            vector<int> dp(length + 1);
+            dp[0] = cost[0], dp[1] = cost[1];
+            for (int i = 2; i < length; i++)
+                dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i];
+            return min(dp[length - 1], dp[length - 2]);
         }
     };
 }
