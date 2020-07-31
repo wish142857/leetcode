@@ -454,6 +454,30 @@ namespace s104 {
 
 
 //---------------------------------------------
+// @ID: #121
+// @Date: 2020/7/31
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s121 {
+    class Solution {
+    public:
+        int maxProfit(vector<int>& prices) {
+            if (prices.size() == 0)
+                return 0;
+            int maxProfit = 0, minPrice = prices[0];
+            for (int i = 1; i < int(prices.size()); i++) {
+                maxProfit = max(maxProfit, prices[i] - minPrice);
+                minPrice = min(minPrice, prices[i]);
+            }
+            return maxProfit;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #122
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
@@ -610,6 +634,32 @@ namespace s167 {
                     return { l + 1, r + 1 };
             }
             return { 0, 0 };
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #198
+// @Date: 2020/7/31
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s198 {
+    class Solution {
+    public:
+        int rob(vector<int>& nums) {
+            int n = nums.size();
+            if (n == 0)
+                return 0;
+            int dp_done = nums[0], dp_undo = 0, temp = 0;
+            for (int i = 1; i < n; i++) {
+                temp = dp_done;
+                dp_done = dp_undo + nums[i];
+                dp_undo = max(dp_undo, temp);
+            }
+            return max(dp_done, dp_undo);
         }
     };
 }
