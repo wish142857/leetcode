@@ -97,21 +97,30 @@ namespace s2 {
 }
 
 
-// TODO
+//---------------------------------------------
+// @ID: #5
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
 namespace s5 {
     class Solution {
     public:
         string longestPalindrome(string s) {
-            int ans = 0;
-            vector<vector<bool>> dp(s.size(), vector<bool>(s.size()));
+            if (s.length() == 0)
+                return "";
+            int maxLength = 1, x = 0;
+            vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), true));
             for (int i = s.size() - 1; i >= 0; i--) {
                 dp[i][i] = true;
                 for (int j = i + 1; j < int(s.size()); j++) {
                     dp[i][j] = dp[i + 1][j - 1] && s[i] == s[j];
-                    ans = max(ans, j - i + 1);
+                    if (dp[i][j] && (j - i + 1 > maxLength))
+                        maxLength = j - i + 1, x = i;
                 }
             }
-            
+            return s.substr(x, maxLength);
         }
     };
 }
@@ -488,6 +497,40 @@ namespace s75 {
                 }
             }
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #s91
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s91 {
+    class Solution {
+    public:
+        int numDecodings(string s) {
+            if (s.length() == 0 || s[0] == '0')
+                return 0;
+            int dp1 = 1, dp2 = 1, dp3 = 0;
+            for (int i = 1; i < int(s.length()); i++) {
+                if (s[i] == '0') {
+                    if (s[i - 1] == '1' || s[i - 1] == '2')
+                        dp3 = dp2, dp2 = dp1, dp1 = dp3;
+                    else
+                        dp1 = dp2, dp2 = 0;
+                }
+                else if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] <= '6')) {
+                    dp2 = dp2 + dp1, dp1 = dp2 - dp1;
+                }
+                else {
+                    dp1 = dp2;
+                }
+            }
+            return dp2;
         }
     };
 }
