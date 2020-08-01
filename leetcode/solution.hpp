@@ -167,6 +167,18 @@ namespace s11 {
 }
 
 
+namespace s14 {
+    class Solution {
+    public:
+        string longestCommonPrefix(vector<string>& strs) {
+            int index = 0, size = strs.size();
+            for (int i = 0; i < )
+
+
+        }
+    };
+}
+
 //---------------------------------------------
 // @ID: #19
 // @Date: 2020/7/21
@@ -2014,6 +2026,30 @@ namespace o11 {
                 }
             }
             return numbers[i];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o42
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o42 {
+    class Solution {
+    public:
+        int maxSubArray(vector<int>& nums) {
+            int dp = nums[0], ans = nums[0];
+            if (nums.size() == 0)
+                return 0;
+            for (int i = 1; i < nums.size(); i++) {
+                dp = max(dp + nums[i], nums[i]);
+                ans = max(ans, dp);
+            }
+            return ans;
         }
     };
 }
