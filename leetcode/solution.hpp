@@ -581,6 +581,28 @@ namespace s95 {
 
 
 //---------------------------------------------
+// @ID: #96
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s96 {
+    class Solution {
+    public:
+        int numTrees(int n) {
+            vector<int> dp(n + 1, 0);
+            dp[0] = 1;
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= i; j++)
+                    dp[i] += dp[j - 1] * dp[i - j];
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #104
 // @Date: 2020/7/28
 // @Algorithm: Tree Algorithm
@@ -804,6 +826,40 @@ namespace s141 {
                 slow = slow->next;
             }
             return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #152
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s152 {
+    class Solution {
+    public:
+        int maxProduct(vector<int>& nums) {
+            if (nums.size() == 0)
+                return 0;
+            if (nums.size() == 1)
+                return nums[0];
+            int n = nums.size(), dp_max = 0, dp_min = 0, dp_temp = 0, maxProduct = 0;
+            for (int i = 0; i < n; i++) {
+                if (nums[i] >= 0) {
+                    dp_max = dp_max > 0 ? dp_max * nums[i] : nums[i];
+                    dp_min = dp_min * nums[i];
+                }
+                else {
+                    dp_temp = dp_max;
+                    dp_max = dp_min * nums[i];
+                    dp_min = dp_temp > 0 ? dp_temp * nums[i] : nums[i];
+                }
+                maxProduct = max(maxProduct, dp_max);
+            }
+            return maxProduct;
         }
     };
 }
