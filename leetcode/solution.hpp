@@ -288,7 +288,7 @@ namespace s53 {
             int dp = nums[0], ans = nums[0];
             if (nums.size() == 0)
                 return 0;
-            for (int i = 1; i < nums.size(); i++) {
+            for (int i = 1; i < int(nums.size()); i++) {
                 dp = max(dp + nums[i], nums[i]);
                 ans = max(ans, dp);
             }
@@ -2038,6 +2038,36 @@ namespace o64 {
 
 
 //---------------------------------------------
+// @ID: #i08_01
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i08_01 {
+    class Solution {
+    public:
+        int waysToStep(int n) {
+            if (n == 0)
+                return 1;
+            if (n == 1)
+                return 1;
+            if (n == 2)
+                return 2;
+            int dp1 = 1, dp2 = 1, dp3 = 2, dp4 = 0;
+            for (int i = 3; i <= n; i++) {
+                dp4 = (((dp1 + dp2) % MOD) + dp3) % MOD;
+                dp1 = dp2, dp2 = dp3, dp3 = dp4;
+            }
+            return dp3;
+        }
+    private:
+        const int MOD = 1000000007;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i08_03
 // @Date: 2020/7/31
 // @Algorithm: Simple Algorithm
@@ -2053,6 +2083,30 @@ namespace i08_03 {
                 if (nums[i] == i)
                     return i;
             return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i16_17
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i16_17 {
+    class Solution {
+    public:
+        int maxSubArray(vector<int>& nums) {
+            int dp = nums[0], ans = nums[0];
+            if (nums.size() == 0)
+                return 0;
+            for (int i = 1; i < nums.size(); i++) {
+                dp = max(dp + nums[i], nums[i]);
+                ans = max(ans, dp);
+            }
+            return ans;
         }
     };
 }
