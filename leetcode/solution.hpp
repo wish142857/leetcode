@@ -605,6 +605,47 @@ namespace s104 {
     };
 }
 
+//---------------------------------------------
+// @ID: #114
+// @Date: 2020/8/2
+// @Algorithm: Tree Algorithm | Recursive Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s114 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        void flatten(TreeNode* root) {
+            if (root == nullptr)
+                return;
+            TreeNode* currentEnd = root, * left = root->left, * right = root->right;
+            root->left = nullptr, root->right = nullptr;
+            if (left) {
+                flatten(left);
+                currentEnd->right = begin;
+                currentEnd = end;
+            }
+            if (right) {
+                flatten(right);
+                currentEnd->right = begin;
+                currentEnd = end;
+            }
+            begin = root, end = currentEnd;
+        }
+    private:
+        TreeNode *begin = nullptr, *end = nullptr;
+    };
+}
+
 
 //---------------------------------------------
 // @ID: #120
