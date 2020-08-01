@@ -974,6 +974,113 @@ namespace s198 {
 
 
 //---------------------------------------------
+// @ID: #213
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s213 {
+    class Solution {
+    public:
+        int rob(vector<int>& nums) {
+            if (nums.size() == 0)
+                return 0;
+            if (nums.size() == 1)
+                return nums[0];
+            if (nums.size() == 2)
+                return max(nums[0], nums[1]);
+            if (nums.size() == 3) {
+                int temp = max(nums[0], nums[1]);
+                return max(temp, nums[2]);
+            }
+
+            int n = nums.size();
+            int dp_done_0 = nums[1], dp_undo_0 = 0, dp_done_1 = nums[0] + nums[2], dp_undo_1 = nums[0],  dp_temp = 0;
+            
+            for (int i = 2; i < n; i++) {
+                dp_temp = dp_done_0;
+                dp_done_0 = dp_undo_0 + nums[i];
+                dp_undo_0 = max(dp_undo_0, dp_temp);
+            }
+            for (int i = 3; i < n - 1; i++) {
+                dp_temp = dp_done_1;
+                dp_done_1 = dp_undo_1 + nums[i];
+                dp_undo_1 = max(dp_undo_1, dp_temp);
+            }
+            dp_temp = max(dp_done_0, dp_undo_0);
+            dp_temp = max(dp_temp, dp_done_1);
+            dp_temp = max(dp_temp, dp_undo_1);
+            return dp_temp;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #263
+// @Date: 2020/8/2
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s263 {
+    class Solution {
+    public:
+        bool isUgly(int num) {
+            if (num == 0)
+                return false;
+            while (num % 2 == 0) num /= 2;
+            while (num % 3 == 0) num /= 3;
+            while (num % 5 == 0) num /= 5;
+            return num == 1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #264
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s264 {
+    class Solution {
+    public:
+        int nthUglyNumber(int n) {
+            if (n == 1)
+                return 1;
+            int i = 0, point_2 = 1, point_3 = 1, point_5 = 1, temp_2 = 0, temp_3 = 0, temp_5 = 0;
+            vector<int> dp(n + 1);
+            dp[1] = 1, i = 2;
+            while (i <= n) {
+                temp_2 = dp[point_2] * 2;
+                temp_3 = dp[point_3] * 3;
+                temp_5 = dp[point_5] * 5;
+                if ((temp_2 <= temp_3) && (temp_2 <= temp_5)) {
+                    dp[i] = temp_2;
+                    point_2++;
+                }
+                else if (temp_3 <= temp_5) {
+                    dp[i] = temp_3;
+                    point_3++;
+                }
+                else {
+                    dp[i] = temp_5;
+                    point_5++;
+                }
+                if (dp[i] != dp[i - 1])
+                    i++;
+            }
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #292
 // @Date: 2020/7/19 
 // @Algorithm: Number Theory Algorithm
@@ -1923,6 +2030,40 @@ namespace s1033 {
 }
 
 
+namespace s1201 {
+    class Solution {
+    public:
+        int nthUglyNumber(int n, int a, int b, int c) {
+            if (n == 1)
+                return 1;
+            int i = 0, point_2 = 1, point_3 = 1, point_5 = 1, temp_2 = 0, temp_3 = 0, temp_5 = 0;
+            vector<int> dp(n + 1);
+            dp[1] = 1, i = 2;
+            while (i <= n) {
+                temp_2 = dp[point_2] * 2;
+                temp_3 = dp[point_3] * 3;
+                temp_5 = dp[point_5] * 5;
+                if ((temp_2 <= temp_3) && (temp_2 <= temp_5)) {
+                    dp[i] = temp_2;
+                    point_2++;
+                }
+                else if (temp_3 <= temp_5) {
+                    dp[i] = temp_3;
+                    point_3++;
+                }
+                else {
+                    dp[i] = temp_5;
+                    point_5++;
+                }
+                if (dp[i] != dp[i - 1])
+                    i++;
+            }
+            return dp[n];
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #1227
 // @Date: 2020/7/19
@@ -2322,6 +2463,47 @@ namespace o42 {
                 ans = max(ans, dp);
             }
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o49
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace o49 {
+    class Solution {
+    public:
+        int nthUglyNumber(int n) {
+            if (n == 1)
+                return 1;
+            int i = 0, point_2 = 1, point_3 = 1, point_5 = 1, temp_2 = 0, temp_3 = 0, temp_5 = 0;
+            vector<int> dp(n + 1);
+            dp[1] = 1, i = 2;
+            while (i <= n) {
+                temp_2 = dp[point_2] * 2;
+                temp_3 = dp[point_3] * 3;
+                temp_5 = dp[point_5] * 5;
+                if ((temp_2 <= temp_3) && (temp_2 <= temp_5)) {
+                    dp[i] = temp_2;
+                    point_2++;
+                }
+                else if (temp_3 <= temp_5) {
+                    dp[i] = temp_3;
+                    point_3++;
+                }
+                else {
+                    dp[i] = temp_5;
+                    point_5++;
+                }
+                if (dp[i] != dp[i - 1])
+                    i++;
+            }
+            return dp[n];
         }
     };
 }
