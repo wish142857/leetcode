@@ -167,17 +167,27 @@ namespace s11 {
 }
 
 
+// TODO
+/*
 namespace s14 {
     class Solution {
     public:
         string longestCommonPrefix(vector<string>& strs) {
             int index = 0, size = strs.size();
-            for (int i = 0; i < )
+            while (true) {
+                for (int i = 0; i < size; i++) {
+                    if (strs[i][index] )
+
+                }
+                index++;
+            }
 
 
         }
     };
 }
+*/
+
 
 //---------------------------------------------
 // @ID: #19
@@ -329,6 +339,70 @@ namespace s55 {
                 i++;
             }
             return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #62
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s62 {
+    class Solution {
+    public:
+        int uniquePaths(int m, int n) {
+            vector<vector<int>> dp(m, vector<int>(n));
+            for (int i = 0; i < m; i++)
+                dp[i][0] = 1;
+            for (int j = 0; j < n; j++)
+                dp[0][j] = 1;
+
+            for (int i = 1; i < m; i++)
+                for (int j = 1; j < n; j++)
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            
+            return dp[m - 1][n - 1];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #63
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s63 {
+    class Solution {
+    public:
+        int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+            if (obstacleGrid.size() == 0 || obstacleGrid[0].size() == 0)
+                return 1;
+            int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+            vector<vector<int>> dp(m, vector<int>(n, 0));
+            for (int i = 0; i < m; i++) {
+                if (obstacleGrid[i][0])
+                    break;
+                dp[i][0] = 1;
+            }
+            for (int j = 0; j < n; j++) {
+                if (obstacleGrid[0][j])
+                    break;
+                dp[0][j] = 1;
+            }
+
+            for (int i = 1; i < m; i++)
+                for (int j = 1; j < n; j++)
+                    if (!obstacleGrid[i][j])
+                        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            
+            return dp[m - 1][n - 1];
         }
     };
 }
@@ -2045,7 +2119,7 @@ namespace o42 {
             int dp = nums[0], ans = nums[0];
             if (nums.size() == 0)
                 return 0;
-            for (int i = 1; i < nums.size(); i++) {
+            for (int i = 1; i < int(nums.size()); i++) {
                 dp = max(dp + nums[i], nums[i]);
                 ans = max(ans, dp);
             }
@@ -2138,7 +2212,7 @@ namespace i16_17 {
             int dp = nums[0], ans = nums[0];
             if (nums.size() == 0)
                 return 0;
-            for (int i = 1; i < nums.size(); i++) {
+            for (int i = 1; i < int(nums.size()); i++) {
                 dp = max(dp + nums[i], nums[i]);
                 ans = max(ans, dp);
             }
