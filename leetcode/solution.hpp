@@ -503,7 +503,7 @@ namespace s75 {
 
 
 //---------------------------------------------
-// @ID: #s91
+// @ID: #91
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
 // @Time: O(n)
@@ -607,6 +607,36 @@ namespace s104 {
 
 
 //---------------------------------------------
+// @ID: #120
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s120 {
+    class Solution {
+    public:
+        int minimumTotal(vector<vector<int>>& triangle) {
+            if (triangle.size() == 0)
+                return 0;
+            int n = triangle.size(), minTotal = INT_MAX;
+            vector<int> dp(n, INT_MAX);
+            dp[0] = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = i ; j > 0; j--) {
+                    dp[j] = min(dp[j], dp[j - 1]) + triangle[i][j];
+                }
+                dp[0] += triangle[i][0];
+            }
+            for (int i = 0; i < n; i++)
+                minTotal = min(minTotal, dp[i]);
+            return minTotal;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #121
 // @Date: 2020/7/31
 // @Algorithm: Greedy Algorithm
@@ -672,6 +702,34 @@ namespace s125 {
                 if (_s[left++] != _s[right--])
                     return false;
             return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #139
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s139 {
+    class Solution {
+    public:
+        bool wordBreak(string s, vector<string>& wordDict) {
+            int n = s.length(), m = wordDict.size(), l = 0;
+            vector<bool> dp(n, false);
+            for (int i = 0; i < n; i++) {
+                for (auto str : wordDict) {
+                    l = str.length();
+                    if ((i + 1 >= l) && (s.substr(i + 1 - l, l) == str) && ((i + 1 - l == 0) || dp[i- l])) {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+            return dp[n - 1];
         }
     };
 }
