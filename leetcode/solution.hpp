@@ -275,6 +275,30 @@ namespace s45 {
 
 
 //---------------------------------------------
+// @ID: #53
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s53 {
+    class Solution {
+    public:
+        int maxSubArray(vector<int>& nums) {
+            int dp = nums[0], ans = nums[0];
+            if (nums.size() == 0)
+                return 0;
+            for (int i = 1; i < nums.size(); i++) {
+                dp = max(dp + nums[i], nums[i]);
+                ans = max(ans, dp);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #55
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
@@ -679,6 +703,47 @@ namespace s292 {
             return n % 4;
         }
     };
+}
+
+
+//---------------------------------------------
+// @ID: #303
+// @Date: 2020/8/1
+// @Algorithm: Simple Algorithm | Using Buffer
+// @Time: O(n) -> O(1)
+// @Space: O(n)
+//---------------------------------------------
+namespace s303 {
+    class NumArray {
+    public:
+        NumArray(vector<int>& nums) : nums(nums) {
+            numsSize = nums.size();
+            prefixSum.resize(numsSize);
+            prefixBufferIndex = 0;
+            if (numsSize > 0)
+                prefixSum[0] = nums[0];
+        }
+
+        int sumRange(int i, int j) {
+            if (j > prefixBufferIndex) {
+                for (int x = prefixBufferIndex + 1; x <= j; x++)
+                    prefixSum[x] = prefixSum[x - 1] + nums[x];
+                prefixBufferIndex = j;
+            }
+            return prefixSum[j] - prefixSum[i] + nums[i];
+        }
+    private:
+        int numsSize = 0;
+        int prefixBufferIndex = 0;
+        vector<int>& nums;
+        vector<int>prefixSum;
+    };
+
+    /**
+     * Your NumArray object will be instantiated and called as such:
+     * NumArray* obj = new NumArray(nums);
+     * int param_1 = obj->sumRange(i,j);
+     */
 }
 
 
@@ -1195,6 +1260,12 @@ namespace s528 {
      * int param_1 = obj->pickIndex();
      */
 }
+
+
+namespace s632 {
+    // TODO
+}
+
 
 
 //---------------------------------------------
@@ -1982,6 +2053,32 @@ namespace i08_03 {
                 if (nums[i] == i)
                     return i;
             return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_16
+// @Date: 2020/8/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i17_16 {
+    class Solution {
+    public:
+        int massage(vector<int>& nums) {
+            int n = nums.size();
+            if (n == 0)
+                return 0;
+            int dp_done = nums[0], dp_undo = 0, temp = 0;
+            for (int i = 1; i < n; i++) {
+                temp = dp_done;
+                dp_done = dp_undo + nums[i];
+                dp_undo = max(dp_undo, temp);
+            }
+            return max(dp_done, dp_undo);
         }
     };
 }
