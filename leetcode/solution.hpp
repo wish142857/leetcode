@@ -1594,6 +1594,72 @@ namespace s410 {
 
 
 //---------------------------------------------
+// @ID: #413
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s413 {
+    class Solution {
+    public:
+        int numberOfArithmeticSlices(vector<int>& A) {
+            if (A.size() == 0)
+                return 0;
+            int n = A.size(), sum = 0;
+            vector<int> dp(n);
+            for (int i = 2; i < n; i++)
+                if (A[i] - A[i - 1] == A[i - 1] - A[i - 2]) {
+                    dp[i] = dp[i - 1] + 1;
+                    sum += dp[i];
+                }
+            return sum;
+
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #416
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(?)
+// @Space: O(n)
+//---------------------------------------------
+namespace s416 {
+    class Solution {
+    public:
+        vector<int> *nums;
+        vector<int> prefixSum;
+        bool canPartition(vector<int>& nums) {
+            if (nums.size() == 0)
+                return true;
+            int n = nums.size(), sum = 0;
+            sort(nums.begin(), nums.end());
+            this->nums = &nums;
+            prefixSum.resize(n);
+            prefixSum[0] = nums[0];
+            for (int i = 1; i < n; i++)
+                prefixSum[i] = prefixSum[i - 1] + nums[i];
+            if (prefixSum[n - 1] & 1)
+                return false;
+            return dpCheck(n - 1, prefixSum[n - 1] >> 1);
+        }
+    private:
+        bool dpCheck(int k, int x) {
+            if (x <= 0 || prefixSum[k] < x)
+                return false;
+            if (k == 0)
+                return (*nums)[k] == x;
+            else
+                return dpCheck(k - 1, x - (*nums)[k]) || dpCheck(k - 1, x);
+        };
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #470
 // @Date: 2020/7/19 
 // @Algorithm: Rejection Sampling Algorithm
