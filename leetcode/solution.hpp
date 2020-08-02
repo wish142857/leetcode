@@ -1081,6 +1081,34 @@ namespace s264 {
 
 
 //---------------------------------------------
+// @ID: #279
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n^1.5)
+//---------------------------------------------
+namespace s279 {
+    class Solution {
+    public:
+        int numSquares(int n) {
+            int k = 0;
+            vector<int> dp(n + 1);
+            dp[1] = 1;
+            for (int i = 2; i <= n; i++) {
+                dp[i] = INT_MAX;
+                for (int j = int(sqrt(i)); j >= 1; j--) {
+                    k = i - j * j;
+                    if (dp[k] != INT_MAX)
+                        dp[i] = min(dp[i], dp[k] + 1);
+                }
+            }
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #292
 // @Date: 2020/7/19 
 // @Algorithm: Number Theory Algorithm
@@ -1092,6 +1120,19 @@ namespace s292 {
     public:
         bool canWinNim(int n) {
             return n % 4;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #300
+//---------------------------------------------
+namespace s300 {
+    class Solution {
+    public:
+        int lengthOfLIS(vector<int>& nums) {
+            // TODO
         }
     };
 }
@@ -1161,6 +1202,33 @@ namespace s312 {
                         dp[i][j] = max(dp[i][j], dp[i][k] + dp[k][j] + v[i] * v[k] * v[j]);
                     }
             return dp[0][n + 1];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #322
+// @Date: 2020/8/2 
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s322 {
+    class Solution {
+    public:
+        int coinChange(vector<int>& coins, int amount) {
+            int n = amount, m = coins.size(), k = 0;
+            vector<int> dp(n + 1);
+            for (int i = 1; i <= n; i++) {
+                dp[i] = INT_MAX;
+                for (int j = 0; j < m; j++) {
+                    k = i - coins[j];
+                    if (k >= 0 && dp[k] != INT_MAX)
+                        dp[i] = min(dp[i], dp[k] + 1);
+                }
+            }
+            return dp[n] != INT_MAX ? dp[n] : -1;
         }
     };
 }
@@ -2029,36 +2097,35 @@ namespace s1033 {
 
 }
 
-
+//---------------------------------------------
+// @ID: #1201
+// @Date: 2020/8/2
+// TODO OVERTIME
+//---------------------------------------------
 namespace s1201 {
     class Solution {
     public:
         int nthUglyNumber(int n, int a, int b, int c) {
-            if (n == 1)
-                return 1;
-            int i = 0, point_2 = 1, point_3 = 1, point_5 = 1, temp_2 = 0, temp_3 = 0, temp_5 = 0;
-            vector<int> dp(n + 1);
-            dp[1] = 1, i = 2;
-            while (i <= n) {
-                temp_2 = dp[point_2] * 2;
-                temp_3 = dp[point_3] * 3;
-                temp_5 = dp[point_5] * 5;
-                if ((temp_2 <= temp_3) && (temp_2 <= temp_5)) {
-                    dp[i] = temp_2;
-                    point_2++;
-                }
-                else if (temp_3 <= temp_5) {
-                    dp[i] = temp_3;
-                    point_3++;
-                }
-                else {
-                    dp[i] = temp_5;
-                    point_5++;
-                }
-                if (dp[i] != dp[i - 1])
-                    i++;
+            int i = 0, pointA = 1, pointB = 1, pointC = 1, tempA = 0, tempB = 0, tempC = 0;
+            int dp = 0;
+            for (int i = 1; i <= n; i++) {
+                tempA = pointA * a;
+                tempB = pointB * b;
+                tempC = pointC * c;
+                if ((tempA <= tempB) && (tempA <= tempC))
+                    dp = tempA;
+                else if (tempB <= tempC)
+                    dp = tempB;
+                else
+                    dp = tempC;
+                if (tempA == dp)
+                    pointA++;
+                if (tempB == dp)
+                    pointB++;
+                if (tempC == dp)
+                    pointC++;
             }
-            return dp[n];
+            return dp;
         }
     };
 }
