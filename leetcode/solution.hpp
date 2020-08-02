@@ -1208,6 +1208,23 @@ namespace s312 {
 
 
 //---------------------------------------------
+// @ID: #319
+// @Date: 2020/7/19
+// @Algorithm: Number Theory Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s319 {
+    class Solution {
+    public:
+        int bulbSwitch(int n) {
+            return int(sqrt(n));
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #322
 // @Date: 2020/8/2 
 // @Algorithm: Dynamic Programming Algorithm
@@ -1229,23 +1246,6 @@ namespace s322 {
                 }
             }
             return dp[n] != INT_MAX ? dp[n] : -1;
-        }
-    };
-}
-
-
-//---------------------------------------------
-// @ID: #319
-// @Date: 2020/7/19
-// @Algorithm: Number Theory Algorithm
-// @Time: O(1)
-// @Space: O(1)
-//---------------------------------------------
-namespace s319 {
-    class Solution {
-    public:
-        int bulbSwitch(int n) {
-            return int(sqrt(n));
         }
     };
 }
@@ -1297,6 +1297,27 @@ namespace s329 {
 
 
 //---------------------------------------------
+// @ID: #338
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s338 {
+    class Solution {
+    public:
+        vector<int> countBits(int num) {
+            int n = num;
+            vector<int> dp(n + 1);
+            for (int i = 1; i <= n; i++)
+                dp[i] = dp[i >> 1] + (i & 1);
+            return dp;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #343
 // @Date: 2020/7/30
 // @Algorithm: Dynamic Programming Algorithm
@@ -1323,6 +1344,51 @@ namespace s343 {
 
 
 //---------------------------------------------
+// @ID: #368
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s368 {
+    class Solution {
+    public:
+        vector<int> largestDivisibleSubset(vector<int>& nums) {
+            if (nums.size() == 0)
+                return {};
+            int n = nums.size(), i = 0, maxSize = 0, maxIndex = 0;
+            vector<int> dp(n);
+            sort(nums.begin(), nums.end());
+            for (i = 0; i < n; i++) {
+                dp[i] = 1;
+                for (int j = 0; j < i; j++) {
+                    if (nums[i] % nums[j] == 0)
+                        dp[i] = max(dp[i], dp[j] + 1);
+                }
+                if (dp[i] > maxSize) {
+                    maxSize = dp[i];
+                    maxIndex = i;
+                }
+            }
+            vector<int> ansSet;
+            ansSet.push_back(nums[maxIndex]);
+            i = maxIndex;
+            maxSize--;
+            while (i > 0) {
+                i--;
+                if ((nums[maxIndex] % nums[i] == 0) && (dp[i] == maxSize)) {
+                    ansSet.push_back(nums[i]);
+                    maxIndex = i;
+                    maxSize--;
+                }
+            }
+            return ansSet;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #375
 // @Date: 2020/7/19 
 // @Algorithm: Dynamic Programming Algorithm
@@ -1343,6 +1409,32 @@ namespace s375 {
                 }
             }
             return dp[1][n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #377
+// @Date: 2020/8/2
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s377 {
+    class Solution {
+    public:
+        int combinationSum4(vector<int>& nums, int target) {
+            int n = target, m = nums.size();
+            vector<long> dp(n + 1, 0);
+            dp[0] = 1;
+            for (int i = 1; i <= n; i++)
+                for (int j = 0; j < m; j++)
+                    if (i >= nums[j]) {
+                        dp[i] += dp[i - nums[j]];
+                        dp[i] %= INT_MAX;
+                    }
+            return int(dp[n]);
         }
     };
 }
