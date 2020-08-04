@@ -2315,6 +2315,43 @@ namespace s931 {
 
 
 //---------------------------------------------
+// @ID: #978
+// @Date: 2020/8/4
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s978 {
+    class Solution {
+    public:
+        int maxTurbulenceSize(vector<int>& A) {
+            if (A.size() == 0)
+                return 0;
+            int n = A.size(), maxSize = 1;
+            int dpUp = 1, dpDown = 1;
+            for (int i = 1; i < n; i++) {
+                if (A[i] > A[i - 1]) {
+                    dpDown = dpUp + 1;
+                    dpUp = 1;
+                    maxSize = max(maxSize, dpDown);
+                }
+                else if (A[i] < A[i - 1]) {
+                    dpUp = dpDown + 1;
+                    dpDown = 1;
+                    maxSize = max(maxSize, dpUp);
+                }
+                else {
+                    dpUp = 1;
+                    dpDown = 1;
+                }
+            }
+            return maxSize;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1025
 // @Date: 2020/7/24
 // @Algorithm: Simple Algorithm
