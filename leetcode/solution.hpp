@@ -2281,6 +2281,40 @@ namespace s877 {
 
 
 //---------------------------------------------
+// @ID: #931
+// @Date: 2020/8/4
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s931 {
+    class Solution {
+    public:
+        int minFallingPathSum(vector<vector<int>>& A) {
+            if (A.size() == 0)
+                return 0;
+            int n = A.size(), temp = 0;
+            vector<vector<int>> dp(n, vector<int>(n));
+            for (int j = 0; j < n; j++)
+                dp[0][j] = A[0][j];
+            for (int i = 1; i < n; i++) {
+                dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]) + A[i][0];
+                dp[i][n - 1] = min(dp[i - 1][n - 2], dp[i - 1][n - 1]) + A[i][n - 1];
+                for (int j = 1; j < n - 1; j++) {
+                    temp = min(dp[i - 1][j - 1], dp[i - 1][j + 1]);
+                    dp[i][j] = min(dp[i - 1][j], temp) + A[i][j];
+                }
+            }
+            temp = dp[n - 1][0];
+            for (int i = 1; i < n; i++)
+                temp = min(temp, dp[n - 1][i]);
+            return temp;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1025
 // @Date: 2020/7/24
 // @Algorithm: Simple Algorithm
