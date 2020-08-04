@@ -974,6 +974,55 @@ namespace s198 {
 
 
 //---------------------------------------------
+// @ID: #207
+// @Date: 2020/8/4
+// @Algorithm: DFS Algorithm 
+// @Time: O(n+m)
+// @Space: O(n+m)
+//---------------------------------------------
+namespace s207 {
+    class Solution {
+    private:
+        vector<vector<int>> edges;
+        vector<int> visited;
+        bool valid = true;
+
+    public:
+        void dfs(int u) {
+            visited[u] = 1;
+            for (int v : edges[u]) {
+                if (visited[v] == 0) {
+                    dfs(v);
+                    if (!valid) {
+                        return;
+                    }
+                }
+                else if (visited[v] == 1) {
+                    valid = false;
+                    return;
+                }
+            }
+            visited[u] = 2;
+        }
+
+        bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+            edges.resize(numCourses);
+            visited.resize(numCourses);
+            for (const auto& info : prerequisites) {
+                edges[info[1]].push_back(info[0]);
+            }
+            for (int i = 0; i < numCourses && valid; ++i) {
+                if (!visited[i]) {
+                    dfs(i);
+                }
+            }
+            return valid;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #213
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
