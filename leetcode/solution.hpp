@@ -1346,6 +1346,46 @@ namespace s329 {
 
 
 //---------------------------------------------
+// @ID: #337
+// @Date: 2020/8/5
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s337 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        int rob(TreeNode* root) {
+            if (!root) {
+                dp_done = 0, dp_undo = 0;
+                return 0;
+            }
+
+            int dp_done_temp = root->val, dp_undo_temp = 0;
+
+            dp_undo_temp += rob(root->left);
+            dp_done_temp += dp_undo;
+
+            dp_undo_temp += rob(root->right);
+            dp_done_temp += dp_undo;
+
+            dp_done = dp_done_temp, dp_undo = dp_undo_temp;
+            return max(dp_done_temp, dp_undo_temp);
+        }
+    private:
+        int dp_done = 0, dp_undo = 0;
+    };
+
+}
+
+//---------------------------------------------
 // @ID: #338
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
