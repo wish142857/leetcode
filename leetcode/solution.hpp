@@ -573,6 +573,42 @@ namespace s91 {
 
 
 //---------------------------------------------
+// @ID: #94
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Recursion Algorithm 
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s94 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        vector<int> inorderTraversal(TreeNode* root) {
+            ans.clear();
+            _inorderTraversal(root);
+            return ans;
+        }
+    private:
+        vector<int> ans;
+
+        void _inorderTraversal(TreeNode* root) {
+            if (!root)
+                return;
+            _inorderTraversal(root->left);
+            ans.push_back(root->val);
+            _inorderTraversal(root->right);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #95
 // @Date: 2020/7/21
 // @Algorithm: Tree Algorithm
@@ -634,6 +670,50 @@ namespace s96 {
                     dp[i] += dp[j - 1] * dp[i - j];
             return dp[n];
         }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #98
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s98 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        bool isValidBST(TreeNode* root) {
+            if (!root)
+                return true;
+            int currentMinVal = root->val, currentMaxVal = root->val;
+            if (root->left) {
+                if (!isValidBST(root->left) || maxVal >= root->val)
+                    return false;
+                currentMinVal = minVal;
+            }
+
+            if (root->right) {
+                if (!isValidBST(root->right) || minVal <= root->val)
+                    return false;
+                currentMaxVal = maxVal;
+            }
+            
+            minVal = currentMinVal;
+            maxVal = currentMaxVal;
+            return true;
+        }
+
+    private:
+        int minVal = 0, maxVal = 0;
     };
 }
 
