@@ -280,6 +280,41 @@ namespace s21 {
 }
 
 
+// TODO 
+namespace s39 {
+    class Solution {
+    public:
+        vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+            if (candidates.size() == 0)
+                return {};
+            this->n = candidates.size();
+            this->candidates = &candidates;
+            this->target = target;
+            this->candidateSet.clear();
+            this->candidateAnsSet.clear();
+        }
+    private:
+        int n = 0;
+        int target = 0;
+        vector<int>* candidates;
+        int sum;
+        vector<int> candidateSet;
+        vector<vector<int>> candidateAnsSet;
+
+        void DFS(int c) {
+            // if ()
+
+            candidateSet.push_back((*candidates)[c]);
+            // if ()
+
+        }
+
+    };
+
+
+}
+
+
 //---------------------------------------------
 // @ID: #45
 // @Date: 2020/7/21
@@ -2688,6 +2723,69 @@ namespace s1227 {
     public:
         double nthPersonGetsNthSeat(int n) {
             return n > 1 ? 0.5 : 1.0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1373
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1373 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        int maxSumBST(TreeNode* root) {
+            maxSum = 0;
+            if (root)
+                checkBST(root);
+            return maxSum;
+        }
+
+    private:
+        int minVal = 0, maxVal = 0, sumVal = 0, maxSum = 0;
+
+        // [requires] root != nullptr 
+        bool checkBST(TreeNode* root) {
+            bool isBST = true;
+            int currentMinVal = root->val, currentMaxVal = root->val, currentSumVal = root->val;
+            if (root->left) {
+                if (!checkBST(root->left) || maxVal >= root->val) {
+                    isBST = false;
+                }
+                if (isBST) {
+                    currentMinVal = minVal;
+                    currentSumVal += sumVal;
+                }
+            }
+            if (root->right) {
+                if (!checkBST(root->right) || minVal <= root->val) {
+                    isBST = false;
+                }
+                if (isBST) {
+                    currentMaxVal = maxVal;
+                    currentSumVal += sumVal;
+                }
+            }
+            if (isBST) {
+                minVal = currentMinVal;
+                maxVal = currentMaxVal;
+                sumVal = currentSumVal;
+                maxSum = max(maxSum, sumVal);
+            }
+            return isBST;
         }
     };
 }
