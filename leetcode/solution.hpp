@@ -4,6 +4,7 @@
 #include <iostream>
 #include <queue>
 #include <random>
+#include <stack>
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -3124,6 +3125,61 @@ namespace i08_01 {
         }
     private:
         const int MOD = 1000000007;
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i08_02
+// @Date: 2020/8/7
+// @Algorithm: DFS Algorithm
+// @Time: O(mn)
+// @Space: O(m+n)
+//---------------------------------------------
+namespace i08_02 {
+    class Solution {
+    public:
+        vector<vector<int>> pathWithObstacles(vector<vector<int>>& obstacleGrid) {
+            if (obstacleGrid.size() == 0 || obstacleGrid[0].size() == 0)
+                return {};
+            if (obstacleGrid[0][0] == 1)
+                return {};
+            m = obstacleGrid.size();
+            n = obstacleGrid[0].size();
+            v = &obstacleGrid;
+            s.clear();
+            s.push_back({ 0, 0 });
+            if (DFS(0, 0))
+                return s;
+            else
+                return {};
+        }
+
+    private:
+        int m = 0, n = 0;
+        vector<vector<int>> *v;
+        vector<vector<int>> s;
+
+        bool DFS(const int x, const int y) {
+            if (x == m - 1 && y == n - 1)
+                return true;
+
+            if (x < m - 1 && (*v)[x + 1][y] == 0) {
+                (*v)[x + 1][y] = 1;
+                s.push_back({ x + 1,y });
+                if (DFS(x + 1, y))
+                    return true;
+                s.pop_back();
+            }
+            if (y < n - 1 && (*v)[x][y + 1] == 0) {
+                (*v)[x][y + 1] = 1;
+                s.push_back({ x, y + 1 });
+                if (DFS(x, y + 1))
+                    return true;
+                s.pop_back();
+            }
+            return false;            
+        }
     };
 }
 
