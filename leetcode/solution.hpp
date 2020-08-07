@@ -2602,6 +2602,46 @@ namespace s1033 {
 
 }
 
+
+//---------------------------------------------
+// @ID: #1038
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1038 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* bstToGst(TreeNode* root) {
+            sum = 0;
+            _bstToGst(root);
+            return root;
+        }
+    private:
+        int sum = 0, val = 0;
+
+        void _bstToGst(TreeNode* root) {
+            if (!root)
+                return;
+            _bstToGst(root->right);
+            val = root->val;
+            root->val += sum;
+            sum += val;
+            _bstToGst(root->left);
+            return;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #1201
 // @Date: 2020/8/2
@@ -3254,6 +3294,48 @@ namespace i16_17 {
             }
             return ans;
         }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_12
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Binary Search Tree
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace i17_12 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* convertBiNode(TreeNode* root) {
+            if (!root) {
+                begin = end = nullptr;
+                return nullptr;
+            }
+                
+            TreeNode* currentBegin = root, * currentEnd = root;
+            convertBiNode(root->left);
+            root->left = nullptr;
+            if (begin)
+                currentBegin = begin, end->right = root;
+            convertBiNode(root->right);
+            root->right = nullptr;
+            if (begin)
+                currentEnd->right = begin, currentEnd = end;
+            begin = currentBegin, end = currentEnd;
+            return currentBegin;
+        }
+
+    private:
+        TreeNode* begin, * end;
     };
 }
 
