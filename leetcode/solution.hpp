@@ -603,6 +603,33 @@ namespace s96 {
 
 
 //---------------------------------------------
+// @ID: #100
+// @Date: 2020/8/7
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s100 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        bool isSameTree(TreeNode* p, TreeNode* q) {
+            if (!p || !q)
+                return !p && !q;
+            return p->val == q->val ? isSameTree(p->left, q->left) && isSameTree(p->right, q->right) : false;
+        }
+    };
+}
+
+//---------------------------------------------
 // @ID: #104
 // @Date: 2020/7/28
 // @Algorithm: Tree Algorithm
