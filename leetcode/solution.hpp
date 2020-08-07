@@ -3150,6 +3150,35 @@ namespace i08_03 {
 
 
 //---------------------------------------------
+// @ID: #i08_11
+// @Date: 2020/8/7
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace i08_11 {
+    class Solution {
+    public:
+        int waysToChange(int n) {
+            if (n == 0)
+                return 0;
+            vector<int> dp(n + 1);
+            dp[0] = 1;
+            for (int i = 25; i <= n; i++)
+                dp[i] += dp[i - 25], dp[i] %= 1000000007;
+            for (int i = 10; i <= n; i++)
+                dp[i] += dp[i - 10], dp[i] %= 1000000007;
+            for (int i = 5; i <= n; i++)
+                dp[i] += dp[i - 5], dp[i] %= 1000000007;
+            for (int i = 1; i <= n; i++)
+                dp[i] += dp[i - 1], dp[i] %= 1000000007;
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i16_17
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
