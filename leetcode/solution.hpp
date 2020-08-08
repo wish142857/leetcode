@@ -2486,6 +2486,126 @@ namespace s777 {
 }
 
 
+//---------------------------------------------
+// @ID: #783
+// @Date: 2020/8/8 
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s783 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        int minDiffInBST(TreeNode* root) {
+            if (!root)
+                return 0;
+            minDiff = INT_MAX;
+            lastValOK = false;
+            inorderBST(root);
+            return minDiff;
+        }
+
+    private:
+        int minDiff = INT_MAX, lastVal = 0;
+        bool lastValOK = false;
+        void inorderBST(TreeNode* root) {
+            if (!root)
+                return;
+            inorderBST(root->left);
+            if (lastValOK)
+                minDiff = min(minDiff, root->val - lastVal);
+            else
+                lastValOK = true;
+            lastVal = root->val;
+            inorderBST(root->right);
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #794
+// @Date: 2020/8/8 
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s794 {
+    class Solution {
+    public:
+        bool validTicTacToe(vector<string>& board) {
+            int playerStep1 = 0, playerStep2 = 0;
+            bool playerWon1 = false, playerWon2 = false;
+            
+            for (auto s : board) {
+                for (auto c : s) {
+                    if (c == 'X')
+                        playerStep1++;
+                    else if (c == 'O')
+                        playerStep2++;
+                    else if (c != ' ')
+                        return false;
+                }
+            }
+            if (playerStep1 != playerStep2 && playerStep1 != playerStep2 + 1) {
+                return false;
+            }
+            for (int i = 0; i <= 2; i++) {
+                if (board[i][0] == 'X' && board[i][1] == 'X' && board[i][2] == 'X') {
+                    if (playerWon2)
+                        return false;
+                    playerWon1 = true;
+                }
+                if (board[0][i] == 'X' && board[1][i] == 'X' && board[2][i] == 'X') {
+                    if (playerWon2)
+                        return false;
+                    playerWon1 = true;
+                }
+                if (board[i][0] == 'O' && board[i][1] == 'O' && board[i][2] == 'O') {
+                    if (playerWon1)
+                        return false;
+                    playerWon2 = true;
+                }
+                if (board[0][i] == 'O' && board[1][i] == 'O' && board[2][i] == 'O') {
+                    if (playerWon1)
+                        return false;
+                    playerWon2 = true;
+                } 
+            }
+            if (board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X') {
+                if (playerWon2)
+                    return false;
+                playerWon1 = true;
+            }
+            if (board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O') {
+                if (playerWon1)
+                    return false;
+                playerWon2 = true;
+            }
+            if (board[0][2] == 'X' && board[1][1] == 'X' && board[2][0] == 'X') {
+                if (playerWon2)
+                    return false;
+                playerWon1 = true;
+            }
+            if (board[0][2] == 'O' && board[1][1] == 'O' && board[2][0] == 'O') {
+                if (playerWon1)
+                    return false;
+                playerWon2 = true;
+            }
+            return !((playerWon1 && playerStep1 != playerStep2 + 1) || (playerWon2 && playerStep1 != playerStep2));
+         }
+    };
+}
+
+
 // TODO
 /*
 namespace s838 {
@@ -2818,6 +2938,31 @@ namespace s1038 {
             sum += val;
             _bstToGst(root->left);
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1137
+// @Date: 2020/8/8
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1137 {
+    class Solution {
+    public:
+        int tribonacci(int n) {
+            if (n == 0)
+                return 0;
+            int x = 0, y = 1, z = 1;
+            for (int i = 3; i <= n; i++) {
+                z = x + y + z;
+                y = z - x - y;
+                x = z - x - y;
+            }
+            return z;
         }
     };
 }
@@ -3173,7 +3318,7 @@ namespace lcp13 {
             return ret;
         }
 
-        int minimalSteps(vector<string>& maze) {
+            int minimalSteps(vector<string>& maze) {
             n = maze.size(), m = maze[0].size();
             vector<pair<int, int>> buttons, stones;
             int sx = 0, sy = 0, tx = 0, ty = 0;
