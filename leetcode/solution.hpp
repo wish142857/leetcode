@@ -836,6 +836,56 @@ namespace s104 {
     };
 }
 
+
+//---------------------------------------------
+// @ID: #105
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s105 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+            if (preorder.size() != inorder.size())
+                return nullptr;
+            int n = preorder.size();
+            this->preorder = &preorder;
+            this->inorder = &inorder;
+            return buildPartTree(0, n - 1, 0, n - 1);
+        }
+    private:
+        vector<int>* preorder = nullptr, * inorder = nullptr;
+
+        // [requires] preorderJ - preorderI == inorderJ - inorderI
+        TreeNode* buildPartTree(const int preorderI, const int preorderJ, const int inorderI, const int inorderJ) {
+            if (preorderI > preorderJ)
+                return nullptr;
+            TreeNode* root = new TreeNode((*preorder)[preorderI]);
+            int inorderX = inorderI;
+            while ((*inorder)[inorderX] != root->val) inorderX++;
+            root->left = buildPartTree(
+                preorderI + 1, preorderI + inorderX - inorderI,
+                inorderI, inorderX - 1
+            );
+            root->right = buildPartTree(
+                preorderJ - inorderJ + inorderX + 1, preorderJ,
+                inorderX + 1, inorderJ
+            );
+            return root;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #114
 // @Date: 2020/8/2
@@ -2336,10 +2386,54 @@ namespace s528 {
 }
 
 
+//---------------------------------------------
+// @ID: #530
+// @Date: 2020/8/8 
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s530 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        int getMinimumDifference(TreeNode* root) {
+            if (!root)
+                return 0;
+            minDiff = INT_MAX;
+            lastValOK = false;
+            inorderBST(root);
+            return minDiff;
+        }
+
+    private:
+        int minDiff = INT_MAX, lastVal = 0;
+        bool lastValOK = false;
+        void inorderBST(TreeNode* root) {
+            if (!root)
+                return;
+            inorderBST(root->left);
+            if (lastValOK)
+                minDiff = min(minDiff, root->val - lastVal);
+            else
+                lastValOK = true;
+            lastVal = root->val;
+            inorderBST(root->right);
+            return;
+        }
+    };
+}
+
+
 namespace s632 {
     // TODO
 }
-
 
 
 //---------------------------------------------
@@ -2481,6 +2575,23 @@ namespace s777 {
                 j++;
             }
             return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #779
+// @Date: 2020/8/8 
+// @Algorithm: Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s779 {
+    class Solution {
+    public:
+        int kthGrammar(int N, int K) {
+            return N == 1 ? 0 : kthGrammar(N - 1, (K + 1) >> 1) == 1 ? K & 1 : ~K & 1;
         }
     };
 }
@@ -2808,6 +2919,45 @@ namespace s931 {
             for (int i = 1; i < n; i++)
                 temp = min(temp, dp[n - 1][i]);
             return temp;
+        }
+    };
+}
+
+//---------------------------------------------
+// @ID: #938
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s938 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        int rangeSumBST(TreeNode* root, int L, int R) {
+            this->L = L;
+            this->R = R;
+            this->rangeSum = 0;
+            inorder(root);
+            return rangeSum;
+        }
+    private:
+        int L = 0, R = 0, rangeSum = 0;
+        
+        void inorder(TreeNode* root) {
+            if (!root)
+                return;
+            inorder(root->left);
+            if (root->val >= L && root->val <= R)
+                rangeSum += root->val;
+            inorder(root->right);
+            return;
         }
     };
 }
@@ -3416,6 +3566,80 @@ namespace lcp13 {
 
 
 //---------------------------------------------
+// @ID: #o7
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace o7 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+            if (preorder.size() != inorder.size())
+                return nullptr;
+            int n = preorder.size();
+            this->preorder = &preorder;
+            this->inorder = &inorder;
+            return buildPartTree(0, n - 1, 0, n - 1);
+        }
+    private:
+        vector<int>* preorder = nullptr, * inorder = nullptr;
+
+        // [requires] preorderJ - preorderI == inorderJ - inorderI
+        TreeNode* buildPartTree(const int preorderI, const int preorderJ, const int inorderI, const int inorderJ) {
+            if (preorderI > preorderJ)
+                return nullptr;
+            TreeNode* root = new TreeNode((*preorder)[preorderI]);
+            int inorderX = inorderI;
+            while ((*inorder)[inorderX] != root->val) inorderX++;
+            root->left = buildPartTree(
+                preorderI + 1, preorderI + inorderX - inorderI,
+                inorderI, inorderX - 1
+            );
+            root->right = buildPartTree(
+                preorderJ - inorderJ + inorderX + 1, preorderJ,
+                inorderX + 1, inorderJ
+            );
+            return root;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o10_2
+// @Date: 2020/8/8
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o10_2 {
+    class Solution {
+    public:
+        int numWays(int n) {
+            if (n <= 1)
+                return 1;
+            int x = 1, y = 2;
+            for (int i = 3; i <= n; i++) {
+                y = y + x;
+                x = y - x;
+                y %= 1000000007;
+            }
+            return y;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o11
 // @Date: 2020/7/22
 // @Algorithm: Binary Search Algorithm
@@ -3658,6 +3882,32 @@ namespace i08_11 {
             for (int i = 1; i <= n; i++)
                 dp[i] += dp[i - 1], dp[i] %= 1000000007;
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i16_11
+// @Date: 2020/8/8
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace i16_11 {
+    class Solution {
+    public:
+        vector<int> divingBoard(int shorter, int longer, int k) {
+            if (k == 0)
+                return {};
+            if (shorter == longer)
+                return { shorter * k };
+            int d = longer - shorter;
+            vector<int> lengthSet(k + 1);
+            lengthSet[0] = shorter * k;
+            for (int i = 1; i <= k; i++)
+                lengthSet[i] = lengthSet[i - 1] + d;
+            return lengthSet;
         }
     };
 }
