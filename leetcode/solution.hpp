@@ -811,6 +811,154 @@ namespace s100 {
     };
 }
 
+
+//---------------------------------------------
+// @ID: #101
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s101 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        bool isSymmetric(TreeNode* root) {
+            return root ? isSymmetric(root->left, root->right) : true;
+        }
+
+    private:
+        bool isSymmetric(TreeNode* left, TreeNode* right) {
+            if (!left || !right)
+                return !left && !right;
+            return left->val == right->val && isSymmetric(left->left, right->right) && isSymmetric(left->right, right->left);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #102
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm | Queue Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s102 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        vector<vector<int>> levelOrder(TreeNode* root) {
+            if (!root)
+                return {};
+            int n = 1;
+            vector<vector<int>> ans;
+            queue<TreeNode*> q;
+            q.push(root);
+            while (!q.empty()) {
+                vector<int> nodes;
+                TreeNode* node = nullptr;
+                int number = n;
+                for (int i = 0; i < number; i++) {
+                    node = q.front();
+                    q.pop();
+                    n--;
+                    nodes.push_back(node->val);
+                    if (node->left) {
+                        q.push(node->left);
+                        n++;
+                    }   
+                    if (node->right) {
+                        q.push(node->right);
+                        n++;
+                    }
+                }
+                ans.push_back(nodes);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #103
+// @Date: 2020/8/8
+// @Algorithm: Tree Algorithm | Queue Algorithm | Stack Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s103 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+            if (!root)
+                return {};
+            int depth = 1;
+            vector<vector<int>> ans;
+            stack<TreeNode*> s1;
+            stack<TreeNode*> s2;
+            s1.push(root);
+            while (true) {
+                if (depth & 1) {
+                    if (s1.empty())
+                        break;
+                    vector<int> nodes;
+                    TreeNode* node = nullptr;
+                    while(!s1.empty()){
+                        node = s1.top();
+                        s1.pop();
+                        nodes.push_back(node->val);
+                        if (node->left)
+                            s2.push(node->left);
+                        if (node->right)
+                            s2.push(node->right);
+                    }
+                    ans.push_back(nodes);
+                }
+                else {
+                    if (s2.empty())
+                        break;
+                    vector<int> nodes;
+                    TreeNode* node = nullptr;
+                    while (!s2.empty()) {
+                        node = s2.top();
+                        s2.pop();
+                        nodes.push_back(node->val);
+                        if (node->right)
+                            s1.push(node->right);
+                        if (node->left)
+                            s1.push(node->left);
+                    }
+                    ans.push_back(nodes);
+                }
+                depth++;
+            }
+            return ans;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #104
 // @Date: 2020/7/28
@@ -2304,6 +2452,31 @@ namespace s497 {
 
 
 //---------------------------------------------
+// @ID: #509
+// @Date: 2020/8/8
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s509 {
+    class Solution {
+    public:
+        int fib(int n) {
+            if (n <= 0)
+                return 0;
+            int x = 0, y = 1;
+            for (int i = 2; i <= n; i++) {
+                y = y + x;
+                x = y - x;
+                y %= 1000000007;
+            }
+            return y;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #519
 // @Date: 2020/7/20 
 // @Algorithm: Random Algorithm
@@ -3609,6 +3782,31 @@ namespace o7 {
                 inorderX + 1, inorderJ
             );
             return root;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o10_1
+// @Date: 2020/8/8
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o10_1 {
+    class Solution {
+    public:
+        int fib(int n) {
+            if (n <= 0)
+                return 0;
+            int x = 0, y = 1;
+            for (int i = 2; i <= n; i++) {
+                y = y + x;
+                x = y - x;
+                y %= 1000000007;
+            }
+            return y;
         }
     };
 }
