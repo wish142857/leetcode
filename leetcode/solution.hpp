@@ -573,6 +573,65 @@ namespace s91 {
 
 
 //---------------------------------------------
+// @ID: #93
+// @Date: 2020/8/9
+// @Algorithm: String Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s93 {
+    class Solution {
+    public:
+        vector<string> restoreIpAddresses(string s) {
+            if (s.size() < 4 || s.size() > 12)
+                return {};
+            int n = s.size(), i = 0, j = 0, k = 0, l = 0;
+            string s1, s2, s3, s4;
+            vector<string> ans;
+            for (i = 1; i <= 3; i++) {
+                s1 = s.substr(0, i);
+                if (!isValid(s1))
+                    continue;
+                for (j = 1; j <= 3; j++) {
+                    if (i >= n)
+                        continue;
+                    s2 = s.substr(i, j);
+                    if (!isValid(s2))
+                        continue;
+                    for (k = 1; k <= 3; k++) {
+                        if (i + j + k >= n)
+                            continue;
+                        s3 = s.substr(i + j, k);
+                        if (!isValid(s3))
+                            continue;
+                        s4 = s.substr(i + j + k);
+                        if (!isValid(s4))
+                            continue;
+                        ans.push_back(s1 + '.' + s2 + '.' + s3 + '.' + s4);
+                    }
+                }
+            }
+            return ans;
+        }
+    private:
+        bool isValid(string &s) {
+            if (s.size() == 1)
+                return true;
+            if (s.size() == 2)
+                return s[0] != '0';
+            if (s.size() == 3) {
+                if (s[0] == '1')
+                    return true;
+                if (s[0] == '2')
+                    return s[1] < '5' || (s[1] == '5' && s[2] <= '5');
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #94
 // @Date: 2020/8/7
 // @Algorithm: Tree Algorithm | Recursion Algorithm 
