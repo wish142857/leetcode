@@ -2711,6 +2711,34 @@ namespace s687{
 
 
 //---------------------------------------------
+// @ID: #696
+// @Date: 2020/8/10
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s696 {
+    class Solution {
+    public:
+        int countBinarySubstrings(string s) {
+            if (s.size() == 0)
+                return 0;
+            int n = s.size(), a = 0, b = 0, i = 0, ans = 0;
+            while (i < n) {
+                char c = s[i++];
+                b = 1;
+                while (i < n && s[i] == c)
+                    b++, i++;
+                ans += min(a, b);
+                a = b;
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #710
 // @Date: 2020/7/20
 // @Algorithm:  Blacklist Sampling Algorithm
