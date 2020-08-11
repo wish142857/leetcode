@@ -1237,6 +1237,60 @@ namespace s125 {
 
 
 //---------------------------------------------
+// @ID: #130
+// @Date: 2020/8/11
+// @Algorithm: Search Algorithm
+// @Time: O(nm)
+// @Space: O(nm)
+//---------------------------------------------
+namespace s130 {
+    class Solution {
+    public:
+        void solve(vector<vector<char>>& board) {
+            if (board.size() == 0 || board[0].size() == 0)
+                return;
+            n = board.size();
+            m = board[0].size();
+            this->board = &board;
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    if (board[i][j] == 'O')
+                        board[i][j] = ' ';
+            for (int i = 0; i < n; i++) {
+                search(i, 0);
+                search(i, m - 1);
+            }
+            for (int j = 0; j < m; j++) {
+                search(0, j);
+                search(n - 1, j);
+            }
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    if (board[i][j] == ' ')
+                        board[i][j] = 'X';
+            return;
+        }
+    private:
+        int n = 0, m = 0;
+        vector<vector<char>>* board = nullptr;
+        void search(int x, int y) {
+            if ((*board)[x][y] != ' ')
+                return;
+            (*board)[x][y] = 'O';
+            if (x + 1 < n)
+                search(x + 1, y);
+            if (x - 1 >= 0)
+                search(x - 1, y);
+            if (y + 1 < m)
+                search(x, y + 1);
+            if (y - 1 >= 0)
+                search(x, y - 1);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #139
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
