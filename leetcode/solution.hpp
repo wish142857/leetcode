@@ -1291,6 +1291,62 @@ namespace s130 {
 
 
 //---------------------------------------------
+// @ID: #133
+// @Date: 2020/8/12
+// @Algorithm: Graph Algorithm | Queue Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s133 {
+    class Node {
+    public:
+        int val;
+        vector<Node*> neighbors;
+
+        Node() {
+            val = 0;
+            neighbors = vector<Node*>();
+        }
+
+        Node(int _val) {
+            val = _val;
+            neighbors = vector<Node*>();
+        }
+
+        Node(int _val, vector<Node*> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    };
+
+    class Solution {
+    public:
+        Node* cloneGraph(Node* node) {
+            if (!node)
+                return nullptr;
+            Node* n = nullptr;
+            queue<Node*> queList;
+            unordered_map<Node*, Node*> mapList;
+            mapList[node] = new Node(node->val);
+            queList.push(node);
+            while (!queList.empty()) {
+                n = queList.front();
+                queList.pop();
+                for (Node* neighbor : n->neighbors) {
+                    if (mapList.find(neighbor) == mapList.end()) {
+                        mapList[neighbor] = new Node(neighbor->val);
+                        queList.push(neighbor);   
+                    }
+                    mapList[n]->neighbors.push_back(mapList[neighbor]);
+                }
+            }
+            return mapList[node];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #139
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
