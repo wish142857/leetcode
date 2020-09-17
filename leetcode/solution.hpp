@@ -150,6 +150,28 @@ namespace s7 {
 
 
 //---------------------------------------------
+// @ID: #9
+// @Date: 2020/9/18
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s9 {
+    class Solution {
+    public:
+        bool isPalindrome(int x) {
+            char c[100];
+            string s;
+            sprintf_s(c, "%d", x);
+            s.assign(c);
+            reverse(s.begin(), s.end());
+            return (s == string(c));
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #11
 // @Date: 2020/7/26
 // @Algorithm: Greedy Algorithm | Two Points Algorithm
@@ -3388,6 +3410,41 @@ namespace s1025 {
 
 
 //---------------------------------------------
+// @ID: #1027
+// @Date: 2020/9/15
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(nm)
+//---------------------------------------------
+namespace s1027 {
+    class Solution {
+    public:
+        int longestArithSeqLength(vector<int>& A) {
+            if (A.size() == 0)
+                return 0;
+            int n = A.size(), m = 0, maxValue = INT_MIN, minValue = INT_MAX;
+            int maxLength = 1;
+            for (int i = 0; i < n; i++) {
+                maxValue = max(maxValue, A[i]);
+                minValue = min(minValue, A[i]);
+            }
+            m = maxValue - minValue;
+
+            vector<vector<int>> dp(n, vector<int>(m * 2 + 2, 1));
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    int index = A[i] - A[j] + m;
+                    dp[i][index] = dp[j][index] + 1;
+                    maxLength = max(maxLength, dp[i][index]);   
+                }
+            }
+            return maxLength;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1033
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
@@ -3458,6 +3515,82 @@ namespace s1038 {
             sum += val;
             _bstToGst(root->left);
             return;
+        }
+    };
+}
+
+
+// TODO
+namespace s1048 {
+    class Solution {
+    public:
+        int longestStrChain(vector<string>& words) {
+            if (words.size() == 0)
+                return 0;
+            int n = words.size(), maxLength = 0;
+            vector<int> dp(n, 1);
+            sort(words.begin(), words.end(), Solution::cmp);
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (check(words[j], words[i]))
+                        dp[i] = max(dp[i], dp[j] + 1);
+                }
+                maxLength = max(maxLength, dp[i]);
+            }
+            return maxLength;
+        }
+    private:
+        bool check(string s1, string s2) {
+            if (s1.length() + 1 != s2.length())
+                return false;
+            int i = 0, l = s1.length();
+            while (i < l && s1[i] == s2[i]) i++;
+            while (i < l) {
+                if (s1[i] != s2[i + 1])
+                    return false;
+                i++;
+            }
+            return true;
+        }
+
+        static bool cmp(const string a, const string b) {
+            return a.size() <= b.size();
+        }
+    };
+}
+
+//---------------------------------------------
+// @ID: #1049
+// @Date: 2020/9/15
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(m)
+//---------------------------------------------
+namespace s1049 {
+    class Solution {
+    public:
+        int lastStoneWeightII(vector<int>& stones) {
+            int n = stones.size(), m = 0, s = 0,  k = 0;
+            for (int i = 0; i < n; i++) {
+                s += stones[i];
+            }
+            m = s >> 1;
+
+            vector<bool> dp(m + 1);
+            dp[0] = true;
+            for (int i = 0; i < n; i++) {
+                for (int j = m; j >= stones[i]; j--) {
+                    dp[j] = dp[j] || dp[j - stones[i]];
+                }
+            }
+
+            for (int i = m; i >= 0; i--) {
+                if (dp[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            return s - (k << 1);
         }
     };
 }
