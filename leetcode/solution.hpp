@@ -530,6 +530,41 @@ namespace s70 {
 
 
 //---------------------------------------------
+// @ID: #72
+// @Date: 2020/9/18
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s72 {
+    class Solution {
+    public:
+        int minDistance(string word1, string word2) {
+            int l1 = word1.length(), l2 = word2.length();
+            vector<vector<int>> dp(l1 + 1, vector<int>(l2 + 1));
+            
+            for (int i = 1; i <= l1; i++) {
+                dp[i][0] = i;
+            }
+
+            for (int j = 1; j <= l2; j++) {
+                dp[0][j] = j;
+            }
+
+            for (int i = 1; i <= l1; i++) {
+                for (int j = 1; j <= l2; j++) {
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1;
+                    dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + (word1[i - 1] == word2[j - 1] ? 0 : 1));
+                }
+            }
+
+            return dp[l1][l2];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #75
 // @Date: 2020/7/26
 // @Algorithm: Two Points Algorithm
@@ -4281,6 +4316,52 @@ namespace o64 {
 
 
 //---------------------------------------------
+// @ID: #i01_05
+// @Date: 2020/9/21
+// @Algorithm: String Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i01_05 {
+    class Solution {
+    public:
+        bool oneEditAway(string first, string second) {
+            int n = first.length(), m = second.length();
+
+            if (n == m) {
+                int i = 0;
+                while (i < n && first[i] == second[i])
+                    i++;
+                i++;
+                while (i < n && first[i] == second[i])
+                    i++;
+                return i >= n;
+            }
+            if (n == m + 1) {
+                int i = 0;
+                while (i < m && first[i] == second[i])
+                    i++;
+                i++;
+                while (i < n && first[i] == second[i - 1])
+                    i++;
+                return i >= n;
+            }
+            if (n + 1 == m) {
+                int i = 0;
+                while (i < n && first[i] == second[i])
+                    i++;
+                i++;
+                while (i < m && first[i - 1] == second[i])
+                    i++;
+                return i >= m;
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i08_01
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -4416,6 +4497,41 @@ namespace i08_11 {
 
 
 //---------------------------------------------
+// @ID: #i08_13
+// @Date: 2020/9/21
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace i08_13 {
+    class Solution {
+    public:
+        int pileBox(vector<vector<int>>& box) {
+            int n = box.size(), m = 0;
+            vector<int> dp(n);
+            sort(box.begin(), box.end());
+            
+            for (int i = 0; i < n; i++) {
+                dp[i] = box[i][2];
+                for (int j = 0; j < i; j++) {
+                    if (allCmp(box[i], box[j])) {
+                        dp[i] = max(dp[i], dp[j] + box[i][2]);
+                    }
+                }
+                m = max(m, dp[i]);
+            }
+
+            return m;
+        }
+    private:
+        bool allCmp(vector<int>& x, vector <int>& y) {
+            return (x[0] > y[0] && x[1] > y[1] && x[2] > y[2]);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i16_11
 // @Date: 2020/8/8
 // @Algorithm: Math Algorithm
@@ -4460,6 +4576,64 @@ namespace i16_17 {
                 ans = max(ans, dp);
             }
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_08
+// @Date: 2020/9/21
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2 → nlogn)
+// @Space: O(n)
+//---------------------------------------------
+namespace i17_08 {
+    class Solution {
+    public:
+        int bestSeqAtIndex(vector<int>& height, vector<int>& weight) {
+            int n = height.size();
+            vector<int> dp;
+            quickSortByHeight(height, weight, 0, n - 1);
+            
+            for (int i = 0; i < n; i++) {
+                int j = 0;
+                while (j < int(dp.size()) && dp[j] > weight[i]) j++;
+                if (j < int(dp.size())) {
+                    dp[j] = weight[i];
+                }
+                else {
+                    dp.push_back(weight[i]);                    
+                }
+            }
+            return dp.size();
+        }
+
+    private:
+        void quickSortByHeight(vector<int>& height, vector<int>& weight, int begin, int end) {
+            if (begin >= end)
+                return;
+
+            int i = begin, j = end, mid = i + ((j - i) >> 1);
+            int key = height[mid], back = weight[mid];
+            height[mid] = height[i];
+            weight[mid] = weight[i];
+
+            while (i < j) {
+                while (i < j && (height[j] < key || ((height[j] == key) && (weight[j] >= back)))) j--;
+                height[i] = height[j];
+                weight[i] = weight[j];
+
+                while (i < j && (height[i] > key || ((height[i] == key) && (weight[i] <= back)))) i++;
+                height[j] = height[i];
+                weight[j] = weight[i];
+
+            }
+            height[i] = key;
+            weight[i] = back;
+
+            quickSortByHeight(height, weight, begin, i - 1);
+            quickSortByHeight(height, weight, i + 1, end);
         }
     };
 }
@@ -4528,6 +4702,94 @@ namespace i17_16 {
                 dp_undo = max(dp_undo, temp);
             }
             return max(dp_done, dp_undo);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_23
+// @Date: 2020/9/18
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(nms)
+// @Space: O(nm)
+//---------------------------------------------
+namespace i17_23 {
+    class Solution {
+    public:
+        vector<int> findSquare(vector<vector<int>>& matrix) {
+            if (matrix.size() == 0 || matrix[0].size() == 0)
+                return  {};
+            int n = matrix.size(), m = matrix[0].size();
+            int r = 0, c = 0, maxSize = 1, proSize = 0;
+
+            vector<vector<int>> dp_x(n + 1, vector<int>(m + 1));
+            vector<vector<int>> dp_y(n + 1, vector<int>(m + 1));
+
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = m - 1; j >= 0; j--) {
+                    dp_x[i][j] = matrix[i][j] ? 0 : dp_x[i + 1][j] + 1;
+                    dp_y[i][j] = matrix[i][j] ? 0 : dp_y[i][j + 1] + 1;
+                    proSize = min(dp_x[i][j], dp_y[i][j]);
+                    for (int k = proSize; k >= maxSize; k--) {
+                        if (dp_x[i][j + k - 1] >= k && dp_y[i + k - 1][j] >= k) {
+                            r = i;
+                            c = j;
+                            maxSize = k;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (matrix[r][c] == 0)
+                return  { r, c, maxSize };
+            else
+                return  {};
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_24
+// @Date: 2020/9/18
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2 * m)
+// @Space: O(m)
+//---------------------------------------------
+namespace i17_24 {
+    class Solution {
+    public:
+        vector<int> getMaxMatrix(vector<vector<int>>& matrix) {
+            int n = matrix.size(), m = matrix[0].size();
+            int maxSum = INT_MIN, dp = 0, begin = 0,  r1 = 0, c1 = 0, r2 = 0, c2 = 0;
+            vector<int> lineSum(m);
+
+            for (int a = 0; a < n; a++) {
+                for (int i = 0; i < m; i++) lineSum[i] = 0;
+                for (int b = a; b < n; b++) {
+                    dp = 0;
+                    begin = 0;
+                    for (int i = 0; i < m; i++) {
+                        lineSum[i] += matrix[b][i];
+                        if (lineSum[i] >= dp + lineSum[i]) {
+                            dp = lineSum[i];
+                            begin = i;
+                        }
+                        else {
+                            dp = dp + lineSum[i];
+                        }
+                        if (dp > maxSum) {
+                            r1 = a;
+                            c1 = begin;
+                            r2 = b;
+                            c2 = i;
+                            maxSum = dp;
+                        }
+                    }
+                }
+            }
+            return { r1, c1, r2, c2 };
         }
     };
 }
