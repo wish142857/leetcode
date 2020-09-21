@@ -2830,6 +2830,45 @@ namespace s530 {
 }
 
 
+//---------------------------------------------
+// @ID: #538
+// @Date: 2020/9/21
+// @Algorithm: Tree Algorithm | Recursion Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s538 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* convertBST(TreeNode* root) {
+            sum = 0;
+            _bstToGst(root);
+            return root;
+        }
+    private:
+        int sum = 0, val = 0;
+
+        void _bstToGst(TreeNode* root) {
+            if (!root)
+                return;
+            _bstToGst(root->right);
+            val = root->val;
+            root->val += sum;
+            sum += val;
+            _bstToGst(root->left);
+            return;
+        }
+    };
+}
+
+
 namespace s632 {
     // TODO
 }
@@ -3815,6 +3854,85 @@ namespace s1512 {
 
 
 //---------------------------------------------
+// @ID: #1594
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s1594 {
+    class Solution {
+    public:
+        int maxProductPath(vector<vector<int>>& grid) {
+            if (grid.size() == 0 || grid[0].size() == 0) {
+                return 0;
+            }
+
+            int m = grid.size(), n = grid[0].size();
+            bool checkZero = false;
+            vector<vector<long>> dp_p(m, vector<long>(n));
+            vector<vector<long>> dp_n(m, vector<long>(n));
+            for (int i = 0; i < m; i++) {
+                if (checkZero) {
+                    break;
+                }
+                for (int j = 0; j < n; j++) {
+                    if (grid[i][j] == 0) {
+                        checkZero = true;
+                        break;
+                    }
+                }
+            }
+
+            if (grid[0][0] > 0) {
+                dp_p[0][0] = grid[0][0];
+            } else {
+                dp_n[0][0] = grid[0][0];
+            }
+            for (int i = 1; i < m; i++) {
+                if (grid[i][0] > 0) {
+                    dp_p[i][0] = dp_p[i - 1][0] * grid[i][0];
+                    dp_n[i][0] = dp_n[i - 1][0] * grid[i][0];
+                }
+                else {
+                    dp_p[i][0] = dp_n[i - 1][0] * grid[i][0];
+                    dp_n[i][0] = dp_p[i - 1][0] * grid[i][0];
+                }
+            }
+
+            for (int j = 1; j < n; j++) {
+                if (grid[0][j] > 0) {
+                    dp_p[0][j] = dp_p[0][j - 1] * grid[0][j];
+                    dp_n[0][j] = dp_n[0][j - 1] * grid[0][j];
+                }
+                else {
+                    dp_p[0][j] = dp_n[0][j - 1] * grid[0][j];
+                    dp_n[0][j] = dp_p[0][j - 1] * grid[0][j];
+                }
+            }
+
+            for (int i = 1; i < m; i++) {
+                for (int j = 1; j < n; j++) {
+                    if (grid[i][j] > 0) {
+                        dp_p[i][j] = max(dp_p[i][j - 1], dp_p[i - 1][j]) * grid[i][j];
+                        dp_n[i][j] = min(dp_n[i][j - 1], dp_n[i - 1][j]) * grid[i][j];
+                    }
+                    else {
+                        dp_p[i][j] = min(dp_n[i][j - 1], dp_n[i - 1][j]) * grid[i][j];
+                        dp_n[i][j] = max(dp_p[i][j - 1], dp_p[i - 1][j]) * grid[i][j];
+                    }
+                }
+            }
+            if (dp_p[m - 1][n - 1] == 0 && !checkZero)
+                return -1;
+            return dp_p[m - 1][n - 1] % 1000000007;
+
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #lcp1
 // @Date: 2020/7/29
 // @Algorithm: Simple Algorithm
@@ -4233,6 +4351,31 @@ namespace o11 {
 
 
 //---------------------------------------------
+// @ID: #o14_1
+// @Date: 2020/9/21
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace o14_1 {
+    class Solution {
+    public:
+        int cuttingRope(int n) {
+            vector<int> dp(n + 1);
+            for (int i = 2; i <= n; i++) {
+                for (int j = 1; j <= i / 2; j++) {
+                    int left = max(dp[j], j);
+                    int right = max(dp[i - j], i - j);
+                    dp[i] = max(dp[i], left * right);
+                }
+            }
+            return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o42
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -4251,6 +4394,41 @@ namespace o42 {
                 ans = max(ans, dp);
             }
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o47
+// @Date: 2020/9/21
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace o47 {
+    class Solution {
+    public:
+        int maxValue(vector<vector<int>>& grid) {
+            if (grid.size() == 0 || grid[0].size() == 0)
+                return 0;
+
+            int m = grid.size(), n = grid[0].size();
+            vector<vector<int>> dp(m, vector<int>(n));
+            dp[0][0] = grid[0][0];
+            for (int i = 1; i < m; i++) {
+                dp[i][0] = dp[i - 1][0] + grid[i][0];
+            }
+            for (int j = 1; j < n; j++) {
+                dp[0][j] = dp[0][j - 1] + grid[0][j];
+            }
+            for (int i = 1; i < m; i++) {
+                for (int j = 1; j < n; j++) {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+                }
+            }
+
+            return dp[m - 1][n - 1];
         }
     };
 }
@@ -4292,6 +4470,33 @@ namespace o49 {
                     i++;
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o63
+// @Date: 2020/9/21
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o63 {
+    class Solution {
+    public:
+        int maxProfit(vector<int>& prices) {
+            if (prices.size() == 0)
+                return 0;
+
+            int n = prices.size(), m = 0;
+            int dp = prices[0];
+            for (int i = 1; i < n; i++) {
+                m = max(m, prices[i] - dp);
+                dp = min(dp, prices[i]);
+            }
+
+            return m;
         }
     };
 }
