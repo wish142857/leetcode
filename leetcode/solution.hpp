@@ -99,6 +99,41 @@ namespace s2 {
 
 
 //---------------------------------------------
+// @ID: #3
+// @Date: 2020/9/22
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(m)
+//---------------------------------------------
+namespace s3 {
+    class Solution {
+    public:
+        int lengthOfLongestSubstring(string s) {
+            int i = 0, j = 0, l = s.length(), m = 0;
+            unordered_set<char> hashSet;
+            while (true) {
+                while (j < l && hashSet.find(s[j]) == hashSet.end()) {
+                    hashSet.insert(s[j]);
+                    j++;
+                }
+                m = max(m, j - i);
+                if (j >= l)
+                    break;
+                while (s[i] != s[j]) {
+                    hashSet.erase(s[i]);
+                    i++;
+                }
+                hashSet.erase(s[i]);
+                i++;
+            }
+
+            return m;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #5
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -1908,7 +1943,13 @@ namespace s303 {
 }
 
 
-
+//---------------------------------------------
+// @ID: #304
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
 namespace s304 {
         class NumMatrix {
         public:
@@ -1958,6 +1999,7 @@ namespace s304 {
      * int param_1 = obj->sumRegion(row1,col1,row2,col2);
      */
 }
+
 
 //---------------------------------------------
 // @ID: #312
