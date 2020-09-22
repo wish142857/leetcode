@@ -1616,6 +1616,42 @@ namespace s167 {
 
 
 //---------------------------------------------
+// @ID: #174
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s174 {
+    class Solution {
+    public:
+        int calculateMinimumHP(vector<vector<int>>& dungeon) {
+            if (dungeon.size() == 0 || dungeon[0].size() == 0)
+                return 1;
+
+            int m = dungeon.size(), n = dungeon[0].size();
+            vector<vector<int>> dp(m, vector<int>(n));
+            dp[m - 1][n - 1] = max(1, 1 - dungeon[m - 1][n - 1]);
+            for (int i = m - 2; i >= 0; i--) {
+                dp[i][n - 1] = max(1, dp[i + 1][n - 1] - dungeon[i][n - 1]);
+            }
+            for (int j = n - 2; j >= 0; j--) {
+                dp[m - 1][j] = max(1, dp[m - 1][j + 1] - dungeon[m - 1][j]);
+            }
+
+            for (int i = m - 2; i >= 0; i--) {
+                for (int j = n - 2; j >= 0; j--) {
+                    dp[i][j] = max(1, min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]);
+                }
+            }
+
+            return dp[0][0];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #198
 // @Date: 2020/7/31
 // @Algorithm: Dynamic Programming Algorithm
@@ -2407,6 +2443,36 @@ namespace s375 {
 
 
 //---------------------------------------------
+// @ID: #376
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s376 {
+    class Solution {
+    public:
+        int wiggleMaxLength(vector<int>& nums) {
+            if (nums.size() == 0)
+                return 0;
+
+            int n = nums.size();
+            int dp_up = 1, dp_down = 1;
+            for (int i = 1; i < n; i++) {
+                if (nums[i] > nums[i - 1]) {
+                    dp_up = dp_down + 1;
+                }
+                else if (nums[i] < nums[i - 1]) {
+                    dp_down = dp_up + 1;
+                }
+            }
+            return max(dp_up, dp_down);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #377
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
@@ -2534,6 +2600,48 @@ namespace s398 {
      * Solution* obj = new Solution(nums);
      * int param_1 = obj->pick(target);
      */
+}
+
+
+//---------------------------------------------
+// @ID: #403
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s403 {
+    class Solution {
+    public:
+        bool canCross(vector<int>& stones) {
+            if (stones.size() == 0)
+                return false;
+
+            int n = stones.size();
+            unordered_map<int, unordered_set<int>> hashMap;
+
+            for (int i = 0; i < n; i++) {
+                hashMap.insert(pair<int, unordered_set<int>>(stones[i], unordered_set<int>()));
+            }
+
+            hashMap[stones[0]].insert(0);
+            for (int i = 0; i < n - 1; i++) {
+                for (auto step : hashMap[stones[i]]) {
+                    if (step > 0 && hashMap.find(stones[i] + step) != hashMap.end()) {
+                        hashMap[stones[i] + step].insert(step);
+                    }
+                    if (step + 1 > 0 && hashMap.find(stones[i] + step + 1) != hashMap.end()) {
+                        hashMap[stones[i] + step + 1].insert(step + 1);
+                    }
+                    if (step - 1 > 0 && hashMap.find(stones[i] + step - 1) != hashMap.end()) {
+                        hashMap[stones[i] + step - 1].insert(step - 1);
+                    }
+                }
+            }
+
+            return hashMap[stones[n - 1]].size() > 0;
+        }
+    };
 }
 
 
@@ -2843,6 +2951,42 @@ namespace s509 {
 
 
 //---------------------------------------------
+// @ID: #516
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s516 {
+    class Solution {
+    public:
+        int longestPalindromeSubseq(string s) {
+            if (s.length() == 0)
+                return 0;
+
+            int n = s.length(), m = 1;
+            vector<vector<int>> dp(n + 2, vector<int>(n + 2));
+
+            for (int i = n; i >= 1; i--) {
+                dp[i][i] = 1;
+                for (int j = i + 1; j <= n; j++) {
+                    if (s[i - 1] == s[j - 1]) {
+                        dp[i][j] = dp[i + 1][j - 1] + 2;
+                        m = max(m, dp[i][j]);
+                    }
+                    else {
+                        dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+                    }
+                }
+            }
+
+            return m;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #519
 // @Date: 2020/7/20 
 // @Algorithm: Random Algorithm
@@ -3009,11 +3153,6 @@ namespace s538 {
 }
 
 
-namespace s632 {
-    // TODO
-}
-
-
 //---------------------------------------------
 // @ID: #687
 // @Date: 2020/7/31
@@ -3115,6 +3254,49 @@ namespace s710 {
         }
     };
 }
+
+
+//---------------------------------------------
+// @ID: #740
+// @Date: 2020/9/22
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s740 {
+        class Solution {
+        public:
+            int deleteAndEarn(vector<int>& nums) {
+                if (nums.size() == 0)
+                    return 0;
+                
+                int n = nums.size();
+                int dpDo = 0, dpUndo = 0, dpTemp = 0, lastNum = 0;
+                sort(nums.begin(), nums.end());
+                dpDo = lastNum = nums[0];
+                for (int i = 1; i < int(nums.size()); i++) {
+                    if (nums[i] == lastNum) {
+                        dpDo += lastNum;
+                    }
+                    else if (nums[i] == lastNum + 1) {
+                        lastNum = nums[i];
+                        dpTemp = dpUndo;
+                        dpUndo = max(dpDo, dpUndo);
+                        dpDo = dpTemp + lastNum;
+                    }
+                    else {
+                        lastNum = nums[i];
+                        dpUndo = max(dpDo, dpUndo);
+                        dpDo = dpUndo + lastNum;
+                    }
+                }
+
+                return max(dpDo, dpUndo);
+            }
+        };
+}
+
+
 
 
 //---------------------------------------------
