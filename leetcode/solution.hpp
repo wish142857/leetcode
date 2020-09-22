@@ -2821,6 +2821,39 @@ namespace s470 {
 
 
 //---------------------------------------------
+// @ID: #474
+// @Date: 2020/9/23
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(Nmn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s474 {
+    class Solution {
+    public:
+        int findMaxForm(vector<string>& strs, int m, int n) {
+            int N = strs.size(), x = 0, y = 0;
+            vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+
+            for (string str : strs) {
+                x = y = 0;
+                for (char c : str)
+                    if (c == '0')
+                        x++;
+                    else
+                        y++;
+                if (x == 0 && y == 0)
+                    continue;                
+                for (int i = m; i >= x; i--)
+                    for (int j = n; j >= y; j--)
+                        dp[i][j] = max(dp[i][j], dp[i - x][j - y] + 1);
+            }
+            return dp[m][n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #478
 // @Date: 2020/7/19 
 // @Algorithm: Rejection Sampling Algorithm
@@ -2878,6 +2911,40 @@ namespace s486 {
                     dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
             }
             return dp[0][n - 1] >= 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #494
+// @Date: 2020/9/23
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(ns)
+// @Space: O(s)
+//---------------------------------------------
+namespace s494 {
+    class Solution {
+    public:
+        int findTargetSumWays(vector<int>& nums, int S) {
+            if (nums.size() == 0 || S > 1000)
+                return 0;
+
+            int n = nums.size();
+            vector<int> dp(2001);
+            for (int i = 0; i < n; i++) {
+                S += nums[i];
+                nums[i] <<= 1;
+            }
+
+            dp[0] = 1;
+            for (int i = 0; i < n; i++) {
+                for (int j = S; j >= nums[i]; j--) {
+                    dp[j] += dp[j - nums[i]];
+                }
+            }
+
+            return dp[S];
         }
     };
 }
