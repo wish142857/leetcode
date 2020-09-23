@@ -163,6 +163,52 @@ namespace s5 {
 
 
 //---------------------------------------------
+// @ID: #6
+// @Date: 2020/9/23
+// @Algorithm: String Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s6 {
+    class Solution {
+    public:
+        string convert(string s, int numRows) {
+            if (numRows <= 0)
+                return {};
+            if (numRows == 1)
+                return s;
+
+
+            bool isDown = true;
+            int n = s.length(), i = -1;
+            vector<string> lines(numRows);
+            string ans;
+
+            for (auto c : s) {
+                if (isDown) {
+                    i++;
+                    lines[i].append(1, c);
+                    if (i == numRows - 1)
+                        isDown = false;
+                }
+                else {
+                    i--;
+                    lines[i].append(1, c);
+                    if (i == 0)
+                        isDown = true;
+                }
+            }
+
+            for (auto line : lines)
+                ans.append(line);
+
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #7
 // @Date: 2020/7/26
 // @Algorithm: Simple Algorithm
