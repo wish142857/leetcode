@@ -3339,6 +3339,59 @@ namespace s687{
 }
 
 
+// TODO
+namespace s688 {
+    class Solution {
+    public:
+        double knightProbability(int N, int K, int r, int c) {
+            if (K == 0)
+                return 1;
+            if (r < 0 || r >= N || c < 0 || c >= N)
+                return 0;
+
+            vector<vector<double>> dp(K, vector<double>(N));
+
+            for (int i = 0; i < N; i++) {
+                if (i >= 2) {
+                    dp[0][i] += 1.0 / 4;
+                    dp[0][i] += 1.0 / 4;
+                }
+                else if (i >= 1) {
+                    dp[0][i] += 1.0 / 4;
+                }
+                if (i <= N - 3) {
+                    dp[0][i] += 1.0 / 4;
+                    dp[0][i] += 1.0 / 4;
+                }
+                else if (i <= N - 2) {
+                    dp[0][i] += 1.0 / 4;
+                }
+            }
+
+            for (int k = 1; k < K; k++) {
+                for (int i = 0; i < N; i++) {
+                    if (i >= 2) {
+                        dp[k][i] += dp[k - 1][i - 2] / 4;
+                        dp[k][i] += dp[k - 1][i - 1] / 4;
+                    }
+                    else if (i >= 1) {
+                        dp[k][i] += dp[k - 1][i - 1] / 4;
+                    }
+                    if (i <= N - 3) {
+                        dp[k][i] += dp[k - 1][i + 2] / 4;
+                        dp[k][i] += dp[k - 1][i + 1] / 4;
+                    }
+                    else if (i <= N - 2) {
+                        dp[k][i] += dp[k - 1][i + 1] / 4;
+                    }
+                }
+            }
+
+            return dp[K - 1][r] * dp[K - 1][c];
+        }
+    };
+}
+
 //---------------------------------------------
 // @ID: #696
 // @Date: 2020/8/10
@@ -3395,6 +3448,91 @@ namespace s710 {
         int pick() {
             int k = rand() % l;
             return m.count(k) ? m[k] : k;
+        }
+    };
+}
+
+
+// TODO
+namespace s714 {
+    class Solution {
+    public:
+        int maxProfit(vector<int>& prices, int fee) {
+            bool isDown = true;
+            int n = prices.size(), currentMin = prices[0], maxProfit = 0;
+
+            for (int i = 1; i < n; i++) {
+                if (isDown) {
+                    if (prices[i] < prices[i - 1]) {
+                        currentMin = min(currentMin, prices[i]);
+                    }
+                    else if (prices[i] > prices[i - 1]) {
+                        isDown = false;
+                    }
+                }
+                else {
+                    if (prices[i] < prices[i - 1]) {
+                        isDown = true;
+                        if (prices[i - 1] - currentMin > fee) {
+                            maxProfit += prices[i - 1] - currentMin - fee;
+                            currentMin = prices[i];
+                        }
+                        else {
+                            currentMin = min(currentMin, prices[i]);
+                        }
+                    }
+                }
+            }
+
+            if (!isDown && prices[n - 1] - currentMin > fee)
+                maxProfit += prices[n - 1] - currentMin - fee;
+
+            return maxProfit;
+        }
+    };
+}
+
+//---------------------------------------------
+// @ID: #718
+// @Date: 2020/9/23
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s718 {
+    class Solution {
+    public:
+        int findLength(vector<int>& A, vector<int>& B) {
+            if (A.size() == 0 || B.size() == 0)
+                return 0;
+
+            int n = A.size(), m = B.size(), maxLength = 0;
+            vector<vector<int>> dp(n, vector<int>(m));
+            
+            for (int i = 0; i < n; i++) {
+                if (A[i] == B[0]) {
+                    dp[i][0] = 1;
+                    maxLength = 1;
+                }
+            }
+            
+            for (int j = 1; j < m; j++) {
+                if (A[0] == B[j]) {
+                    dp[0][j] = 1;
+                    maxLength = 1;
+                }
+            }
+            
+            for (int i = 1; i < n; i++) {
+                for (int j = 1; j < m; j++) {
+                    if (A[i] == B[j]) {
+                        dp[i][j] = dp[i - 1][j - 1] + 1;
+                        maxLength = max(maxLength, dp[i][j]);
+                    }
+                }
+            }
+
+            return maxLength;
         }
     };
 }
