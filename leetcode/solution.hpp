@@ -1864,6 +1864,42 @@ namespace s221 {
 
 
 //---------------------------------------------
+// @ID: #235
+// @Date: 2020/9/27
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s235 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+            TreeNode* ancestor = root;
+            while (true) {
+                if (p->val < ancestor->val && q->val < ancestor->val) {
+                    ancestor = ancestor->left;
+                }
+                else if (p->val > ancestor->val && q->val > ancestor->val) {
+                    ancestor = ancestor->right;
+                }
+                else {
+                    break;
+                }
+            }
+            return ancestor;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #263
 // @Date: 2020/8/2
 // @Algorithm: Simple Algorithm
