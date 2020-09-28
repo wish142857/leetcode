@@ -383,6 +383,36 @@ namespace s21 {
 }
 
 
+//---------------------------------------------
+// @ID: #35
+// @Date: 2020/9/28
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s35 {
+    class Solution {
+    public:
+        int searchInsert(vector<int>& nums, int target) {
+            int n = nums.size();
+            int i = 0, j = n - 1;
+            if (target > nums[n - 1])
+                return n;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] < target) {
+                    i = mid + 1;
+                }
+                else {
+                    j = mid;
+                }
+            }
+            return i;
+        }
+    };
+}
+
+
 // TODO 
 namespace s39 {
     class Solution {
@@ -1274,6 +1304,121 @@ namespace s114 {
 
 
 //---------------------------------------------
+// @ID: #116
+// @Date: 2020/9/28
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s116 {
+    class Node {
+    public:
+        int val;
+        Node* left;
+        Node* right;
+        Node* next;
+
+        Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val, Node* _left, Node* _right, Node* _next)
+            : val(_val), left(_left), right(_right), next(_next) {}
+    };
+
+    class Solution {
+    public:
+        Node* connect(Node* root) {
+            if (root == nullptr)
+                return nullptr;
+
+            Node* g = root, * h = nullptr, * q = nullptr, * p = nullptr;
+            while (g) {
+                h = g;
+                g = h->left;
+                q = nullptr;
+                while (h) {
+                    p = h->left;
+                    if (q)
+                        q->next = p;
+                    q = p;
+                    p = h->right;
+                    if (q)
+                        q->next = p;
+                    q = p;
+                    h = h->next;
+                }
+                h = g;
+            }
+
+            return root;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #117
+// @Date: 2020/9/28
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s117 {
+    class Node {
+    public:
+        int val;
+        Node* left;
+        Node* right;
+        Node* next;
+
+        Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val, Node* _left, Node* _right, Node* _next)
+            : val(_val), left(_left), right(_right), next(_next) {}
+    };
+
+    class Solution {
+    public:
+        Node* connect(Node* root) {
+            if (root == nullptr)
+                return nullptr;
+
+            Node* g = root, * h = nullptr, * q = nullptr, * p = nullptr;
+            while (g) {
+                h = g;
+                g = q = nullptr;
+                while (h) {
+                    if (h->left) {
+                        p = h->left;
+                        if (q)
+                            q->next = p;
+                        q = p;
+                        if (!g)
+                            g = p;
+                    }
+                    if (h->right) {
+                        p = h->right;
+                        if (q)
+                            q->next = p;
+                        q = p;
+                        if (!g)
+                            g = p;
+                    }
+                    h = h->next;
+                }
+                h = g;
+            }
+
+            return root;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #120
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -1961,6 +2106,31 @@ namespace s264 {
     };
 }
 
+
+namespace s278 {
+    // The API isBadVersion is defined for you.
+    // bool isBadVersion(int version);
+    bool isBadVersion(int version) {
+        return false;
+    }
+
+    class Solution {
+    public:
+        int firstBadVersion(int n) {
+            int i = 1, j = n, mid = 0;
+            while (i < j) {
+                mid = i + ((j - i) >> 1);
+                if (isBadVersion(mid)) {
+                    j = mid;
+                }
+                else {
+                    i = mid + 1;
+                }
+            }
+            return i;
+        }
+    };
+}
 
 //---------------------------------------------
 // @ID: #279
@@ -3528,6 +3698,32 @@ namespace s714 {
     };
 }
 
+
+//---------------------------------------------
+// @ID: #717
+// @Date: 2020/9/28
+// @Algorithm: Linear Search Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s717 {
+    class Solution {
+    public:
+        bool isOneBitCharacter(vector<int>& bits) {
+            int n = bits.size(), i = 0;
+            while (i < n) {
+                if (bits[i] == 1) {
+                    if (++i >= n - 1)
+                        return false;
+                }
+                i++;
+            }
+            return true;            
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #718
 // @Date: 2020/9/23
@@ -4107,6 +4303,33 @@ namespace s978 {
 
 
 //---------------------------------------------
+// @ID: #997
+// @Date: 2020/9/28
+// @Algorithm: Graph Algorithm
+// @Time: O(max(m,n))
+// @Space: O(n)
+//---------------------------------------------
+namespace s997 {
+    class Solution {
+    public:
+        int findJudge(int N, vector<vector<int>>& trust) {
+            int m = trust.size();
+            vector<int> counter(N + 1);
+            for (vector<int> t : trust) {
+                counter[t[0]]++;
+                counter[t[1]]--;
+            }
+
+            for (int i = 1; i <= N; i++)
+                if (counter[i] == -N + 1)
+                    return i;
+            return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1025
 // @Date: 2020/7/24
 // @Algorithm: Simple Algorithm
@@ -4381,6 +4604,43 @@ namespace s1227 {
     public:
         double nthPersonGetsNthSeat(int n) {
             return n > 1 ? 0.5 : 1.0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1267
+// @Date: 2020/9/28
+// @Algorithm: Simple Algorithm
+// @Time: O(mn)
+// @Space: O(m+n)
+//---------------------------------------------
+namespace s1267 {
+    class Solution {
+    public:
+        int countServers(vector<vector<int>>& grid) {
+            if (grid.size() == 0 || grid[0].size() == 0)
+                return 0;
+            int m = grid.size(), n = grid[0].size(), s = 0;
+            vector<int> r(m), c(n);
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (grid[i][j]) {
+                        r[i]++;
+                        c[j]++;
+                    }
+                }
+            }
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (grid[i][j] && (r[i] > 1 || c[j] > 1))
+                    {
+                        s++;
+                    }
+                }
+            }
+            return s;
         }
     };
 }
