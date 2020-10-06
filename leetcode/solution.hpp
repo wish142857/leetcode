@@ -7,6 +7,7 @@
 #include <stack>
 #include <vector>
 #include <map>
+#include <numeric>
 #include <unordered_map>
 #include <set>
 #include <unordered_set>
@@ -1685,6 +1686,50 @@ namespace s141 {
                 slow = slow->next;
             }
             return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #145
+// @Date: 2020/9/29
+// @Algorithm: Stack Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s145 {
+     struct TreeNode {
+         int val;
+         TreeNode *left;
+         TreeNode *right;
+         TreeNode() : val(0), left(nullptr), right(nullptr) {}
+         TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+         TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+     };
+
+    class Solution {
+    public:
+        vector<int> postorderTraversal(TreeNode* root) {
+            vector<int> v;
+            stack<pair<TreeNode*, bool>> s;
+            pair<TreeNode*, bool> p;
+            s.push(pair<TreeNode*, bool>(root, true));                
+            while (!s.empty()) {
+                p = s.top();
+                s.pop();
+                if (!p.first)
+                    continue;
+                if (p.second) {
+                    s.push(pair<TreeNode*, bool>(p.first, false));
+                    s.push(pair<TreeNode*, bool>(p.first->right, true));
+                    s.push(pair<TreeNode*, bool>(p.first->left, true));
+                }
+                else {
+                    v.push_back(p.first->val);
+                }
+            }
+            return v;
         }
     };
 }
@@ -4019,6 +4064,57 @@ namespace s794 {
 }
 
 
+//---------------------------------------------
+// @ID: #797
+// @Date: 2020/9/29 
+// @Algorithm: DFS Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s797 {
+    class Solution {
+    public:
+        vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+            n = graph.size();
+            _graph = &graph;
+            path.clear();
+            paths.clear();
+            visited.resize(n, false);
+
+            visited[0] = true;
+            path.push_back(0);
+            DFS(0);
+            return paths;
+        }
+    private:
+        int n = 0;
+        vector<vector<int>> *_graph = nullptr;
+        vector<int> path;
+        vector<vector<int>> paths;
+        vector<bool> visited;
+
+        void DFS(const int x) {
+            for (int y : (*_graph)[x]) {
+                if (!visited[y]) {
+                    if (y == n - 1) {
+                        path.push_back(n - 1);
+                        paths.push_back(path);
+                        path.pop_back();
+                        continue;
+                    }
+                    visited[y] = true;
+                    path.push_back(y);
+                    DFS(y);
+                    path.pop_back();
+                    visited[y] = false;
+                }
+            }
+            return;
+        }
+    };
+}
+
+
 // TODO
 /*
 namespace s838 {
@@ -4704,6 +4800,26 @@ namespace s1373 {
                 maxSum = max(maxSum, sumVal);
             }
             return isBST;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1491
+// @Date: 2020/10/7
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1491 {
+    class Solution {
+    public:
+        double average(vector<int>& salary) {
+            double maxValue = *max_element(salary.begin(), salary.end());
+            double minValue = *min_element(salary.begin(), salary.end());
+            double sum = accumulate(salary.begin(), salary.end(), -maxValue - minValue);
+            return sum / int(salary.size() - 2);
         }
     };
 }
