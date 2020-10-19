@@ -1692,6 +1692,45 @@ namespace s141 {
 
 
 //---------------------------------------------
+// @ID: #142
+// @Date: 2020/10/10
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s142 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* detectCycle(ListNode* head) {
+            ListNode* slow = head, * fast = head;
+            while (fast != nullptr) {
+                slow = slow->next;
+                if (fast->next == nullptr) {
+                    return nullptr;
+                }
+                fast = fast->next->next;
+                if (fast == slow) {
+                    ListNode* ptr = head;
+                    while (ptr != slow) {
+                        ptr = ptr->next;
+                        slow = slow->next;
+                    }
+                    return ptr;
+                }
+            }
+            return nullptr;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #145
 // @Date: 2020/9/29
 // @Algorithm: Stack Algorithm
@@ -2668,6 +2707,15 @@ namespace s343 {
 }
 
 
+namespace s349 {
+    class Solution {
+    public:
+        vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+
+        }
+    };
+}
+
 //---------------------------------------------
 // @ID: #368
 // @Date: 2020/8/2
@@ -3048,40 +3096,60 @@ namespace s415 {
 
 //---------------------------------------------
 // @ID: #416
-// @Date: 2020/8/2
+// @Date: 2020/10/11
 // @Algorithm: Dynamic Programming Algorithm
-// @Time: O(?)
-// @Space: O(n)
+// @Time: O(n * target)
+// @Space: O(target)
 //---------------------------------------------
 namespace s416 {
     class Solution {
     public:
-        vector<int> *nums;
-        vector<int> prefixSum;
         bool canPartition(vector<int>& nums) {
-            if (nums.size() == 0)
-                return true;
-            int n = nums.size(), sum = 0;
-            sort(nums.begin(), nums.end());
-            this->nums = &nums;
-            prefixSum.resize(n);
-            prefixSum[0] = nums[0];
-            for (int i = 1; i < n; i++)
-                prefixSum[i] = prefixSum[i - 1] + nums[i];
-            if (prefixSum[n - 1] & 1)
+            int n = nums.size();
+            if (n < 2) {
                 return false;
-            return dpCheck(n - 1, prefixSum[n - 1] >> 1);
+            }
+            int sum = 0, maxNum = 0;
+            for (auto& num : nums) {
+                sum += num;
+                maxNum = max(maxNum, num);
+            }
+            if (sum & 1) {
+                return false;
+            }
+            int target = sum / 2;
+            if (maxNum > target) {
+                return false;
+            }
+            vector<int> dp(target + 1, 0);
+            dp[0] = true;
+            for (int i = 0; i < n; i++) {
+                int num = nums[i];
+                for (int j = target; j >= num; --j) {
+                    dp[j] |= dp[j - num];
+                }
+            }
+            return dp[target];
         }
-    private:
-        bool dpCheck(int k, int x) {
-            if (x <= 0 || prefixSum[k] < x)
-                return false;
-            if (k == 0)
-                return (*nums)[k] == x;
-            else
-                return dpCheck(k - 1, x - (*nums)[k]) || dpCheck(k - 1, x);
-        };
     };
+}
+
+
+//---------------------------------------------
+// @ID: #441
+// @Date: 2020/10/10
+// @Algorithm: Math Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s441 {
+    class Solution {
+    public:
+        int arrangeCoins(int n) {
+            int m = (sqrt((long(n) << 3) | 1) - 1) / 2;
+            return m;
+        }
+    };   
 }
 
 
@@ -3643,6 +3711,7 @@ namespace s688 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #696
 // @Date: 2020/8/10
@@ -3666,6 +3735,33 @@ namespace s696 {
                 a = b;
             }
             return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #704
+// @Date: 2020/10/10
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log(n))
+// @Space: O(1)
+//---------------------------------------------
+namespace s704 {
+    class Solution {
+    public:
+        int search(vector<int>& nums, int target) {
+            if (nums.size() == 0)
+                return -1;
+            int i = 0, j = nums.size() - 1, mid = 0;
+            while (i < j) {
+                mid = i + ((j - i) >> 1);
+                if (nums[mid] < target)
+                    i = mid + 1;
+                else
+                    j = mid;
+            }
+            return nums[i] == target ? i : -1;
         }
     };
 }
@@ -4226,6 +4322,52 @@ namespace s843 {
             return;
         }
     };
+}
+
+
+//---------------------------------------------
+// @ID: #844
+// @Date: 2020/10/19 
+// @Algorithm: Simple Algorithm
+// @Time: O(n + m)
+// @Space: O(1)
+//---------------------------------------------
+namespace s844 {
+        class Solution {
+        public:
+            bool backspaceCompare(string S, string T) {
+                int i = S.length() - 1, j = T.length() - 1, backNum = 0;
+                while (true) {
+                    backNum = 0;
+                    while (i >= 0) {
+                        if (S[i] == '#')
+                            backNum++;
+                        else if (backNum > 0)
+                            backNum--;
+                        else
+                            break;
+                        i--;
+                    }
+                    backNum = 0;
+                    while (j >= 0) {
+                        if (T[j] == '#')
+                            backNum++;
+                        else if (backNum > 0)
+                            backNum--;
+                        else
+                            break;
+                        j--;
+                    }
+                    if (i < 0 && j < 0)
+                        return true;
+                    if (i < 0 || j < 0 || S[i] != T[j])
+                        return false;
+                    i--;
+                    j--;
+                }
+                return false;
+            }
+        };
 }
 
 
@@ -4870,6 +5012,30 @@ namespace s1512 {
 
 
 //---------------------------------------------
+// @ID: #1572
+// @Date: 2020/10/11
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1572 {
+    class Solution {
+    public:
+        int diagonalSum(vector<vector<int>>& mat) {
+            int n = mat.size(), m = 0;
+            for (int i = 0; i < n; i++) {
+                m += mat[i][i];
+                m += mat[i][n - 1 - i];
+            }
+            if ((n - 1) % 2 == 0)
+                m -= mat[(n - 1) / 2][(n - 1) / 2];
+            return m;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1594
 // @Date: 2020/9/22
 // @Algorithm: Dynamic Programming Algorithm
@@ -5232,6 +5398,30 @@ namespace lcp13 {
                 }
             }
             return ret;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #lcp17
+// @Date: 2020/10/11
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace lcp17 {
+    class Solution {
+    public:
+        int calculate(string s) {
+            int x = 1, y = 0;
+            for (auto c : s) {
+                if (c == 'A')
+                    x = (x << 1) + y;
+                else
+                    y = (y << 1) + x;
+            }
+            return x + y;
         }
     };
 }
