@@ -1731,6 +1731,68 @@ namespace s142 {
 
 
 //---------------------------------------------
+// @ID: #143
+// @Date: 2020/10/20
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s143 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode *next) : val(x), next(next) {}
+    };
+    
+    class Solution {
+    public:
+        void reorderList(ListNode* head) {
+            if (head == nullptr)
+                return;
+
+            ListNode *slow = head, *fast = head;
+            while (fast && fast->next) {
+                fast = fast->next->next;
+                if (fast)
+                    slow = slow->next;
+            }
+            
+            ListNode*h = head, * p = head, * q = reverseList(slow->next), * t = nullptr;
+            slow->next = nullptr;
+
+            while (p && q) {
+                t = p->next;
+                p->next = q;
+                p = t;
+                t = q->next;
+                q->next = p;
+                q = t;
+            }
+            if (p)
+                p->next = nullptr;
+            return;
+        }
+    private:
+        ListNode* reverseList(ListNode* head) {
+            if (head == nullptr)
+                return nullptr;
+            ListNode* q = head, * p = head->next, * t = nullptr;
+            q->next = nullptr;
+            while (p) {
+                t = p->next;
+                p->next = q;
+                q = p;
+                p = t;
+            }
+            return q;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #145
 // @Date: 2020/9/29
 // @Algorithm: Stack Algorithm
@@ -3146,7 +3208,7 @@ namespace s441 {
     class Solution {
     public:
         int arrangeCoins(int n) {
-            int m = (sqrt((long(n) << 3) | 1) - 1) / 2;
+            int m = int((sqrt((long(n) << 3) | 1) - 1) / 2);
             return m;
         }
     };   
