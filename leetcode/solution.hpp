@@ -4038,6 +4038,39 @@ namespace s746 {
 }
 
 
+namespace s763 {
+    class Solution {
+    public:
+        vector<int> partitionLabels(string S) {
+            int x = 0, i = 0, j = 0;
+            int len = S.length();
+            vector<int> splitLength;
+            while (x < len) {
+                j = findLastIndex(S, S[x]);
+                i = x + 1;
+                while (i < j) {
+                    int maxLastIndex = INT_MIN;
+                    for (int k = i; k < j; k++)
+                        maxLastIndex = max(maxLastIndex, findLastIndex(S, S[k]));
+                    i = j + 1;
+                    if (maxLastIndex > j)
+                        j = maxLastIndex;
+                }
+                splitLength.push_back(j - x + 1);
+                x = j + 1;
+            }
+            return splitLength;
+        }
+    private:
+        int findLastIndex(string& S, char c) {
+            for (int i = S.length() - 1; i >= 0; i--)
+                if (S[i] == c)
+                    return i;
+            return -1;
+        }
+    };
+}
+
 //---------------------------------------------
 // @ID: #777
 // @Date: 2020/7/19 
@@ -5527,6 +5560,33 @@ namespace lcp17 {
 
 //---------------------------------------------
 // @ID: #o7
+// @Date: 2020/10/21
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o3 {
+    class Solution {
+    public:
+        int findRepeatNumber(vector<int>& nums) {
+            int n = nums.size(), temp = 0;
+            for (int i = 0; i < n; i++) {
+                while (nums[i] != i) {
+                    if (nums[nums[i]] == nums[i])
+                        return nums[i];
+                    temp = nums[nums[i]];
+                    nums[nums[i]] = nums[i];
+                    nums[i] = temp;
+                }
+            }
+            return 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o7
 // @Date: 2020/8/8
 // @Algorithm: Tree Algorithm | Recursion Algorithm
 // @Time: O(n)
@@ -5571,6 +5631,50 @@ namespace o7 {
             return root;
         }
     };
+}
+
+
+//---------------------------------------------
+// @ID: #o9
+// @Date: 2020/10/21
+// @Algorithm: Stack Algorithm | Queue Algorithm
+// @Time: O(1)/O(1)
+// @Space: O(n)
+//---------------------------------------------
+namespace o9 {
+    class CQueue {
+    public:
+        CQueue() { }
+
+        void appendTail(int value) {
+            s1.push(value);
+            return;
+        }
+
+        int deleteHead() {
+            if (s2.empty()) {
+                while (!s1.empty()) {
+                    int t = s1.top();
+                    s1.pop();
+                    s2.push(t);
+                }
+                if (s2.empty())
+                    return -1;
+            }
+            int t = s2.top();
+            s2.pop();
+            return t;
+        }
+    private:
+        stack<int> s1, s2;
+    };
+
+    /**
+     * Your CQueue object will be instantiated and called as such:
+     * CQueue* obj = new CQueue();
+     * obj->appendTail(value);
+     * int param_2 = obj->deleteHead();
+     */
 }
 
 
@@ -5649,6 +5753,96 @@ namespace o11 {
                 }
             }
             return numbers[i];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o12
+// @Date: 2020/10/21
+// @Algorithm: DFS Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace o12 {
+    class Solution {
+    public:
+        bool exist(vector<vector<char>>& board, string word) {
+            if (board.size() == 0 || board[0].size() == 0)
+                return false;
+            if (word.size() == 0)
+                return true;
+            m = board.size(), n = board[0].size();
+            pBoard = &board;
+            pWord = &word;
+            v.resize(m, vector<bool>(n, false));
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    if (dfs(i, j, 0))
+                        return true;
+            return false;
+        }
+    private:
+        int m, n;
+        vector<vector<char>>* pBoard;
+        string* pWord;
+        vector<vector<bool>> v;
+        bool dfs(int x, int y, int depth) {
+            if (x < 0 || x >= m || y < 0 || y >= n || v[x][y])
+                return false;
+            if ((*pBoard)[x][y] != (*pWord)[depth])
+                return false;
+            depth++;
+            v[x][y] = true;
+            if (depth == pWord->length())
+                return true;
+            if (dfs(x + 1, y, depth))
+                return true;
+            if (dfs(x - 1, y, depth))
+                return true;
+            if (dfs(x, y + 1, depth))
+                return true;
+            if (dfs(x, y - 1, depth))
+                return true;
+            v[x][y] = false;
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o13
+// @Date: 2020/10/22
+// @Algorithm: Simple Algorithm
+// @Time: O(m * n)
+// @Space: O(m * n)
+//---------------------------------------------
+namespace o13 {
+    class Solution {
+    public:
+        int movingCount(int m, int n, int k) {
+            int count = 0;
+            vector<vector<bool>> d(m + 1, vector<bool>(n + 1));
+            d[0][1] = true;
+            for (int i = 1; i <= m; i++)
+                for (int j = 1; j <= n; j++)
+                    if (d[i][j - 1] || d[i - 1][j]) {
+                        d[i][j] = (getBitSum(i - 1) + getBitSum(j - 1) <= k);
+                        if (d[i][j])
+                            count++;
+                    }
+            return count;
+        }
+    private:
+        int getBitSum(int x) {
+            int sum = 0;
+            while (x) {
+                sum += x % 10;
+                x /= 10;
+            }
+            return sum;
         }
     };
 }
@@ -5798,6 +5992,36 @@ namespace o55_1 {
     public:
         int maxDepth(TreeNode* root) {
             return root ? max(maxDepth(root->left), maxDepth(root->right)) + 1 : 0;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o58_2
+// @Date: 2020/10/21
+// @Algorithm: String Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o58_2 {
+    class Solution {
+    public:
+        string reverseLeftWords(string s, int n) {
+            reverseWords(s, 0, n - 1);
+            reverseWords(s, n, s.length() - 1);
+            reverseWords(s, 0, s.length() - 1);
+            return s;
+        }
+    private:
+        void reverseWords(string& s, int i, int j) {
+            char temp;
+            while (i < j) {
+                temp = s[i];
+                s[i] = s[j];
+                s[j] = temp;
+                i++, j--;
+            }
         }
     };
 }
