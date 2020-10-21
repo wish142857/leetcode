@@ -4491,6 +4491,42 @@ namespace s877 {
     };
 }
 
+    
+//---------------------------------------------
+// @ID: #925
+// @Date: 2020/10/21
+// @Algorithm: Simple Algorithm
+// @Time: O(max(n,m))
+// @Space: O(1)
+//---------------------------------------------
+namespace s925 {
+    class Solution {
+    public:
+        bool isLongPressedName(string name, string typed) {
+            if (name.length() == 0 && typed.length() == 0)
+                return true;
+            if (name.length() == 0 || typed.length() == 0)
+                return false;
+            int i = 0, j = 0, n = name.length(), m = typed.length();
+            if (name[0] != typed[0])
+                return false;
+            i = j = 1;
+            while (i < n && j < m) {
+                if (name[i] != typed[j]) {
+                    while (j < m && typed[j] == typed[j - 1]) j++;
+                    if (j >= m) return false;
+                    if (name[i] != typed[j])
+                        return false;
+                }
+                i++;
+                j++;
+            }
+            if (j < m)
+                while (j < m && typed[j] == typed[j - 1]) j++;
+            return i >= n && j >= m;
+        }
+    };
+}
 
 //---------------------------------------------
 // @ID: #931
@@ -5738,6 +5774,30 @@ namespace o49 {
                     i++;
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o55_1
+// @Date: 2020/10/21
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(lg(n))
+//---------------------------------------------
+namespace o55_1 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        int maxDepth(TreeNode* root) {
+            return root ? max(maxDepth(root->left), maxDepth(root->right)) + 1 : 0;
         }
     };
 }
