@@ -1989,6 +1989,28 @@ namespace s174 {
 
 
 //---------------------------------------------
+// @ID: #191
+// @Date: 2020/10/23
+// @Algorithm: Bit Algorithm
+// @Time: O(s)
+// @Space: O(1)
+//---------------------------------------------
+namespace s191 {
+    class Solution {
+    public:
+        int hammingWeight(uint32_t n) {
+            int s = 0;
+            while (n) {
+                s++;
+                n &= (n - 1);
+            }
+            return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #198
 // @Date: 2020/7/31
 // @Algorithm: Dynamic Programming Algorithm
@@ -5935,6 +5957,91 @@ namespace o14_1 {
                 }
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o15
+// @Date: 2020/10/23
+// @Algorithm: Bit Algorithm
+// @Time: O(s)
+// @Space: O(1)
+//---------------------------------------------
+namespace o15 {
+    class Solution {
+    public:
+        int hammingWeight(uint32_t n) {
+            int s = 0;
+            while (n) {
+                s++;
+                n &= (n - 1);
+            }
+            return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o18
+// @Date: 2020/10/23
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o18 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        ListNode* deleteNode(ListNode* head, int val) {
+            ListNode* p = head, * q = nullptr;
+            while (p && p->val != val) {
+                q = p;
+                p = p->next;
+            }
+            if (!p)
+                return head;
+            if (!q)
+                return p->next;
+            q->next = p->next;
+            return head;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o24
+// @Date: 2020/10/23
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o24 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* reverseList(ListNode* head) {
+            ListNode* q = nullptr, * t = nullptr;
+            while (head) {
+                t = head->next;
+                head->next = q;
+                q = head;
+                head = t;
+            }
+            return q;
         }
     };
 }
