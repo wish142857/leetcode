@@ -2155,6 +2155,65 @@ namespace s221 {
 
 
 //---------------------------------------------
+// @ID: #234
+// @Date: 2020/10/23
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s234 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        bool isPalindrome(ListNode* head) {
+            if (!head)
+                return true ;
+
+            ListNode* fast = head, * slow = head;
+            while (fast && fast->next) {
+                fast = fast->next->next;
+                slow = slow->next;
+            }
+
+            ListNode* p = slow, * q = nullptr, * t = nullptr;
+            while (p) {
+                t = p->next;
+                p->next = q;
+                q = p;
+                p = t;
+            }
+
+            bool isPalindrome = true;
+            ListNode* i = head, * j = q;
+            while (i && j) {
+                if (i->val != j->val) {
+                    isPalindrome = false;
+                    break;
+                }
+                i = i->next;
+                j = j->next;
+            }
+            
+            p = q; q = nullptr;
+            while (p) {
+                t = p->next;
+                p->next = q;
+                q = p;
+                p = t;
+            }
+
+            return isPalindrome;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #235
 // @Date: 2020/9/27
 // @Algorithm: Tree Algorithm
@@ -4038,6 +4097,13 @@ namespace s746 {
 }
 
 
+//---------------------------------------------
+// @ID: #763
+// @Date: 2020/10/22
+// @Algorithm: Simple Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
 namespace s763 {
     class Solution {
     public:
@@ -4070,6 +4136,7 @@ namespace s763 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #777
