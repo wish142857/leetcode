@@ -3603,6 +3603,74 @@ namespace s519 {
 
 
 //---------------------------------------------
+// @ID: #521
+// @Date: 2020/10/23
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s521 {
+    class Solution {
+    public:
+        int findLUSlength(string a, string b) {
+            return a == b ? -1 : max(a.length(), b.length());
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #522
+// @Date: 2020/10/23
+// @Algorithm: Simple Algorithm
+// @Time: O(n^2 * m)
+// @Space: O(1)
+//---------------------------------------------
+namespace s522 {
+    bool cmp(const string& s1, const string& s2) {
+        return s1.length() > s2.length();
+    }
+
+    class Solution {
+    public:
+        int findLUSlength(vector<string>& strs) {
+            int n = strs.size();
+            sort(strs.begin(), strs.end(), cmp);
+            for (int i = 0; i < n; i++) {
+                bool flag = true;
+                for (int j = 0; j < n; j++) {
+                    if (i == j)
+                        continue;
+                    if (strs[j].length() < strs[i].length())
+                        break;
+                    if (check(strs[i], strs[j])) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                    return strs[i].length();
+            }
+            return -1;
+        }
+    private:
+  
+        bool check(const string& s1, const string& s2) {
+            if (s1.length() > s2.length())
+                return false;
+            int i = 0, j = 0;
+            for (; i < int(s1.length()); i++) {
+                while (j < int(s2.length()) && s1[i] != s2[j]) j++;
+                if (j >= int(s2.length()))
+                    return false;
+                j++;
+            }
+            return true;
+        }
+    };
+}
+
+//---------------------------------------------
 // @ID: #528
 // @Date: 2020/7/19 
 // @Algorithm: Random Algorithm
