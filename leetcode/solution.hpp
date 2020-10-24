@@ -4856,6 +4856,42 @@ namespace s997 {
 
 
 //---------------------------------------------
+// @ID: #1024
+// @Date: 2020/10/24
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1024 {
+    class Solution {
+    public:
+        int videoStitching(vector<vector<int>>& clips, int T) {
+            sort(clips.begin(), clips.end(), Solution::cmp);
+            if (clips.size() == 0 || clips[0][0] != 0)
+                return -1;
+            int num = 1, i = 1, t = clips[0][1], currentMaxPos = 0;
+            while (i < int(clips.size()) && t < T) {
+                currentMaxPos = INT_MIN;
+                while (i < int(clips.size()) && clips[i][0] <= t) {
+                    currentMaxPos = max(currentMaxPos, clips[i][1]);
+                    i++;
+                }
+                if (currentMaxPos <= t)
+                    return -1;
+                t = currentMaxPos;
+                num++;
+            }
+            return t >= T ? num : -1;
+        }
+    private:
+        static bool cmp(const vector<int>& clip1, const vector<int>& clip2) {
+            return (clip1[0] < clip2[0]) || (clip1[0] == clip2[0] && clip1[1] > clip2[1]);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1025
 // @Date: 2020/7/24
 // @Algorithm: Simple Algorithm
