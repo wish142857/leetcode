@@ -4624,6 +4624,37 @@ namespace s844 {
 
 
 //---------------------------------------------
+// @ID: #845
+// @Date: 2020/10/25
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s845 {
+    class Solution {
+    public:
+        int longestMountain(vector<int>& A) {
+            if (A.size() == 0)
+                return 0;
+            int n = A.size(), i = 0, maxLength = 0, dpDown = 0;
+            vector<int> dpUp(n);
+            dpUp[0] = 1;
+            for (i = 1; i < n; i++) {
+                dpUp[i] = A[i] > A[i - 1] ? dpUp[i - 1] + 1 : 1;
+            }
+            dpDown = 1;
+            for (i = n - 2; i >= 0; i--) {
+                dpDown = A[i] > A[i + 1] ? dpDown + 1 : 1;
+                if (dpDown > 1 && dpUp[i] > 1)
+                    maxLength = max(maxLength, dpUp[i] + dpDown - 1);
+            }
+            return maxLength;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #860
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
@@ -5209,6 +5240,31 @@ namespace s1267 {
 
 
 //---------------------------------------------
+// @ID: #1365
+// @Date: 2020/10/26
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1365 {
+    class Solution {
+    public:
+        vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+            int n = nums.size(), count[101] = { 0 };
+            vector<int> ans(n);
+            for (int i = 0; i < n; i++)
+                count[nums[i]]++;
+            for (int i = 1; i <= 100; i++)
+                count[i] += count[i - 1];
+            for (int i = 0; i < n; i++)
+                ans[i] = nums[i] > 0 ? count[nums[i] - 1] : 0;
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1373
 // @Date: 2020/8/7
 // @Algorithm: Tree Algorithm | Recursion Algorithm
@@ -5752,6 +5808,32 @@ namespace lcp17 {
 
 
 //---------------------------------------------
+// @ID: #lcp18
+// @Date: 2020/10/25
+// @Algorithm: Simple Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace lcp18 {
+    class Solution {
+    public:
+        int breakfastNumber(vector<int>& staple, vector<int>& drinks, int x) {
+            int m = staple.size(), n = drinks.size(), i = 0, j = n - 1, s = 0;
+            sort(staple.begin(), staple.end());
+            sort(drinks.begin(), drinks.end());
+            for (i = 0; i < m; i++) {
+                while (j >= 0 && staple[i] + drinks[j] > x) j--;
+                if (j < 0)
+                    break;
+                s = (s + j + 1) % 1000000007;
+            }
+            return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o7
 // @Date: 2020/10/21
 // @Algorithm: Simple Algorithm
@@ -6246,6 +6328,36 @@ namespace o49 {
                     i++;
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o52
+// @Date: 2020/10/25
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o52 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+            if (!headA || !headB)
+                return nullptr;
+            ListNode* p = headA, * q = headB;
+            while (p != q) {
+                p = p ? p->next : headB;
+                q = q ? q->next : headA;
+            }
+            return p;
         }
     };
 }
