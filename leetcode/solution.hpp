@@ -1793,6 +1793,45 @@ namespace s143 {
 
 
 //---------------------------------------------
+// @ID: #144
+// @Date: 2020/10/27
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(log n)
+//---------------------------------------------
+namespace s144 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    };
+    class Solution {
+    public:
+        vector<int> preorderTraversal(TreeNode* root) {
+            vector<int> v;
+            stack<TreeNode*> s;
+            if (!root)
+                return v;
+            s.push(root);
+            while (!s.empty()) {
+                TreeNode* p = s.top();
+                s.pop();
+                v.push_back(p->val);
+                if (p->right)
+                    s.push(p->right);
+                if (p->left)
+                    s.push(p->left);
+            }
+            return v;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #145
 // @Date: 2020/9/29
 // @Algorithm: Stack Algorithm
@@ -6171,6 +6210,33 @@ namespace o15 {
 
 
 //---------------------------------------------
+// @ID: #o16
+// @Date: 2020/10/27
+// @Algorithm: Fast Exponentiation Algorithm
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o16 {
+    class Solution {
+    public:
+        double myPow(double x, int n) {
+            double ans = 1.0, d = (n >= 0 ? x : 1 / x);
+            long e = n;
+            if (n < 0)
+                e = -e;
+            while (e) {
+                if (e & 1)
+                    ans *= d;
+                e >>= 1;
+                d *= d;
+            }
+            return ans;
+        }
+    };
+}
+    
+
+//---------------------------------------------
 // @ID: #o18
 // @Date: 2020/10/23
 // @Algorithm: Linked List Algorithm
@@ -6228,6 +6294,138 @@ namespace o24 {
                 head = t;
             }
             return q;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o26
+// @Date: 2020/10/27
+// @Algorithm: Tree Algorithm
+// @Time: O(mn)
+// @Space: O(log n)
+//---------------------------------------------
+namespace o26 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    class Solution {
+    public:
+        bool isSubStructure(TreeNode* A, TreeNode* B) {
+            if (!A || !B)
+                return false;
+            stack<TreeNode*> s;
+            s.push(A);
+            while (!s.empty()) {
+                TreeNode* p = s.top();
+                s.pop();
+                if (check(p, B))
+                    return true;
+                if (p->right)
+                    s.push(p->right);
+                if (p->left)
+                    s.push(p->left);
+            }
+            return false;
+        }
+   private:
+       bool check(TreeNode* a, TreeNode* b) {
+           if (!b)
+               return true;
+           if (!a)
+               return false;
+           if (a->val != b->val)
+               return false;
+           if (!check(a->left, b->left))
+               return false;
+           if (!check(a->right, b->right))
+               return false;
+           return true;
+       }
+   };
+}
+
+
+//---------------------------------------------
+// @ID: #o28
+// @Date: 2020/10/27
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(log n)
+//---------------------------------------------
+namespace o28 {
+   struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        bool isSymmetric(TreeNode* root) {
+            if (!root)
+                return true;
+            return check(root->left, root->right);
+        }
+    private:
+        bool check(TreeNode* A, TreeNode* B) {
+            if (!A && !B)
+                return true;
+            if (!A || !B)
+                return false;
+            if (A->val != B->val)
+                return false;
+            if (!check(A->left, B->right))
+                return false;
+            if (!check(A->right, B->left))
+                return false;
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o32_1
+// @Date: 2020/10/27
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace o32_1 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        vector<int> levelOrder(TreeNode* root) {
+            vector<int> v;
+            queue<TreeNode*> q;
+            int n = root ? 1 : 0;
+            q.push(root);
+            while (n) {
+                int m = n;
+                n = 0;
+                while (m--) {
+                    TreeNode* p = q.front();
+                    q.pop();
+                    v.push_back(p->val);
+                    if (p->left)
+                        q.push(p->left), n++;
+                    if (p->right)
+                        q.push(p->right), n++;
+                }
+            }
+            return v;
         }
     };
 }
