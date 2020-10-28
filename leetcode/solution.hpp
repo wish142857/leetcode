@@ -5225,6 +5225,32 @@ namespace s1201 {
 
 
 //---------------------------------------------
+// @ID: #1207
+// @Date: 2020/10/28
+// @Algorithm: Hash Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1207 {
+    class Solution {
+    public:
+        bool uniqueOccurrences(vector<int>& arr) {
+            unordered_map<int, int> um;
+            unordered_set<int> us;
+            for (int i : arr)
+                um[i]++;
+            for (const pair<int, int>& i : um) {
+                if (us.find(i.second) != us.end())
+                    return false;
+                us.insert(i.second);
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1227
 // @Date: 2020/7/19
 // @Algorithm: Number Theory Algorithm
