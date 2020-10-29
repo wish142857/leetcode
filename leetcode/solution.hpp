@@ -1521,6 +1521,48 @@ namespace s125 {
 
 
 //---------------------------------------------
+// @ID: #129
+// @Date: 2020/10/29
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s129 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    class Solution {
+    public:
+        int sumNumbers(TreeNode* root) {
+            if (!root)
+                return 0;
+            s = 0;
+            search(root, 0);
+            return s;
+        }
+    private:
+        int s = 0;
+        void search(TreeNode* p, int n) {
+            n = n * 10 + p->val;
+            if (p->left || p->right) {
+                if (p->left)
+                    search(p->left, n);
+                if (p->right)
+                    search(p->right, n);
+            }
+            else {
+                s += n;
+            }
+        }
+    };
+
+}
+
+
+//---------------------------------------------
 // @ID: #130
 // @Date: 2020/8/11
 // @Algorithm: Search Algorithm
@@ -5707,6 +5749,39 @@ namespace lcp11 {
             }
             return counter;
 
+        }
+    };
+}
+
+
+namespace lcp12 {
+    class Solution {
+    public:
+        int minTime(vector<int>& time, int m) {
+            int n = time.size();
+            if (n == 0)
+                return 0;
+            vector<int> dp(n);
+            vector<int> preSum(n);
+            vector<vector<int>> cost(n, vector<int>(n));
+            preSum[0] = time[0];
+            for (int i = 1; i < n; i++)
+                preSum[i] = preSum[i - 1] + time[i];
+            for (int i = 0; i < n; i++) {
+                int maxTime = time[i];
+                cost[i][i] = 0;
+                for (int j = i + 1; j < n; j++) {
+                    cost[i][j] = preSum[j] - preSum[i - 1] - maxTime;
+                }
+            }
+ 
+
+
+            for (int i = 0; i < m; i++)
+                for (int j = n - 1; j >= 0; j--)
+                    for (int k = 0; k < j; k++)
+                        dp[j] = min(dp[j], max(dp[k], cost[k][j]));
+            return dp[n - 1];
         }
     };
 }
