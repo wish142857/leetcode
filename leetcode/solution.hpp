@@ -1558,7 +1558,6 @@ namespace s129 {
             }
         }
     };
-
 }
 
 
@@ -1695,6 +1694,50 @@ namespace s139 {
                 }
             }
             return dp[n - 1];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #140
+// @Date: 2020/11/1
+// @Algorithm: Recursion Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s140 {
+    class Solution {
+    public:
+        vector<string> wordBreak(string s, vector<string>& wordDict) {
+            str = &s;
+            ansMap.clear();
+            wordSet = unordered_set<string>(wordDict.begin(), wordDict.end());
+            search(0);
+            return ansMap[0];
+        }
+    private:
+        string* str;
+        unordered_map<int, vector<string>> ansMap;
+        unordered_set<string> wordSet;
+        void search(const int n) {
+            if (ansMap.find(n) == ansMap.end()) {
+                ansMap[n] = vector<string>();
+                for (int i = n + 1; i <= str->length(); i++) {
+                    string subStr = str->substr(n, i - n);
+                    if (wordSet.find(subStr) != wordSet.end()) {
+                        if (i < str->length()) {
+                            search(i);
+                            for (const string& suffix : ansMap[i])
+                                ansMap[n].push_back(subStr + ' ' + suffix);
+                        }
+                        else {
+                            ansMap[n].push_back(subStr);
+                        }
+                    }
+                }
+            }
+            return;
         }
     };
 }
@@ -3378,6 +3421,40 @@ namespace s441 {
 
 
 //---------------------------------------------
+// @ID: #463
+// @Date: 2020/10/30
+// @Algorithm: Simple Algorithm
+// @Time: O(mn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s463 {
+    class Solution {
+    public:
+        int islandPerimeter(vector<vector<int>>& grid) {
+            if (grid.size() == 0 || grid[0].size() == 0)
+                return 0;
+            int m = grid.size(), n = grid[0].size(), s = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (!grid[i][j])
+                        continue;
+                    if (!i || !grid[i - 1][j])
+                        s++;
+                    if (!j || !grid[i][j - 1])
+                        s++;
+                    if (i == m - 1 || !grid[i + 1][j])
+                        s++;
+                    if (j == n - 1 || !grid[i][j + 1])
+                        s++;
+                }
+            }
+            return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #470
 // @Date: 2020/7/19 
 // @Algorithm: Rejection Sampling Algorithm
@@ -3903,6 +3980,53 @@ namespace s617 {
             t1->left = mergeTrees(t1->left, t2->left);
             t1->right = mergeTrees(t1->right, t2->right);
             return t1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #637
+// @Date: 2020/10/30
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s637 {
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    class Solution {
+    public:
+        vector<double> averageOfLevels(TreeNode* root) {
+            if (!root)
+                return {};
+            int n = 0, m = 0, num = 0;
+            long sum = 0;
+            vector<double> ans;
+            queue<TreeNode*> q;
+            n = 1;
+            q.push(root);
+            while (n > 0) {
+                sum = 0;
+                num = n;
+                n = 0;
+                for (int i = 0; i < num; i++) {
+                    TreeNode* p = q.front();
+                    q.pop();
+                    sum += p->val;
+                    if (p->left)
+                        q.push(p->left), n++;
+                    if (p->right)
+                        q.push(p->right), n++;
+                }
+                ans.push_back(double(sum) / double(num));
+            }
+            return ans;
         }
     };
 }
@@ -5170,6 +5294,7 @@ namespace s1048 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #1049
 // @Date: 2020/9/15
@@ -5202,6 +5327,41 @@ namespace s1049 {
                 }
             }
             return s - (k << 1);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1103
+// @Date: 2020/11/1
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1103 {
+    class Solution {
+    public:
+        vector<int> distributeCandies(int candies, int num_people) {
+            int roundNum = 1, totalNum = (num_people + 1) * num_people / 2;
+            vector<int> ans(num_people, 0);
+            while (candies >= totalNum) {
+                candies -= totalNum;
+                roundNum++;
+                totalNum += num_people * num_people;
+            }
+            int m = (roundNum - 2) * (roundNum - 1) * num_people / 2;
+            for (int i = 1; i <= num_people; i++) {
+                int sum = (roundNum - 1) * num_people + i;
+                ans[i - 1] = m + (roundNum - 1) * i;
+                if (candies > 0) {
+                    if (candies >= sum)
+                        ans[i - 1] += sum, candies -= sum;
+                    else
+                        ans[i - 1] += candies, candies = 0;
+                }
+            }
+            return ans;
         }
     };
 }
@@ -6914,6 +7074,72 @@ namespace i08_03 {
 
 
 //---------------------------------------------
+// @ID: #i08_05
+// @Date: 2020/10/30
+// @Algorithm: Bit Algorithm || Recursion Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace i08_05 {
+    class Solution {
+    public:
+        int multiply(int A, int B) {
+            return A == 0 || B == 0 ? 0 : (B & 1 ? A : 0) + (multiply(A, B >> 1) << 1);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i08_06
+// @Date: 2020/10/30
+// @Algorithm: Recursion Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace i08_06 {
+    class Solution {
+    public:
+        void hanota(vector<int>& A, vector<int>& B, vector<int>& C) {
+            int n = A.size();
+            move(A, C, B, n);
+            return;
+        }
+    private:
+        void move(vector<int>& S, vector<int>& T, vector<int>& O, int n) {
+            if (n == 1) {
+                int x = S.back();
+                S.pop_back();
+                T.push_back(x);
+                return;
+            }
+            if (n == 2) {
+                int x = S.back();
+                S.pop_back();
+                O.push_back(x);
+                x = S.back();
+                S.pop_back();
+                T.push_back(x);
+                x = O.back();
+                O.pop_back();
+                T.push_back(x);
+                return;
+            }
+            if (n > 2) {
+                move(S, O, T, n - 1);
+                int x = S.back();
+                S.pop_back();
+                T.push_back(x);
+                move(O, T, S, n - 1);
+                return;
+            }
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i08_11
 // @Date: 2020/8/7
 // @Algorithm: Dynamic Programming Algorithm
@@ -7028,6 +7254,30 @@ namespace i16_17 {
 
 
 //---------------------------------------------
+// @ID: #i17_01
+// @Date: 2020/10/30
+// @Algorithm: Bit Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace i17_01 {
+    class Solution {
+    public:
+        int add(int a, int b) {
+            int c;
+            while (b) {
+                // Note, translate to unsigend int to pass the test at LeetCode
+                c = (unsigned int)(a & b) << 1;  
+                a ^= b;
+                b = c;
+            }
+            return a;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i17_08
 // @Date: 2020/9/21
 // @Algorithm: Dynamic Programming Algorithm
@@ -7080,6 +7330,32 @@ namespace i17_08 {
 
             quickSortByHeight(height, weight, begin, i - 1);
             quickSortByHeight(height, weight, i + 1, end);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_10
+// @Date: 2020/10/30
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i17_10 {
+    class Solution {
+    public:
+        int majorityElement(vector<int>& nums) {
+            int count = 0, num = 0;
+            for (const int& n : nums) {
+                if (count == 0)
+                    num = n;
+                count += num == n ? 1 : -1;
+            }
+            count = 0;
+            for (const int& n : nums)
+                count += num == n ? 1 : -1;
+            return count > 0 ? num : -1;
         }
     };
 }
