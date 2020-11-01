@@ -1723,10 +1723,10 @@ namespace s140 {
         void search(const int n) {
             if (ansMap.find(n) == ansMap.end()) {
                 ansMap[n] = vector<string>();
-                for (int i = n + 1; i <= str->length(); i++) {
+                for (int i = n + 1; i <= int(str->length()); i++) {
                     string subStr = str->substr(n, i - n);
                     if (wordSet.find(subStr) != wordSet.end()) {
-                        if (i < str->length()) {
+                        if (i < int(str->length())) {
                             search(i);
                             for (const string& suffix : ansMap[i])
                                 ansMap[n].push_back(subStr + ' ' + suffix);
@@ -2483,6 +2483,7 @@ namespace s278 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #279
 // @Date: 2020/8/2
@@ -2506,6 +2507,41 @@ namespace s279 {
                 }
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #290
+// @Date: 2020/11/1
+// @Algorithm: Simple Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s290 {
+    class Solution {
+    public:
+        bool wordPattern(string pattern, string s) {
+            int n = s.size(), i = 0, j = 0;
+            unordered_map<char, string> linkList;
+            vector<string> wordList;
+            while ((j = s.find(' ', i)) != s.npos)
+                wordList.push_back(s.substr(i, j - i)), i = j + 1;
+            wordList.push_back(s.substr(i));
+            if (wordList.size() != pattern.length())
+                return false;
+            for (int i = 0; i < int(pattern.length()); i++) {
+                if (linkList.find(pattern[i]) == linkList.end()) {
+                    linkList[pattern[i]] = wordList[i];
+                    for (const pair<char, string>& p : linkList)
+                        if (p.first != pattern[i] && p.second == wordList[i])
+                            return false;
+                }
+                else if (linkList[pattern[i]] != wordList[i])
+                    return false;
+            }
+            return true;
         }
     };
 }
@@ -2974,14 +3010,39 @@ namespace s343 {
 }
 
 
+//---------------------------------------------
+// @ID: #349
+// @Date: 2020/11/2
+// @Algorithm: Hash Algorithm
+// @Time: O(max(m,n))
+// @Space: O(max(m,n))
+//---------------------------------------------
 namespace s349 {
     class Solution {
     public:
         vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-
+            vector<int> ans;
+            unordered_set<int> nums1Set, nums2Set;
+            int m = nums1.size(), n = nums2.size();
+            for (const int n : nums1)
+                nums1Set.insert(n);
+            for (const int n : nums2)
+                nums2Set.insert(n);
+            if (nums1Set.size() < nums2Set.size()) {
+                for (const int n : nums1Set)
+                    if (nums2Set.find(n) != nums2Set.end())
+                        ans.push_back(n);
+            }
+            else {
+                for (const int n : nums2Set)
+                    if (nums1Set.find(n) != nums1Set.end())
+                        ans.push_back(n);
+            }
+            return ans;
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #368
@@ -3828,6 +3889,7 @@ namespace s522 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #528
 // @Date: 2020/7/19 
@@ -3949,6 +4011,27 @@ namespace s538 {
             sum += val;
             _bstToGst(root->left);
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #575
+// @Date: 2020/11/1
+// @Algorithm: Hash Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s575 {
+    class Solution {
+    public:
+        int distributeCandies(vector<int>& candies) {
+            unordered_set<int> candiesSet;
+            for (const int c : candies)
+                if (candiesSet.find(c) == candiesSet.end())
+                    candiesSet.insert(c);
+            return candiesSet.size() > candies.size() / 2 ? candies.size() / 2 : candiesSet.size();
         }
     };
 }
@@ -4663,6 +4746,37 @@ namespace s797 {
                 }
             }
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #808
+// @Date: 2020/11/1
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^2)
+// @Space: O(n^2)
+//---------------------------------------------
+namespace s808 {
+    class Solution {
+    public:
+        double soupServings(int N) {
+            if (N > 5000)
+                return 1;
+            if (!N)
+                return 0.5;
+            int n = (N - 1) / 25 + 1;
+            vector<vector<double>> dp(n + 1, vector<double>(n + 1));
+            dp[0][0] = 0.5;
+            for (int i = 1; i <= n; i++) {
+                dp[0][i] = 1;
+                dp[i][0] = 0;
+            }
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= n; j++)
+                    dp[i][j] = (dp[max(0, i - 4)][j] + dp[max(0, i - 3)][max(0, j - 1)] + dp[max(0, i - 2)][max(0, j - 2)] + dp[max(0, i - 1)][max(0, j - 3)]) / 4;
+            return dp[n][n];
         }
     };
 }
@@ -6652,6 +6766,45 @@ namespace o28 {
 
 
 //---------------------------------------------
+// @ID: #o31
+// @Date: 2020/11/2
+// @Algorithm: Simple Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
+namespace o31 {
+    class Solution {
+    public:
+        bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+            if (pushed.size() != popped.size())
+                return false;
+            int n = popped.size(), m = 0, i = 0, j = 0;
+            while (i < n) {
+                while (m < n && pushed[m] != popped[i])
+                    m++;
+                if (m >= n)
+                    return false;
+                pushed[m] = -1;
+                if (++i >= n)
+                    return true;
+                j = m - 1;
+                while (true) {
+                    while (j >= 0 && pushed[j] == -1)
+                        j--;
+                    if (j < 0 || pushed[j] != popped[i])
+                        break;
+                    pushed[j] = -1;
+                    if (++i >= n)
+                        return true;
+                }
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o32_1
 // @Date: 2020/10/27
 // @Algorithm: Tree Algorithm
@@ -6872,6 +7025,80 @@ namespace o58_2 {
                 i++, j--;
             }
         }
+    };
+}
+
+
+namespace o59_1 {
+    class Solution {
+    public:
+        vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+            if (nums.size() == 0 || k == 0)
+                return {};
+            int n = nums.size();
+            vector<int> v;
+            deque<int> d;
+            for (int i = 0; i < k; i++) {
+                while (!d.empty() && d.back() < nums[i])
+                    d.pop_back();
+                d.push_back(nums[i]);
+            }
+            v.push_back(d.front());
+            for (int i = k; i < n; i++) {
+                if (d.front() == nums[i - k]) {
+                    d.pop_front();
+                }
+                while (!d.empty() && d.back() < nums[i]) {
+                    d.pop_back();
+                }
+
+                d.push_back(nums[i]);
+                v.push_back(d.front());
+            }
+            return v;
+        }
+    };
+}
+
+//---------------------------------------------
+// @ID: #o59_2
+// @Date: 2020/11/1
+// @Algorithm: Queue Algorithm
+// @Time: O(1)
+// @Space: O(n)
+//---------------------------------------------
+namespace o59_2 {
+    class MaxQueue {
+    public:
+        MaxQueue() {
+        }
+
+        int max_value() {
+            if (q.empty())
+                return -1;
+            return d.front();
+        }
+
+        void push_back(int value) {
+            q.push(value);
+            while (!d.empty() && d.back() < value)
+                d.pop_back();
+            d.push_back(value);
+        }
+
+        int pop_front() {
+            if (q.empty())
+                return -1;
+            int element = q.front();
+            q.pop();
+            if (element == d.front())
+                d.pop_front();
+            return element;
+        }
+
+    private:
+        queue<int> q;
+        deque<int> d;
     };
 }
 
@@ -7356,6 +7583,36 @@ namespace i17_10 {
             for (const int& n : nums)
                 count += num == n ? 1 : -1;
             return count > 0 ? num : -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_11
+// @Date: 2020/11/1
+// @Algorithm: Simple Algorithm | Hash Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i17_11 {
+    class Solution {
+    public:
+        int findClosest(vector<string>& words, string word1, string word2) {
+            int i = 0, x = -1, y = -1, minDis = INT_MAX;
+            for (; i < int(words.size()); i++) {
+                if (words[i] == word1) {
+                    x = i;
+                    if (y >= 0)
+                        minDis = min(minDis, x - y);
+                }
+                else if (words[i] == word2) {
+                    y = i;
+                    if (x >= 0)
+                        minDis = min(minDis, y - x);
+                }
+            }
+            return minDis;
         }
     };
 }
