@@ -5142,6 +5142,32 @@ namespace s938 {
 
 
 //---------------------------------------------
+// @ID: #941
+// @Date: 2020/11/3
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s941 {
+    class Solution {
+    public:
+        bool validMountainArray(vector<int>& A) {
+            if (A.size() < 3)
+                return false;
+            int n = A.size(), i = 1;
+            while (i < n && A[i] > A[i - 1])
+                i++;
+            if (i <= 1 || i >= n || A[i] == A[i-1])
+                return false;
+            while (i < n && A[i] < A[i - 1])
+                i++;
+            return i >= n;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #978
 // @Date: 2020/8/4
 // @Algorithm: Dynamic Programming Algorithm
@@ -6645,6 +6671,35 @@ namespace o18 {
 
 
 //---------------------------------------------
+// @ID: #o21
+// @Date: 2020/11/2
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o21 {
+    class Solution {
+    public:
+        vector<int> exchange(vector<int>& nums) {
+            if (nums.size() == 0)
+                return {};
+            int i = 0, j = nums.size() - 1, key = nums[0];
+            while (i < j) {
+                while (i < j && !(nums[j] & 1))
+                    j--;
+                nums[i] = nums[j];
+                while (i < j && (nums[i] & 1))
+                    i++;
+                nums[j] = nums[i];
+            }
+            nums[i] = key;
+            return nums;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o24
 // @Date: 2020/10/23
 // @Algorithm: Linked List Algorithm
@@ -6976,6 +7031,31 @@ namespace o52 {
 
 
 //---------------------------------------------
+// @ID: #o53_2
+// @Date: 2020/11/2
+// @Algorithm: Binary Search Algorithm
+// @Time: O(lg(n))
+// @Space: O(1)
+//---------------------------------------------
+namespace o53_2 {
+    class Solution {
+    public:
+        int missingNumber(vector<int>& nums) {
+            int i = 0, j = nums.size() - 1;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] == mid)
+                    i = mid + 1;
+                else
+                    j = mid;
+            }
+            return nums[i] != i ? i : i + 1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o55_1
 // @Date: 2020/10/21
 // @Algorithm: Tree Algorithm
@@ -7029,6 +7109,13 @@ namespace o58_2 {
 }
 
 
+//---------------------------------------------
+// @ID: #o59_1
+// @Date: 2020/11/2
+// @Algorithm: Queue Algorithm
+// @Time: O(n)
+// @Space: O(k)
+//---------------------------------------------
 namespace o59_1 {
     class Solution {
     public:
@@ -7059,6 +7146,7 @@ namespace o59_1 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #o59_2
