@@ -524,6 +524,63 @@ namespace s55 {
 
 
 //---------------------------------------------
+// @ID: #57
+// @Date: 2020/11/4
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s57 {
+    class Solution {
+    public:
+        vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+            if (intervals.size() == 0) {
+                intervals.push_back(newInterval);
+                return intervals;
+            }
+            if (newInterval[1] < intervals[0][0]) {
+                intervals.insert(intervals.begin(), newInterval);
+                return intervals;
+            }
+            if (newInterval[0] > intervals[intervals.size() - 1][1]) {
+                intervals.push_back(newInterval);
+                return intervals;
+            }
+            int i = 0, j = intervals.size(), l = 0, r = 0;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (intervals[mid][0] > newInterval[0])
+                    j = mid;
+                else
+                    i = mid + 1;
+            }
+            l = i;
+            if (l > 0 && newInterval[0] <= intervals[l - 1][1]) {
+                l--;
+                newInterval[0] = intervals[l][0];
+            }
+            i = 0;
+            j = intervals.size();
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (intervals[mid][1] >= newInterval[1])
+                    j = mid;
+                else
+                    i = mid + 1;
+            }
+            r = i - 1;
+            if (r < int(intervals.size()) - 1 && newInterval[1] >= intervals[r + 1][0]) {
+                r++;
+                newInterval[1] = intervals[r][1];
+            }
+            intervals.insert(intervals.erase(intervals.begin() + l, intervals.begin() + r + 1), newInterval);
+            return intervals;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #62
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
