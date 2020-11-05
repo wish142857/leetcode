@@ -1578,6 +1578,63 @@ namespace s125 {
 
 
 //---------------------------------------------
+// @ID: #127
+// @Date: 2020/11/5
+// @Algorithm: Simple Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s127 {
+    class Solution {
+    public:
+        int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+            unordered_set<string*> wordSet;
+            vector<string*> deleteList;
+            queue<pair<string*, int>> q;
+            q.push({ &beginWord, 1 });
+            bool isReachable = false;
+            for (string& word : wordList) {
+                wordSet.insert(&word);
+                if (word == endWord)
+                    isReachable = true;
+            }
+            if (!isReachable)
+                return 0;
+            while (!q.empty()) {
+                auto s = q.front();
+                q.pop();
+                if (isValid(*(s.first), endWord))
+                    return s.second + 1;
+                for (string* word : wordSet)
+                    if (isValid(*(s.first), (*word))) {
+                        q.push({ word, s.second + 1 });
+                        deleteList.push_back(word);
+                    }
+                for (string* word : deleteList)
+                    wordSet.erase(word);
+                deleteList.clear();
+            }
+            return 0;
+        }
+    private:
+        bool isValid(string& begin, string& end) {
+            if (begin.length() != end.length())
+                return false;
+            unsigned int i = 0;
+            while (i < begin.length() && begin[i] == end[i])
+                i++;
+            if (i >= begin.length())
+                return false;
+            i++;
+            while (i < begin.length() && begin[i] == end[i])
+                i++;
+            return i >= begin.length();
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #129
 // @Date: 2020/10/29
 // @Algorithm: Tree Algorithm
