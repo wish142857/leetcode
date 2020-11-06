@@ -5761,6 +5761,42 @@ namespace s1267 {
 
 
 //---------------------------------------------
+// @ID: #1356
+// @Date: 2020/11/6
+// @Algorithm: Simple Algorithm
+// @Time: O(nlogn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1356 {
+    class Solution {
+    public:
+        vector<int> sortByBits(vector<int>& arr) {
+            vector<int> ans;
+            vector<vector<int>> vec(32, vector<int>());
+            for (int x : arr)
+                vec[calBitOneNumber(x)].push_back(x);
+            for (auto v : vec) {
+                sort(v.begin(), v.end());
+                ans.insert(ans.end(), v.begin(), v.end());
+            }
+            return ans;
+        }
+    private:
+        size_t calBitOneNumber(int x) {
+            size_t num = 0;
+            while (x) {
+                num += (x & 1);
+                x >>= 1;
+            }
+            return num;
+        }
+    };
+
+
+}
+
+
+//---------------------------------------------
 // @ID: #1365
 // @Date: 2020/10/26
 // @Algorithm: Simple Algorithm
