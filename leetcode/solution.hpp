@@ -5284,6 +5284,7 @@ namespace s931 {
     };
 }
 
+
 //---------------------------------------------
 // @ID: #938
 // @Date: 2020/8/8
@@ -5345,6 +5346,40 @@ namespace s941 {
             while (i < n && A[i] < A[i - 1])
                 i++;
             return i >= n;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #973
+// @Date: 2020/11/9
+// @Algorithm: Heap Algorithm
+// @Time: O(n)
+// @Space: O(K)
+//---------------------------------------------
+namespace s973 {
+    class Solution {
+    public:
+        vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+            vector<vector<int>> ans;
+            priority_queue<pair<int, vector<int>>> q;
+
+            for (vector<int>& point : points) {
+                int dis = point[0] * point[0] + point[1] * point[1];
+                if (q.size() < K || dis <= q.top().first) {
+                    q.push(pair<int, vector<int>>(dis, point));
+                    while (q.size() > K)
+                        q.pop();
+                }
+            }
+
+            while (!q.empty()) {
+                ans.push_back(q.top().second);
+                q.pop();
+            }
+
+            return ans; 
         }
     };
 }
