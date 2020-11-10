@@ -557,6 +557,40 @@ namespace s55 {
 
 
 //---------------------------------------------
+// @ID: #56
+// @Date: 2020/11/10
+// @Algorithm: Simple Algorithm
+// @Time: O(nlogn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s56 {
+    class Solution {
+    public:
+        vector<vector<int>> merge(vector<vector<int>>& intervals) {
+            vector<vector<int>> ans;
+            int n = intervals.size(), i = 0, x = 0, y = 0;
+            sort(intervals.begin(), intervals.end(), Solution::cmp);
+            while (i < n) {
+                x = intervals[i][0];
+                y = intervals[i][1];
+                i++;
+                while (i < n && intervals[i][0] <= y) {
+                    y = max(y, intervals[i][1]);
+                    i++;
+                }
+                ans.push_back({ x, y });
+            }
+            return ans;
+        }
+    private:
+        static bool cmp(const vector<int>& a, const vector<int>& b) {
+            return a[0] < b[0];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #57
 // @Date: 2020/11/4
 // @Algorithm: Binary Search Algorithm
