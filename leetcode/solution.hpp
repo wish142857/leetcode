@@ -385,6 +385,39 @@ namespace s21 {
 
 
 //---------------------------------------------
+// @ID: #31
+// @Date: 2020/11/10
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s31 {
+    class Solution {
+    public:
+        void nextPermutation(vector<int>& nums) {
+            if (nums.size() <= 1)
+                return;
+            int i = nums.size() - 2, j = 0, t = 0;
+            while (i >= 0 && nums[i] >= nums[i + 1])
+                i--;
+            if (i < 0) {
+                sort(nums.begin(), nums.end());
+                return;
+            }
+            j = i;
+            while (j < nums.size() - 1 && nums[j + 1] > nums[i])
+                j++;
+            t = nums[i];
+            nums[i] = nums[j];
+            nums[j] = t;
+            sort(nums.begin() + i + 1, nums.end());
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #35
 // @Date: 2020/9/28
 // @Algorithm: Binary Search Algorithm
