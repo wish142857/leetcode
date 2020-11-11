@@ -405,7 +405,7 @@ namespace s31 {
                 return;
             }
             j = i;
-            while (j < nums.size() - 1 && nums[j + 1] > nums[i])
+            while (j < int(nums.size()) - 1 && nums[j + 1] > nums[i])
                 j++;
             t = nums[i];
             nums[i] = nums[j];
@@ -2978,7 +2978,7 @@ namespace s327 {
                         }
                     }
                 }
-                for (int i = 0; i < sorted.size(); i++) {
+                for (int i = 0; i < int(sorted.size()); i++) {
                     sum[left + i] = sorted[i];
                 }
                 return ret;
@@ -3989,6 +3989,48 @@ namespace s509 {
                 y %= 1000000007;
             }
             return y;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #514
+// @Date: 2020/11/11
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s514 {
+    class Solution {
+    public:
+        int findRotateSteps(string ring, string key) {
+            int m = ring.length(), n = key.length(), ans = INT_MAX;
+            vector<vector<int>> dp(m, vector<int>(n, INT_MAX));
+            vector<vector<int>> set(2, vector<int>());
+            for (int i = 0; i < m; i++) {
+                if (ring[i] == key[0]) {
+                    set[1].push_back(i);
+                    dp[i][0] = min(i, m - i);
+                }
+            }
+
+            for (int k = 1; k < n; k++) {
+                for (int i = 0; i < m; i++) {
+                    if (ring[i] == key[k]) {
+                        for (int j : set[k & 1]) {
+                            dp[i][k] = min(dp[i][k], min(abs(i - j), m - abs(i - j)) + dp[j][k - 1]);
+                        }
+                        set[(k & 1) ^ 1].push_back(i);
+                    }
+                }
+                set[k & 1].clear();
+            }
+
+            for (int i : set[n & 1]) {
+                ans = min(ans, dp[i][n - 1]);
+            }
+            return ans + n;
         }
     };
 }
@@ -5434,9 +5476,9 @@ namespace s973 {
 
             for (vector<int>& point : points) {
                 int dis = point[0] * point[0] + point[1] * point[1];
-                if (q.size() < K || dis <= q.top().first) {
+                if (int(q.size()) < K || dis <= q.top().first) {
                     q.push(pair<int, vector<int>>(dis, point));
-                    while (q.size() > K)
+                    while (int(q.size()) > K)
                         q.pop();
                 }
             }
@@ -6223,13 +6265,13 @@ namespace s1594 {
 
 
 //---------------------------------------------
-// @ID: #lcp1
+// @ID: #LCP_01
 // @Date: 2020/7/29
 // @Algorithm: Simple Algorithm
 // @Time: O(1)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp1 {
+namespace LCP_01 {
     class Solution {
     public:
         int game(vector<int>& guess, vector<int>& answer) {
@@ -6240,13 +6282,13 @@ namespace lcp1 {
 
 
 //---------------------------------------------
-// @ID: #lcp3
+// @ID: #LCP_03
 // @Date: 2020/7/29
 // @Algorithm: Simple Algorithm
 // @Time: O(m * n)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp3 {
+namespace LCP_03 {
     class Solution {
     public:
         bool robot(string command, vector<vector<int>>& obstacles, int x, int y) {
@@ -6307,13 +6349,13 @@ namespace lcp3 {
 
 
 //---------------------------------------------
-// @ID: #lcp6
+// @ID: #LCP_06
 // @Date: 2020/7/29
 // @Algorithm: Number Theory Algorithm
 // @Time: O(n)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp6 {
+namespace LCP_06 {
     class Solution {
     public:
         int minCount(vector<int>& coins) {
@@ -6327,13 +6369,13 @@ namespace lcp6 {
 
 
 //---------------------------------------------
-// @ID: #lcp7
+// @ID: #LCP_07
 // @Date: 2020/7/30
 // @Algorithm: Dynamic Programming Algorithm
 // @Time: O(km)
 // @Space: O(kn)
 //---------------------------------------------
-namespace lcp7 {
+namespace LCP_07 {
     class Solution {
     public:
         int numWays(int n, vector<vector<int>>& relation, int k) {
@@ -6351,13 +6393,13 @@ namespace lcp7 {
 
 
 //---------------------------------------------
-// @ID: #lcp11
+// @ID: #LCP_11
 // @Date: 2020/7/30
 // @Algorithm: Math Algorithm
 // @Time: O(nlogn)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp11 {
+namespace LCP_11 {
     class Solution {
     public:
         int expectNumber(vector<int>& scores) {
@@ -6375,7 +6417,7 @@ namespace lcp11 {
 }
 
 
-namespace lcp12 {
+namespace LCP_12 {
     class Solution {
     public:
         int minTime(vector<int>& time, int m) {
@@ -6396,8 +6438,6 @@ namespace lcp12 {
                 }
             }
  
-
-
             for (int i = 0; i < m; i++)
                 for (int j = n - 1; j >= 0; j--)
                     for (int k = 0; k < j; k++)
@@ -6409,14 +6449,14 @@ namespace lcp12 {
 
 
 //---------------------------------------------
-// @ID: #lcp13
+// @ID: #LCP_13
 // @Date: 2020/7/29
 // @Algorithm: Dynamic Programming Algorithm
 // @Time: O(?)
 // @Space: O(?)
 // @Note: https://leetcode-cn.com/problems/xun-bao/solution/xun-bao-bfs-dp-by-leetcode-solution/
 //---------------------------------------------
-namespace lcp13 {
+namespace LCP_13 {
     class Solution {
     public:
         int dx[4] = { 1, -1, 0, 0 };
@@ -6545,13 +6585,13 @@ namespace lcp13 {
 
 
 //---------------------------------------------
-// @ID: #lcp17
+// @ID: #LCP_17
 // @Date: 2020/10/11
 // @Algorithm: Simple Algorithm
 // @Time: O(n)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp17 {
+namespace LCP_17 {
     class Solution {
     public:
         int calculate(string s) {
@@ -6569,13 +6609,13 @@ namespace lcp17 {
 
 
 //---------------------------------------------
-// @ID: #lcp18
+// @ID: #LCP_18
 // @Date: 2020/10/25
 // @Algorithm: Simple Algorithm
 // @Time: O(nlogn)
 // @Space: O(1)
 //---------------------------------------------
-namespace lcp18 {
+namespace LCP_18 {
     class Solution {
     public:
         int breakfastNumber(vector<int>& staple, vector<int>& drinks, int x) {
@@ -6595,7 +6635,35 @@ namespace lcp18 {
 
 
 //---------------------------------------------
-// @ID: #o7
+// @ID: #LCP_19
+// @Date: 2020/11/10
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace LCP_19 {
+    class Solution {
+    public:
+        int minimumOperations(string leaves) {
+            int n = leaves.size();
+            int dpR = 0, dpRY = 0, dpRYR = 0;
+            dpR = (leaves[0] != 'r') + (leaves[1] != 'r') + (leaves[2] != 'r');
+            dpRY = (leaves[0] != 'r') + (leaves[2] != 'y');
+            dpRYR = (leaves[0] != 'r') + (leaves[1] != 'y') + (leaves[2] != 'r');
+
+            for (int i = 3; i < n; i++) {
+                dpRYR = min(dpRYR, dpRY) + (leaves[i] != 'r');
+                dpRY = min(dpRY, dpR) + (leaves[i] != 'y');
+                dpR = dpR + (leaves[i] != 'r');
+            }
+            return dpRYR;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #o3
 // @Date: 2020/10/21
 // @Algorithm: Simple Algorithm
 // @Time: O(n)
