@@ -5323,7 +5323,56 @@ namespace s877 {
     };
 }
 
-    
+
+namespace s887 {
+    class Solution {
+    public:
+        int superEggDrop(int K, int N) {
+            if (N <= 1 || K <= 1)
+                return N;
+            return N & 1 ? superEggDrop(K - 1, N >> 1) + 1 : max(superEggDrop(K - 1, (N >> 1) - 1), superEggDrop(K, N >> 1)) + 1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #922
+// @Date: 2020/11/12
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s922 {
+    class Solution {
+    public:
+        vector<int> sortArrayByParityII(vector<int>& A) {
+            bool isOdd = false;
+            vector<int> todoV;
+            for (int i = 0; i < A.size(); i++) {
+                if ((A[i] & 1) == (i & 1)) {
+                    continue;
+                }
+                if (todoV.empty()) {
+                    todoV.push_back(i);
+                    isOdd = A[i] & 1;
+                }
+                else if (isOdd == (A[i] & 1)) {
+                    todoV.push_back(i);
+                }
+                else {
+                    int j = todoV.back(), t = A[i];
+                    todoV.pop_back();
+                    A[i] = A[j];
+                    A[j] = t;
+                }
+            }
+            return A;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #925
 // @Date: 2020/10/21
