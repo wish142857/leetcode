@@ -2999,6 +2999,50 @@ namespace s327 {
 
 
 //---------------------------------------------
+// @ID: #328
+// @Date: 2020/11/13 
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s328 {
+    struct ListNode {
+       int val;
+       ListNode *next;
+       ListNode() : val(0), next(nullptr) {}
+       ListNode(int x) : val(x), next(nullptr) {}
+       ListNode(int x, ListNode *next) : val(x), next(next) {}
+    };
+    
+    class Solution {
+    public:
+        ListNode* oddEvenList(ListNode* head) {
+            if (!head || !head->next || !head->next->next)
+                return head;
+            ListNode* h1 = head, * h2 = head->next, * q1 = head, * q2 = head->next, * p = head->next->next;
+            while (p) {
+                if (p->next) {
+                    q1->next = p;
+                    q1 = p;
+                    q2->next = p->next;
+                    q2 = p->next;
+                    p = p->next->next;
+                }
+                else {
+                    q1->next = p;
+                    q1 = p;
+                    break;
+                }
+            }
+            q1->next = h2;
+            q2->next = nullptr;
+            return h1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #329
 // @Date: 2020/7/26
 // @Algorithm: Dynamic Programming Algorithm
