@@ -3571,6 +3571,50 @@ namespace s398 {
 
 
 //---------------------------------------------
+// @ID: #402
+// @Date: 2020/11/15
+// @Algorithm: Greedy Algorithm
+// @Time: O(nk)
+// @Space: O(n)
+//---------------------------------------------
+namespace s402 {
+    class Solution {
+    public:
+        string removeKdigits(string num, int k) {
+            string ans;
+            int n = num.length(), i = 0, minIndex = 0;
+            char minBit = 0;
+            while (k > 0) {
+                if (k >= n - i) {
+                    i += k;
+                    break;
+                }
+                minBit = CHAR_MAX;
+                for (int j = i; j <= i + k; j++) {
+                    if (num[j] < minBit) {
+                        minBit = num[j];
+                        minIndex = j;
+                    }
+                }
+                ans += num[minIndex];
+                k -= (minIndex - i);
+                i = minIndex + 1;
+            }
+            ans += num.substr(i);
+            if (ans.length() == 0)
+                return "0";
+            i = 0;
+            while (i < ans.length() && ans[i] == '0')
+                i++;
+            if (i >= ans.length())
+                i = ans.length() - 1;
+            return ans.substr(i);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #403
 // @Date: 2020/9/22
 // @Algorithm: Dynamic Programming Algorithm
@@ -5393,7 +5437,7 @@ namespace s922 {
         vector<int> sortArrayByParityII(vector<int>& A) {
             bool isOdd = false;
             vector<int> todoV;
-            for (int i = 0; i < A.size(); i++) {
+            for (int i = 0; i < int(A.size()); i++) {
                 if ((A[i] & 1) == (i & 1)) {
                     continue;
                 }
