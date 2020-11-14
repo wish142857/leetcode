@@ -5928,6 +5928,36 @@ namespace s1103 {
 
 
 //---------------------------------------------
+// @ID: #1122
+// @Date: 2020/11/14
+// @Algorithm: Simple Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1122 {
+    class Solution {
+    public:
+        vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+            int i = 0, j = 0, m = arr1.size(), n = arr2.size(), t = 0;
+            while (j < n) {
+                for (int k = i; k < m; k++) {
+                    if (arr1[k] == arr2[j]) {
+                        t = arr1[i];
+                        arr1[i] = arr1[k];
+                        arr1[k] = t;
+                        i++;
+                    }
+                }
+                j++;
+            }
+            sort(arr1.begin() + i, arr1.end());
+            return arr1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1137
 // @Date: 2020/8/8
 // @Algorithm: Simple Algorithm
