@@ -6265,6 +6265,47 @@ namespace s1373 {
 
 
 //---------------------------------------------
+// @ID: #1482
+// @Date: 2020/11/15
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(?)
+// @Space: O(?)
+// TODO RUNTIMEOUT
+//---------------------------------------------
+namespace s1482 {
+    class Solution {
+    public:
+        int minDays(vector<int>& bloomDay, int m, int k) {
+            int n = bloomDay.size();
+            vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+            vector<int> maxDay(n, 0);
+            for (int i = 0; i < n; i++) {
+                if (i + k <= n) {
+                    for (int l = i; l < i + k; l++) {
+                        maxDay[i] = max(maxDay[i], bloomDay[l]);
+                    }
+                }
+                else {
+                    maxDay[i] = INT_MAX;
+                }
+            }
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = 1; j <= m; j++) {
+                    if (i + j * k <= n) {
+                        dp[i][j] = min(i + 1 < n ? dp[i + 1][j] : INT_MAX, max(maxDay[i], dp[i + k][j - 1]));
+                    }
+                    else {
+                        dp[i][j] = INT_MAX;
+                    }
+                }
+            }
+            return dp[0][m] == INT_MAX ? -1 : dp[0][m];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1491
 // @Date: 2020/10/7
 // @Algorithm: Simple Algorithm
