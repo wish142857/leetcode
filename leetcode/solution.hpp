@@ -3657,6 +3657,37 @@ namespace s403 {
 
 
 //---------------------------------------------
+// @ID: #406
+// @Date: 2020/11/16
+// @Algorithm: Greedy Algorithm
+// @Time: O(n^2)
+// @Space: O(n)
+//---------------------------------------------
+namespace s406 {
+    class Solution {
+    public:
+        static bool cmp(const vector<int> a, const vector<int> b) {
+            if (a[0] == b[0]) return a[1] < b[1];
+            return a[0] > b[0];
+        }
+        vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+            sort(people.begin(), people.end(), cmp);
+            list<vector<int>> que;
+            for (int i = 0; i < people.size(); i++) {
+                int position = people[i][1];
+                std::list<vector<int>>::iterator it = que.begin();
+                while (position--) {
+                    it++;
+                }
+                que.insert(it, people[i]);
+            }
+            return vector<vector<int>>(que.begin(), que.end());
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #410
 // @Date: 2020/7/25
 // @Algorithm: Dynamic Programming Algorithm
