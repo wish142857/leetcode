@@ -5815,6 +5815,60 @@ namespace s1027 {
 
 
 //---------------------------------------------
+// @ID: #1030
+// @Date: 2020/11/17
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1030 {
+    class Solution {
+    public:
+        vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0) {
+            vector<vector<int>> ans;
+            vector<vector<int>> isVisited(R, vector<int>(C, false));
+            int n = 0, m = 0;
+            queue<pair<int, int>> que;
+            que.push({ r0,c0 });
+            isVisited[r0][c0] = true;
+            n++;
+            while (n > 0) {
+                m = 0;
+                while (n > 0) {
+                    pair<int, int> p =  que.front();
+                    que.pop();
+                    n--;
+                    ans.push_back({ p.first, p.second });
+                    if (p.first > 0 && p.first < R && p.second >= 0 && p.second < C && !isVisited[p.first - 1][p.second]) {
+                        que.push({ p.first - 1, p.second });
+                        isVisited[p.first - 1][p.second] = true;
+                        m++;
+                    }
+                    if (p.first >= 0 && p.first < R && p.second > 0 && p.second < C && !isVisited[p.first][p.second - 1]) {
+                        que.push({ p.first, p.second - 1});
+                        isVisited[p.first][p.second - 1] = true;
+                        m++;
+                    }
+                    if (p.first >= 0 && p.first < R - 1 && p.second >= 0 && p.second < C && !isVisited[p.first + 1][p.second]) {
+                        que.push({ p.first + 1, p.second });
+                        isVisited[p.first + 1][p.second] = true;
+                        m++;
+                    }
+                    if (p.first >= 0 && p.first < R && p.second >= 0 && p.second < C - 1 && !isVisited[p.first][p.second + 1]) {
+                        que.push({ p.first, p.second + 1 });
+                        isVisited[p.first][p.second + 1] = true;
+                        m++;
+                    }
+                }
+                n = m;
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1033
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
