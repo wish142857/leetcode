@@ -1853,6 +1853,44 @@ namespace s133 {
 
 
 //---------------------------------------------
+// @ID: #134
+// @Date: 2020/11/18
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s134 {
+    class Solution {
+    public:
+        int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+            int n = gas.size();
+            int i = 0;
+            while (i < n) {
+                int sumOfGas = 0, sumOfCost = 0;
+                int cnt = 0;
+                while (cnt < n) {
+                    int j = (i + cnt) % n;
+                    sumOfGas += gas[j];
+                    sumOfCost += cost[j];
+                    if (sumOfCost > sumOfGas) {
+                        break;
+                    }
+                    cnt++;
+                }
+                if (cnt == n) {
+                    return i;
+                }
+                else {
+                    i = i + cnt + 1;
+                }
+            }
+            return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #139
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -2690,6 +2728,37 @@ namespace s279 {
             return dp[n];
         }
     };
+}
+
+
+//---------------------------------------------
+// @ID: #283
+// @Date: 2020/11/19
+// @Algorithm: Simple Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
+namespace s283 {
+    class Solution {
+    public:
+        void moveZeroes(vector<int>& nums) {
+            int n = nums.size(), i = 0, j = 0, t = 0;
+            while (i < n && j < n) {
+                while (i < n && nums[i])
+                    ++i;
+                j = i + 1;
+                while (j < n && nums[j] == 0)
+                    ++j;
+                if (i < n && j < n) {
+                    nums[i] = nums[j];
+                    nums[j] = 0;
+                    ++i;
+                }
+            }
+            return;
+        }
+    };
+
 }
 
 
@@ -3604,10 +3673,10 @@ namespace s402 {
             if (ans.length() == 0)
                 return "0";
             i = 0;
-            while (i < ans.length() && ans[i] == '0')
+            while (i < int(ans.length()) && ans[i] == '0')
                 i++;
-            if (i >= ans.length())
-                i = ans.length() - 1;
+            if (i >= int(ans.length()))
+                i = int(ans.length()) - 1;
             return ans.substr(i);
         }
     };
