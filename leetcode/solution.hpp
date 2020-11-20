@@ -2180,6 +2180,47 @@ namespace s145 {
 
 
 //---------------------------------------------
+// @ID: #147
+// @Date: 2020/11/20
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s147 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+    class Solution {
+    public:
+        ListNode* insertionSortList(ListNode* head) {
+            if (!head)
+                return head;
+            ListNode* h = head, * q = head->next, * p = nullptr;
+            head->next = nullptr;
+            while (q) {
+                p = q;
+                q = q->next;
+                if (p->val <= h->val) {
+                    p->next = h;
+                    h = p;
+                }
+                else {
+                    ListNode* i = h;
+                    while (i->next && p->val > i->next->val)
+                        i = i->next;
+                    p->next = i->next;
+                    i->next = p;
+                }
+            }
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #152
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
