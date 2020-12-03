@@ -2505,6 +2505,35 @@ namespace s198 {
 
 
 //---------------------------------------------
+// @ID: #204
+// @Date: 2020/12/3
+// @Algorithm: Simple Algorithm 
+// @Time: O(?)
+// @Space: O(n)
+//---------------------------------------------
+namespace s204 {
+    class Solution {
+    public:
+        int countPrimes(int n) {
+            vector<int> isPrime(n, 1);
+            int ans = 0;
+            for (int i = 2; i < n; ++i) {
+                if (isPrime[i]) {
+                    ans += 1;
+                    if ((long long)i * i < n) {
+                        for (int j = i * i; j < n; j += i) {
+                            isPrime[j] = 0;
+                        }
+                    }
+                }
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #207
 // @Date: 2020/8/4
 // @Algorithm: DFS Algorithm 
