@@ -5675,6 +5675,33 @@ namespace s860 {
 
 
 //---------------------------------------------
+// @ID: #861
+// @Date: 2020/12/7
+// @Algorithm: Greedy Algorithm
+// @Time: O(mn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s861 {
+    class Solution {
+    public:
+        int matrixScore(vector<vector<int>>& A) {
+            int m = A.size(), n = A[0].size(), c = 0, d = 1, ans = 0;
+            for (int j = n - 1; j >= 1; j--) {
+                c = 0;
+                for (int i = 0; i < m; i++)
+                    c += (A[i][0] ^ A[i][j]);
+                c = max(c, m - c);
+                ans += c * d;
+                d <<= 1;
+            }
+            ans += m * d;
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #877
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
