@@ -5478,6 +5478,51 @@ namespace s838 {
 }
 */
 
+
+//---------------------------------------------
+// @ID: #842
+// @Date: 2020/12/8 
+// @Algorithm: DFS Algorithm
+// @Time: O(n^2)
+// @Space: O(1)
+//---------------------------------------------
+namespace s842 {
+    class Solution {
+    public:
+        vector<int> splitIntoFibonacci(string S) {
+            vector<int> nums;
+            DFS(0, nums, S);
+            return nums;
+        }
+    private:
+        bool DFS(int n, vector<int>& nums, const string& str) {
+            if (n >= str.length() && nums.size() >= 3)
+                return true;
+            long num = 0;
+            for (; n < str.length(); n++) {
+                num = num * 10 + str[n] - '0';
+                if (num > INT_MAX)
+                    break;
+                if (nums.size() >= 2) {
+                    long sum = long(nums[nums.size() - 1]) + long(nums[nums.size() - 2]);
+                    if (num < sum )
+                        continue;
+                    if (num > sum)
+                        break;
+                }
+                nums.push_back(num);
+                if (DFS(n + 1, nums, str))
+                    return true;
+                nums.pop_back();
+                if (num == 0)
+                    break;
+            }
+            return false;
+        }
+    };
+}
+
+
 //---------------------------------------------
 // @ID: #843
 // @Date: 2020/7/19 
