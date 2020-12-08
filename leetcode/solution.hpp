@@ -418,6 +418,46 @@ namespace s31 {
 
 
 //---------------------------------------------
+// @ID: #34
+// @Date: 2020/12/9
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s34 {
+    class Solution {
+    public:
+        vector<int> searchRange(vector<int>& nums, int target) {
+            if (nums.size() == 0)
+                return { -1, -1 };
+            int i = 0, j = nums.size() - 1, t = 0;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] < target)
+                    i = mid + 1;
+                else
+                    j = mid;
+            }
+            if (nums[i] != target)
+                return { -1, -1 };
+            t = i;
+            j = nums.size() - 1;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] <= target)
+                    i = mid + 1;
+                else
+                    j = mid;
+            }
+            if (nums[i] == target)
+                return { t, i };
+            return { t, i - 1 };
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #35
 // @Date: 2020/9/28
 // @Algorithm: Binary Search Algorithm
