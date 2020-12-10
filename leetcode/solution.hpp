@@ -232,6 +232,49 @@ namespace s7 {
 
 
 //---------------------------------------------
+// @ID: #8
+// @Date: 2020/12/10
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s8 {
+    class Solution {
+    public:
+        int myAtoi(string s) {
+            bool isP = true;
+            int i = 0, n = s.length();
+            long num = 0;
+            while (i < n && s[i] == ' ')
+                i++;
+            if (i >= n)
+                return 0;
+            if (s[i] == '+')
+                i++;
+            else if (s[i] == '-')
+                isP = false, i++;
+            if (!isNumber(s[i]))
+                return 0;
+            while (i < n && isNumber(s[i])) {
+                num *= 10;
+                num += long(s[i] - '0');
+                if (isP && num > long(INT_MAX))
+                    return INT_MAX;
+                if (!isP && -num < long(INT_MIN))
+                    return INT_MIN;
+                i++;
+            }
+            return int(isP ? num : -num);
+        }
+    private:
+        inline bool isNumber(char c) {
+            return c >= '0' && c <= '9';
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #9
 // @Date: 2020/9/18
 // @Algorithm: Simple Algorithm
@@ -3961,7 +4004,7 @@ namespace s406 {
         vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
             sort(people.begin(), people.end(), cmp);
             list<vector<int>> que;
-            for (int i = 0; i < people.size(); i++) {
+            for (int i = 0; i < int(people.size()); i++) {
                 int position = people[i][1];
                 std::list<vector<int>>::iterator it = que.begin();
                 while (position--) {
@@ -5536,10 +5579,10 @@ namespace s842 {
         }
     private:
         bool DFS(int n, vector<int>& nums, const string& str) {
-            if (n >= str.length() && nums.size() >= 3)
+            if (n >= int(str.length()) && nums.size() >= 3)
                 return true;
             long num = 0;
-            for (; n < str.length(); n++) {
+            for (; n < int(str.length()); n++) {
                 num = num * 10 + str[n] - '0';
                 if (num > INT_MAX)
                     break;
@@ -5721,7 +5764,7 @@ namespace s845 {
 // @ID: #860
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
-// @Time: O(1)
+// @Time: O(n)
 // @Space: O(1)
 //---------------------------------------------
 namespace s860 {
@@ -5730,8 +5773,7 @@ namespace s860 {
         bool lemonadeChange(vector<int>& bills) {
             int a = 0, b = 0;
             for (unsigned int i = 0; i < bills.size(); i++) {
-                switch (bills[i])
-                {
+                switch (bills[i]) {
                 case 5:
                     a++;
                     break;
@@ -5753,7 +5795,6 @@ namespace s860 {
                 }
             }
             return true;
-
         }
     };
 }
