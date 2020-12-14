@@ -592,6 +592,33 @@ namespace s45 {
 
 
 //---------------------------------------------
+// @ID: #49
+// @Date: 2020/12/14
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s49 {
+    class Solution {
+    public:
+        vector<vector<string>> groupAnagrams(vector<string>& strs) {
+            map<string, vector<string>> count;
+            vector<vector<string>> ans;
+            for (const string& str : strs) {
+                string s = str;
+                sort(s.begin(), s.end());
+                count[s].push_back(str);
+            }
+            for (const auto& c : count) {
+                ans.push_back(c.second);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #53
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
