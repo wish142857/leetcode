@@ -5217,6 +5217,51 @@ namespace s718 {
 
 
 //---------------------------------------------
+// @ID: #738
+// @Date: 2020/12/15
+// @Algorithm: Greedy Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s738 {
+    class Solution {
+    public:
+        int monotoneIncreasingDigits(int N) {
+            char num[11], ans[11];
+            string str;
+            int ret;
+            sprintf_s(num, "%d", N);
+            str.assign(num);
+            for (int i = 0; i < int(str.length()); i++) {
+                bool isLessOrEquel = true;
+                for (int j = i + 1; j < int(str.length()); j++) {
+                    if (str[j] < str[i]) {
+                        isLessOrEquel = false;
+                        break;
+                    }
+                    if (str[j] > str[i]) {
+                        break;
+                    }
+                }
+                if (isLessOrEquel) {
+                    ans[i] = num[i];
+                }
+                else {
+                    ans[i] = num[i] - 1;
+                    for (int j = i + 1; j < int(str.length()); j++)
+                        ans[j] = '9';
+                    break;
+                }
+            }
+            ans[str.length()] = 0;
+            sscanf_s(ans, "%d", &ret);
+            return ret;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #740
 // @Date: 2020/9/22
 // @Algorithm: Dynamic Programming Algorithm
