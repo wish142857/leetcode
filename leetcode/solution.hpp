@@ -3868,6 +3868,30 @@ namespace s382 {
 
 
 //---------------------------------------------
+// @ID: #387
+// @Date: 2020/12/23 
+// @Algorithm: Hash Algorithm
+// @Time: O(n)  
+// @Space: O(n)
+//---------------------------------------------
+namespace s387 {
+    class Solution {
+    public:
+        int firstUniqChar(string s) {
+            unordered_map<char, int> countMap;
+            for (const auto& c : s) {
+                countMap[c]++;
+            }
+            for (int i = 0; i < int(s.length()); i++) {
+                if (countMap[s[i]] == 1)
+                    return i;
+            }
+            return -1;
+        }
+    };
+}
+
+//---------------------------------------------
 // @ID: #392
 // @Date: 2020/7/27
 // @Algorithm: Simple Algorithm
@@ -5105,41 +5129,25 @@ namespace s710 {
 }
 
 
-// TODO
+//---------------------------------------------
+// @ID: #714
+// @Date: 2020/12/18
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
 namespace s714 {
     class Solution {
     public:
         int maxProfit(vector<int>& prices, int fee) {
-            bool isDown = true;
-            int n = prices.size(), currentMin = prices[0], maxProfit = 0;
-
+            int n = prices.size();
+            int dpHave = -prices[0], dpNotHave = 0;
             for (int i = 1; i < n; i++) {
-                if (isDown) {
-                    if (prices[i] < prices[i - 1]) {
-                        currentMin = min(currentMin, prices[i]);
-                    }
-                    else if (prices[i] > prices[i - 1]) {
-                        isDown = false;
-                    }
-                }
-                else {
-                    if (prices[i] < prices[i - 1]) {
-                        isDown = true;
-                        if (prices[i - 1] - currentMin > fee) {
-                            maxProfit += prices[i - 1] - currentMin - fee;
-                            currentMin = prices[i];
-                        }
-                        else {
-                            currentMin = min(currentMin, prices[i]);
-                        }
-                    }
-                }
+                int temp = dpNotHave;
+                dpNotHave = max(dpNotHave, dpHave + prices[i] - fee);
+                dpHave = max(dpHave, temp - prices[i]);
             }
-
-            if (!isDown && prices[n - 1] - currentMin > fee)
-                maxProfit += prices[n - 1] - currentMin - fee;
-
-            return maxProfit;
+            return max(dpHave, dpNotHave);
         }
     };
 }
