@@ -5974,6 +5974,43 @@ namespace s887 {
 
 
 //---------------------------------------------
+// @ID: #888
+// @Date: 2021/2/1
+// @Algorithm: Simple Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s888 {
+    class Solution {
+    public:
+        vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
+            int i = 0, j = 0;
+            int sumA = 0, sumB = 0, difC = 0;
+            sort(A.begin(), A.end());
+            sort(B.begin(), B.end());
+            for (i = 0; i < A.size(); i++) {
+                sumA += A[i];
+            }
+            for (j = 0; j < B.size(); j++) {
+                sumB += B[j];
+            }
+            difC = sumA - sumB;
+            i = j = 0;
+            while (i < A.size() && j < B.size()) {
+                if ((A[i] - B[j]) * 2 == difC)
+                    return { A[i],B[j] };
+                else if ((A[i] - B[j]) * 2 > difC)
+                    j++;
+                else if ((A[i] - B[j]) * 2 < difC)
+                    i++;
+            }
+            return { 0,0 };
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #922
 // @Date: 2020/11/12
 // @Algorithm: Simple Algorithm
