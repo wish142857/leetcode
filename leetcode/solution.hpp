@@ -7141,6 +7141,43 @@ namespace s1594 {
 
 
 //---------------------------------------------
+// @ID: #1658
+// @Date: 2021/2/2
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1658 {
+    class Solution {
+    public:
+        int minOperations(vector<int>& nums, int x) {
+            int i = 0, j = 0, l = nums.size(), sum = -x, tmp = 0, minNum = INT_MAX;
+            for (int num : nums)
+                sum += num;
+            if (sum < 0)
+                return -1;
+            while (i < l && j < l) {
+                while (j < l && tmp < sum) {
+                    tmp += nums[j];
+                    j++;
+                }
+                while (i < j && tmp > sum) {
+                    tmp -= nums[i];
+                    i++;
+                }
+                if (tmp == sum) {
+                    minNum = min(minNum, l - j + i);    
+                    tmp -= nums[i];
+                    i++;
+                }
+            }
+            return minNum == INT_MAX ? -1 : minNum;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #LCP_01
 // @Date: 2020/7/29
 // @Algorithm: Simple Algorithm
