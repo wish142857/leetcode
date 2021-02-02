@@ -4215,6 +4215,34 @@ namespace s416 {
 
 
 //---------------------------------------------
+// @ID: #424
+// @Date: 2021/2/2
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s424 {
+    class Solution {
+    public:
+        int characterReplacement(string s, int k) {
+            int i = 0, j = 0, maxLength = 0;
+            int charCounter[26] = { 0 }, maxChar = 0;
+            while (i < s.length() && j < s.length()) {
+                charCounter[s[j] - 'A']++;
+                maxChar = charCounter[s[j] - 'A'] > charCounter[maxChar] ? s[j] - 'A' : maxChar;
+                j++;
+                if (j - i - charCounter[maxChar] > k) {
+                    charCounter[s[i] - 'A']--;
+                    i++;
+                }
+                maxLength = max(maxLength, j - i);
+            }
+            return maxLength;
+        }
+    };
+}
+
+//---------------------------------------------
 // @ID: #441
 // @Date: 2020/10/10
 // @Algorithm: Math Algorithm
