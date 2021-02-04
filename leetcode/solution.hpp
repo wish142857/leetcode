@@ -4937,6 +4937,33 @@ namespace s637 {
 
 
 //---------------------------------------------
+// @ID: #643
+// @Date: 2021/2/4
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s643 {
+    class Solution {
+    public:
+        double findMaxAverage(vector<int>& nums, int k) {
+            int i = 0, n = nums.size(), sum = 0, maxSum = 0;
+            for (i = 0; i < k; i++) {
+                sum += nums[i];
+            }
+            maxSum = sum;
+            for (i = k; i < n; i++) {
+                sum -= nums[i - k];
+                sum += nums[i];
+                maxSum = max(maxSum, sum);
+            }
+            return double(maxSum) / double(k);
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #649
 // @Date: 2020/12/11
 // @Algorithm: Greedy Algorithm
