@@ -5431,6 +5431,40 @@ namespace s763 {
 
 
 //---------------------------------------------
+// @ID: #766
+// @Date: 2021/2/22
+// @Algorithm: Simple Algorithm
+// @Time: O(m+n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s766 {
+    class Solution {
+    public:
+        bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+            if (matrix.size() == 0 || matrix[0].size() == 0)
+                return true;
+            int m = matrix.size(), n = matrix[0].size();
+            for (int i = 0; i < m; i++)
+                if (!checkToeplitz(matrix, i, 0))
+                    return false;
+            for (int j = 0; j < n; j++)
+                if (!checkToeplitz(matrix, 0, j))
+                    return false;
+            return true;
+        }
+    private:
+        bool checkToeplitz(vector<vector<int>>& matrix, int i, int j) {
+            int m = matrix.size(), n = matrix[0].size(), e = matrix[i][j];
+            while (++i < m && ++j < n)
+                if (matrix[i][j] != e)
+                    return false;
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #777
 // @Date: 2020/7/19 
 // @Algorithm: Simple Algorithm
@@ -6954,6 +6988,32 @@ namespace s1373 {
                 maxSum = max(maxSum, sumVal);
             }
             return isBST;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1438
+// @Date: 2021/2/21
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1438 {
+    class Solution {
+    public:
+        int longestSubarray(vector<int>& nums, int limit) {
+            int i = 0, j = 0, n = nums.size(), maxLength = 0;
+            multiset<int> s;
+            while (j < n) {
+                s.insert(nums[j++]);
+                while (*s.rbegin() - *s.begin() > limit) {
+                    s.erase(s.find(nums[i++]));
+                }
+                maxLength = max(maxLength, j - i);
+            }
+            return maxLength;
         }
     };
 }
