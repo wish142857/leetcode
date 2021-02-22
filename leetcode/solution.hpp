@@ -4227,7 +4227,7 @@ namespace s424 {
         int characterReplacement(string s, int k) {
             int i = 0, j = 0, maxLength = 0;
             int charCounter[26] = { 0 }, maxChar = 0;
-            while (i < s.length() && j < s.length()) {
+            while (i < int(s.length()) && j < int(s.length())) {
                 charCounter[s[j] - 'A']++;
                 maxChar = charCounter[s[j] - 'A'] > charCounter[maxChar] ? s[j] - 'A' : maxChar;
                 j++;
@@ -6077,15 +6077,15 @@ namespace s888 {
             int sumA = 0, sumB = 0, difC = 0;
             sort(A.begin(), A.end());
             sort(B.begin(), B.end());
-            for (i = 0; i < A.size(); i++) {
+            for (i = 0; i < int(A.size()); i++) {
                 sumA += A[i];
             }
-            for (j = 0; j < B.size(); j++) {
+            for (j = 0; j < int(B.size()); j++) {
                 sumB += B[j];
             }
             difC = sumA - sumB;
             i = j = 0;
-            while (i < A.size() && j < B.size()) {
+            while (i < int(A.size()) && j < int(B.size())) {
                 if ((A[i] - B[j]) * 2 == difC)
                     return { A[i],B[j] };
                 else if ((A[i] - B[j]) * 2 > difC)
@@ -6365,6 +6365,36 @@ namespace s997 {
                 if (counter[i] == -N + 1)
                     return i;
             return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1004
+// @Date: 2021/2/22
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1004 {
+    class Solution {
+    public:
+        int longestOnes(vector<int>& A, int K) {
+            int i = 0, j = 0, k = 0, n = A.size(), maxLength = 0;
+            while (j < n) {
+                if (A[j] == 0)
+                    k++;
+                j++;
+                while (i < j && k > K) {
+                    if (A[i] == 0)
+                        k--;
+                    i++;
+                }
+                if (k <= K)
+                    maxLength = max(maxLength, j - i);
+            }
+            return maxLength;
         }
     };
 }
@@ -6660,6 +6690,39 @@ namespace s1049 {
                 }
             }
             return s - (k << 1);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1052
+// @Date: 2021/2/22
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1052 {
+    class Solution {
+    public:
+        int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int X) {
+            int n = customers.size(), total = 0, cover = 0, maxCover = 0;
+            for (int i = 0; i < n; i++) {
+                if (grumpy[i] == 1)
+                    grumpy[i] = customers[i];
+                else
+                    total += customers[i];
+            }
+            for (int i = 0; i < X; i++) {
+                cover += grumpy[i];
+            }
+            maxCover = cover;
+            for (int i = X; i < n; i++) {
+                cover -= grumpy[i - X];
+                cover += grumpy[i];
+                maxCover = max(maxCover, cover);
+            }
+            return total + maxCover;
         }
     };
 }
@@ -8349,6 +8412,44 @@ namespace o47 {
 
 
 //---------------------------------------------
+// @ID: #o48
+// @Date: 2021/2/22
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace o48 {
+    class Solution {
+    public:
+        int lengthOfLongestSubstring(string s) {
+            int i = 0, j = 0, n = s.size(), maxLength = 0;
+            unordered_map<char, int> m;
+            while (j < n) {
+                m[s[j++]]++;
+                while (i < j && !isUnique(m)) {
+                    m[s[i]]--;
+                    if (m[s[i]] == 0)
+                        m.erase(s[i]);
+                    i++;
+                }
+                if (isUnique(m))
+                    maxLength = max(maxLength, j - i);
+            }
+            return maxLength;
+        }
+    private:
+        bool isUnique(unordered_map<char, int>& m) {
+            for (const auto& p : m) {
+                if (p.second > 1)
+                    return false;
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o49
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
@@ -9158,6 +9259,46 @@ namespace i17_16 {
                 dp_undo = max(dp_undo, temp);
             }
             return max(dp_done, dp_undo);
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_18
+// @Date: 2021/2/22
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace i17_18 {
+    class Solution {
+    public:
+        vector<int> shortestSeq(vector<int>& big, vector<int>& small) {
+            int i = 0, j = 0, minLength = INT_MAX, ansI = 0, ansJ = 0;
+            int n = big.size();
+            unordered_set<int> smallSet;
+            unordered_map<int, int> bigMap;
+            for (int s : small) {
+                smallSet.insert(s);
+            }
+            while (i < n) {
+                while (j < n && bigMap.size() != smallSet.size()) {
+                    if (smallSet.find(big[j]) != smallSet.end())
+                        bigMap[big[j]]++;
+                    j++;
+                }
+                if (bigMap.size() == smallSet.size() && j - i < minLength) {
+                    minLength = j - i;
+                    ansI = i;
+                    ansJ = j;
+                }
+                if (smallSet.find(big[i]) != smallSet.end())
+                    if (--bigMap[big[i]] <= 0)
+                        bigMap.erase(big[i]);
+                i++;
+            }
+            return minLength == INT_MAX ? vector<int> { } : vector<int>{ ansI, ansJ - 1 };
         }
     };
 }
