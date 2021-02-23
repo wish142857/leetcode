@@ -4838,6 +4838,54 @@ namespace s538 {
 
 
 //---------------------------------------------
+// @ID: #567
+// @Date: 2021/2/23
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s567 {
+    class Solution {
+    public:
+        bool checkInclusion(string s1, string s2) {
+            int m = s1.length(), n = s2.length(), t = 0, s = 0;
+            if (m > n)
+                return false;
+            unordered_map<char, int> counter1, counter2;
+            for (int i = 0; i < m; i++) {
+                counter1[s1[i]]++;
+            }
+            t = counter1.size();
+            for (int i = 0; i < m; i++) {
+                if (counter1[s2[i]] > 0 && counter1[s2[i]] == counter2[s2[i]])
+                    s--;
+                counter2[s2[i]]++;
+                if (counter1[s2[i]] > 0 && counter1[s2[i]] == counter2[s2[i]])
+                    s++;
+                if (s == t)
+                    return true;
+            }
+            for (int i = m; i < n; i++) {
+                if (counter1[s2[i - m]] > 0 && counter1[s2[i - m]] == counter2[s2[i - m]])
+                    s--;
+                counter2[s2[i - m]]--;
+                if (counter1[s2[i - m]] > 0 && counter1[s2[i - m]] == counter2[s2[i - m]])
+                    s++;
+                if (counter1[s2[i]] > 0 && counter1[s2[i]] == counter2[s2[i]])
+                    s--;
+                counter2[s2[i]]++;
+                if (counter1[s2[i]] > 0 && counter1[s2[i]] == counter2[s2[i]])
+                    s++;
+                if (s == t)
+                    return true;
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #575
 // @Date: 2020/11/1
 // @Algorithm: Hash Algorithm
@@ -7051,6 +7099,36 @@ namespace s1373 {
                 maxSum = max(maxSum, sumVal);
             }
             return isBST;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1438
+// @Date: 2021/2/21
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1423 {
+    class Solution {
+    public:
+        int maxScore(vector<int>& cardPoints, int k) {
+            int n = cardPoints.size(), l = n - k;
+            int total, sum = 0, minSum = 0;
+            for (int i = 0; i < l; i++) {
+                sum += cardPoints[i];
+            }
+            minSum = sum;
+            total = sum;
+            for (int i = l; i < n; i++) {
+                sum -= cardPoints[i - l];
+                sum += cardPoints[i];
+                minSum = min(minSum, sum);
+                total += cardPoints[i];
+            }
+            return total - minSum;
         }
     };
 }
