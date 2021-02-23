@@ -428,6 +428,30 @@ namespace s21 {
 
 
 //---------------------------------------------
+// @ID: #26
+// @Date: 2021/2/23
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s26 {
+    class Solution {
+    public:
+        int removeDuplicates(vector<int>& nums) {
+            if (nums.size() == 0)
+                return 0;
+            int i = 0, j = 1;
+            for (i = 1; i < nums.size(); i++)
+                if (nums[i] != nums[j - 1])
+                    nums[j++] = nums[i];
+            nums.resize(j);
+            return j;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #31
 // @Date: 2020/11/10
 // @Algorithm: Simple Algorithm
@@ -936,6 +960,92 @@ namespace s75 {
                 }
             }
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #80
+// @Date: 2021/2/23
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s80 {
+    class Solution {
+    public:
+        int removeDuplicates(vector<int>& nums) {
+            if (nums.size() == 0)
+                return 0;
+            int i = 0, j = 1, num = nums[0], time = 1;
+            for (i = 1; i < nums.size(); i++) {
+                if (nums[i] == num) {
+                    if (time >= 2)
+                        continue;
+                    time++;
+                    nums[j++] = nums[i];
+                }
+                else {
+                    num = nums[i];
+                    time = 1;
+                    nums[j++] = nums[i];
+                }
+            }
+            nums.resize(j);
+            return j;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #86
+// @Date: 2021/2/23
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s86 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode *next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* partition(ListNode* head, int x) {
+            ListNode* p = head;
+            ListNode* pLHead = nullptr, * pLTail = nullptr;
+            ListNode* pGeHead = nullptr, * pGeTail = nullptr;
+            while (p) {
+                if (p->val < x) {
+                    if (pLHead)
+                        pLTail = pLTail->next = p;
+                    else
+                        pLHead = pLTail = p;
+                }
+                else {
+                    if (pGeHead)
+                        pGeTail = pGeTail->next = p;
+                    else
+                        pGeHead = pGeTail = p;
+                }
+                p = p->next;
+            }
+            if (pGeHead) {
+                pGeTail->next = nullptr;
+            }
+            if (pLHead) {
+                pLTail->next = pGeHead;
+                return pLHead;
+            }
+            else {
+                return pGeHead;
+            }
         }
     };
 }
@@ -7105,11 +7215,11 @@ namespace s1373 {
 
 
 //---------------------------------------------
-// @ID: #1438
-// @Date: 2021/2/21
-// @Algorithm: Sliding Window Algorithm
+// @ID: #1423
+// @Date: 2021/2/23
+// @Algorithm: Simple Algorithm
 // @Time: O(n)
-// @Space: O(n)
+// @Space: O(1)
 //---------------------------------------------
 namespace s1423 {
     class Solution {
@@ -7155,6 +7265,37 @@ namespace s1438 {
                 maxLength = max(maxLength, j - i);
             }
             return maxLength;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1456
+// @Date: 2021/2/23
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1456 {
+    class Solution {
+    public:
+        int maxVowels(string s, int k) {
+            int n = s.length();
+            int num = 0, maxNum = 0;
+            for (int i = 0; i < k; i++) {
+                if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u')
+                    num++;
+            }
+            maxNum = num;
+            for (int i = k; i < n; i++) {
+                if (s[i - k] == 'a' || s[i - k] == 'e' || s[i - k] == 'i' || s[i - k] == 'o' || s[i - k] == 'u')
+                    num--;
+                if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u')
+                    num++;
+                maxNum = max(maxNum, num);
+            }
+            return maxNum;
         }
     };
 }
