@@ -485,6 +485,66 @@ namespace s31 {
 
 
 //---------------------------------------------
+// @ID: #33
+// @Date: 2021/2/24
+// @Time: O(log n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s33 {
+    class Solution {
+    public:
+        int search(vector<int>& nums, int target) {
+            int i = 0, j = 0, n = nums.size();
+            i = 0, j = n - 1;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] > target) {
+                    if (nums[mid] > nums[n - 1]) {
+                        int ans = binarySearch(nums, i, mid - 1, target);
+                        if (ans != -1)
+                            return ans;
+                        i = mid + 1;
+                    }
+                    else {
+                        j = mid - 1;
+                    }
+                }
+                else if (nums[mid] < target) {
+                    if (nums[mid] > nums[n - 1]) {
+                        i = mid + 1;
+                    }
+                    else {
+                        int ans = binarySearch(nums, mid + 1, j, target);
+                        if (ans != -1)
+                            return ans;
+                        j = mid - 1;
+                    }
+                }
+                else {
+                    return mid;
+                }
+            }
+            return nums[i] == target ? i : -1;
+        }
+    private:
+        int binarySearch(vector<int>& nums, int left, int right, int target) {
+            int i = left, j = right;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] < target)
+                    i = mid + 1;
+                else if (nums[mid] > target)
+                    j = mid - 1;
+                else
+                    return mid;
+            }
+            return nums[i] == target ? i : -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #34
 // @Date: 2020/12/9
 // @Algorithm: Binary Search Algorithm
@@ -4470,6 +4530,32 @@ namespace s474 {
 
 
 //---------------------------------------------
+// @ID: #475
+// @Date: 2021/2/24 
+// @Algorithm: Two Points Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s475 {
+    class Solution {
+    public:
+        int findRadius(vector<int>& houses, vector<int>& heaters) {
+            int i = 0, j = 0, m = houses.size(), n = heaters.size(), dis = 0, minDis = 0, maxMinDis = INT_MIN;
+            sort(houses.begin(), houses.end());
+            sort(heaters.begin(), heaters.end());
+            for (i = 0; i < m; i++) {
+                minDis = abs(houses[i] - heaters[j]);
+                while ((j < n - 1) && (dis = abs(houses[i] - heaters[j + 1])) <= minDis)
+                    minDis = dis, j++;
+                maxMinDis = max(maxMinDis, minDis);
+            }
+            return maxMinDis;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #478
 // @Date: 2020/7/19 
 // @Algorithm: Rejection Sampling Algorithm
@@ -5924,6 +6010,34 @@ namespace s838 {
     };
 }
 */
+
+
+//---------------------------------------------
+// @ID: #832
+// @Date: 2021/2/24 
+// @Algorithm: Simple Algorithm
+// @Time: O(mn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s832 {
+    class Solution {
+    public:
+        vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) {
+            int m = A.size(), n = A[0].size(), t = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < (n >> 1); j++) {
+                    t = A[i][j];
+                    A[i][j] = A[i][n - j - 1];
+                    A[i][n - j - 1] = t;
+                }
+                for (int j = 0; j < n; j++) {
+                    A[i][j] = !A[i][j];
+                }
+            }
+            return A;
+        }
+    };
+}
 
 
 //---------------------------------------------
