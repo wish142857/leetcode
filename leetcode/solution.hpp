@@ -6306,6 +6306,32 @@ namespace s861 {
 
 
 //---------------------------------------------
+// @ID: #864
+// @Date: 2021/2/25
+// @Algorithm: Simple Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s864 {
+    class Solution {
+    public:
+        vector<vector<int>> transpose(vector<vector<int>>& matrix) {
+            if (matrix.size() == 0 || matrix[0].size() == 0)
+                return matrix;
+            int m = matrix.size(), n = matrix[0].size(), t = 0;
+            vector<vector<int>> ans;
+            for (int i = 0; i < n; i++) {
+                ans.push_back(vector<int>());
+                for (int j = 0; j < m; j++)
+                    ans.back().push_back(matrix[j][i]);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #877
 // @Date: 2020/7/19
 // @Algorithm: Simple Algorithm
