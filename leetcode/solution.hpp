@@ -4086,8 +4086,42 @@ namespace s392 {
 
 
 //---------------------------------------------
+// @ID: #395
+// @Date: 2021/2/27
+// @Algorithm: Divide and Conquer Algorithm
+// @Time: O(kn)  
+// @Space: O(kn)
+//---------------------------------------------
+namespace s395 {
+    class Solution {
+    public:
+        int longestSubstring(string s, int k) {
+            int n = s.length();
+            int counter[26] = { 0 };
+            for (const char c : s)
+                counter[c - 'a'] ++;
+            for (int i = 0; i < 26; i++) {
+                if (counter[i] != 0 && counter[i] < k) {
+                    int x = 0, y = 0, maxLength = 0;
+                    while (y < n) {
+                        while (y < n && (s[y] - 'a') != i)
+                            y++;
+                        if (y - x >= k)
+                            maxLength = max(maxLength, longestSubstring(s.substr(x, y - x), k));
+                        x = y = y + 1;
+                    }
+                    return maxLength;
+                }
+            }
+            return n;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #398
-// @Date: 2020/7/19 
+// @Date: 2020/7/19
 // @Algorithm: Reservoir Sampling Algorithm
 // @Time: O(n)  
 // @Space: O(1)
