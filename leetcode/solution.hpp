@@ -324,6 +324,155 @@ namespace s11 {
 }
 
 
+//---------------------------------------------
+// @ID: #12
+// @Date: 2021/2/28
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s12 {
+    class Solution {
+    public:
+        string intToRoman(int num) {
+            int a = 0, b = 0, c = 0, d = 0;
+            string roman;
+            a = num % 10;
+            num /= 10;
+            b = num % 10;
+            num /= 10;
+            c = num % 10;
+            num /= 10;
+            d = num % 10;
+            roman.append(intToRoman1000(d));
+            roman.append(intToRoman100(c));
+            roman.append(intToRoman10(b));
+            roman.append(intToRoman1(a));
+            return roman;
+        }
+    private:
+        string intToRoman1(int x) {
+            switch (x) {
+            case 1: return "I";
+            case 2: return "II";
+            case 3: return "III";
+            case 4: return "IV";
+            case 5: return "V";
+            case 6: return "VI";
+            case 7: return "VII";
+            case 8: return "VIII";
+            case 9: return "IX";
+            default: return "";
+            }
+        }
+
+        string intToRoman10(int x) {
+            switch (x) {
+            case 1: return "X";
+            case 2: return "XX";
+            case 3: return "XXX";
+            case 4: return "XL";
+            case 5: return "L";
+            case 6: return "LX";
+            case 7: return "LXX";
+            case 8: return "LXXX";
+            case 9: return "XC";
+            default: return "";
+            }
+        }
+
+        string intToRoman100(int x) {
+            switch (x) {
+            case 1: return "C";
+            case 2: return "CC";
+            case 3: return "CCC";
+            case 4: return "CD";
+            case 5: return "D";
+            case 6: return "DC";
+            case 7: return "DCC";
+            case 8: return "DCCC";
+            case 9: return "CM";
+            default: return "";
+            }
+        }
+
+        string intToRoman1000(int x) {
+            switch (x) {
+            case 1: return "M";
+            case 2: return "MM";
+            case 3: return "MMM";
+            default: return "";
+            }
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #13
+// @Date: 2021/2/28
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s13 {
+    class Solution {
+    public:
+        int romanToInt(string s) {
+            int i = 0, j = 0, n = s.length(), ans = 0;
+            if (s[i] == 'M') {
+                j = i + 1;
+                while (j < n && s[j] == 'M') j++;
+                ans += (j - i) * 1000;
+            }
+            i = j;
+            if (s[i] == 'D' || s[i] == 'C') {
+                j = i + 1;
+                while (j < n && (s[j] == 'M' || s[j] == 'D' || s[j] == 'C')) j++;
+                if (j - i == 1 && s[i] == 'C') ans += 100;
+                if (j - i == 2 && s[i] == 'C' && s[i + 1] == 'C') ans += 200;
+                if (j - i == 3 && s[i] == 'C' && s[i + 1] == 'C' && s[i + 2] == 'C') ans += 300;
+                if (j - i == 2 && s[i] == 'C' && s[i + 1] == 'D') ans += 400;
+                if (j - i == 1 && s[i] == 'D') ans += 500;
+                if (j - i == 2 && s[i] == 'D' && s[i + 1] == 'C') ans += 600;
+                if (j - i == 3 && s[i] == 'D' && s[i + 1] == 'C' && s[i + 2] == 'C') ans += 700;
+                if (j - i == 4 && s[i] == 'D' && s[i + 1] == 'C' && s[i + 2] == 'C' && s[i + 3] == 'C') ans += 800;
+                if (j - i == 2 && s[i] == 'C' && s[i + 1] == 'M') ans += 900;
+            }
+            i = j;
+            if (s[i] == 'L' || s[i] == 'X') {
+                j = i + 1;
+                while (j < n && (s[j] == 'C' || s[j] == 'L' || s[j] == 'X')) j++;
+                if (j - i == 1 && s[i] == 'X') ans += 10;
+                if (j - i == 2 && s[i] == 'X' && s[i + 1] == 'X') ans += 20;
+                if (j - i == 3 && s[i] == 'X' && s[i + 1] == 'X' && s[i + 2] == 'X') ans += 30;
+                if (j - i == 2 && s[i] == 'X' && s[i + 1] == 'L') ans += 40;
+                if (j - i == 1 && s[i] == 'L') ans += 50;
+                if (j - i == 2 && s[i] == 'L' && s[i + 1] == 'X') ans += 60;
+                if (j - i == 3 && s[i] == 'L' && s[i + 1] == 'X' && s[i + 2] == 'X') ans += 70;
+                if (j - i == 4 && s[i] == 'L' && s[i + 1] == 'X' && s[i + 2] == 'X' && s[i + 3] == 'X') ans += 80;
+                if (j - i == 2 && s[i] == 'X' && s[i + 1] == 'C') ans += 90;
+            }
+            i = j;
+            if (s[i] == 'V' || s[i] == 'I') {
+                j = i + 1;
+                while (j < n && (s[j] == 'X' || s[j] == 'V' || s[j] == 'I')) j++;
+                if (j - i == 1 && s[i] == 'I') ans += 1;
+                if (j - i == 2 && s[i] == 'I' && s[i + 1] == 'I') ans += 2;
+                if (j - i == 3 && s[i] == 'I' && s[i + 1] == 'I' && s[i + 2] == 'I') ans += 3;
+                if (j - i == 2 && s[i] == 'I' && s[i + 1] == 'V') ans += 4;
+                if (j - i == 1 && s[i] == 'V') ans += 5;
+                if (j - i == 2 && s[i] == 'V' && s[i + 1] == 'I') ans += 6;
+                if (j - i == 3 && s[i] == 'V' && s[i + 1] == 'I' && s[i + 2] == 'I') ans += 7;
+                if (j - i == 4 && s[i] == 'V' && s[i + 1] == 'I' && s[i + 2] == 'I' && s[i + 3] == 'I') ans += 8;
+                if (j - i == 2 && s[i] == 'I' && s[i + 1] == 'X') ans += 9;
+            }
+            return ans;
+        }
+    };
+}
+
+
 // TODO
 /*
 namespace s14 {
@@ -695,6 +844,33 @@ namespace s49 {
             }
             for (const auto& c : count) {
                 ans.push_back(c.second);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #50
+// @Date: 2021/2/28
+// @Algorithm: Bit Algorithm
+// @Time: O(logn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s50 {
+    class Solution {
+    public:
+        double myPow(double x, int n) {
+            long num = abs(n);
+            double ans = 1.0;
+            if (n < 0)
+                x = 1 / x;
+            while (n) {
+                if (n % 2)
+                    ans *= x;
+                n /= 2;
+                x *= x;
             }
             return ans;
         }
