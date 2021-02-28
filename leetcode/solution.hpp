@@ -6432,6 +6432,40 @@ namespace s888 {
 
 
 //---------------------------------------------
+// @ID: #896
+// @Date: 2021/2/28
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s896 {
+    class Solution {
+    public:
+        bool isMonotonic(vector<int>& A) {
+            int i = 1, n = A.size();
+            if (n <= 2)
+                return true;
+            while (i < n && A[i] == A[i - 1])
+                i++;
+            if (i >= n)
+                return true;
+            if (A[i] > A[i - 1]) {
+                for (i++; i < n; i++)
+                    if (A[i] < A[i - 1])
+                        return false;
+            }
+            else {
+                for (i++; i < n; i++)
+                    if (A[i] > A[i - 1])
+                        return false;
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #922
 // @Date: 2020/11/12
 // @Algorithm: Simple Algorithm
