@@ -441,7 +441,7 @@ namespace s26 {
             if (nums.size() == 0)
                 return 0;
             int i = 0, j = 1;
-            for (i = 1; i < nums.size(); i++)
+            for (i = 1; i < int(nums.size()); i++)
                 if (nums[i] != nums[j - 1])
                     nums[j++] = nums[i];
             nums.resize(j);
@@ -935,6 +935,51 @@ namespace s64 {
 
 
 //---------------------------------------------
+// @ID: #67
+// @Date: 2021/2/28
+// @Algorithm: Simple Algorithm
+// @Time: O(m+n)
+// @Space: O(m+n)
+//---------------------------------------------
+namespace s67 {
+    class Solution {
+    public:
+        string addBinary(string a, string b) {
+            int m = a.length(), n = b.length();
+            int i = m - 1, j = n - 1, x = 0;
+            vector<bool> ans;
+            string c;
+            while (i >= 0 && j >= 0) {
+                x += ((a[i] - '0') + (b[j] - '0'));
+                ans.push_back(x % 2);
+                x /= 2;
+                i--, j--;
+            }
+            while (i >= 0) {
+                x += (a[i] - '0');
+                ans.push_back(x % 2);
+                x /= 2;
+                i--;
+            }
+            while (j >= 0) {
+                x += (b[j] - '0');
+                ans.push_back(x % 2);
+                x /= 2;
+                j--;
+            }
+            if (x) {
+                ans.push_back(x);
+            }
+            for (i = ans.size() - 1; i >= 0; i--) {
+                c.append(1, ans[i] + '0');
+            }
+            return c;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #70
 // @Date: 2020/7/31
 // @Algorithm: Dynamic Programming Algorithm
@@ -1039,7 +1084,7 @@ namespace s80 {
             if (nums.size() == 0)
                 return 0;
             int i = 0, j = 1, num = nums[0], time = 1;
-            for (i = 1; i < nums.size(); i++) {
+            for (i = 1; i < int(nums.size()); i++) {
                 if (nums[i] == num) {
                     if (time >= 2)
                         continue;
@@ -3074,6 +3119,23 @@ namespace s235 {
 
 
 //---------------------------------------------
+// @ID: #258
+// @Date: 2021/2/28
+// @Algorithm: Math Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s258 {
+    class Solution {
+    public:
+        int addDigits(int num) {
+            return (num - 1) % 9 + 1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #263
 // @Date: 2020/8/2
 // @Algorithm: Simple Algorithm
@@ -5068,6 +5130,57 @@ namespace s538 {
 
 
 //---------------------------------------------
+// @ID: #542
+// @Date: 2021/2/28
+// @Algorithm: BFS Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s542 {
+    class Solution {
+    public:
+        vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+            int m = matrix.size(), n = matrix[0].size(), num = 0, depth = 0;
+            queue<pair<int, int>> q;
+            vector<vector<int>> distance(m, vector<int>(n, INT_MAX));
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (matrix[i][j] == 0) {
+                        distance[i][j] = 0;
+                        q.push({ i, j });
+                    }
+                }
+            }
+            while (num = q.size()) {
+                depth++;
+                for (int i = 0; i < num; i++) {
+                    pair<int, int> p = q.front();
+                    q.pop();
+                    if (p.first > 0 && distance[p.first - 1][p.second] == INT_MAX) {
+                        distance[p.first - 1][p.second] = depth;
+                        q.push({ p.first - 1, p.second });
+                    }
+                    if (p.first < m - 1 && distance[p.first + 1][p.second] == INT_MAX) {
+                        distance[p.first + 1][p.second] = depth;
+                        q.push({ p.first + 1, p.second });
+                    }
+                    if (p.second > 0 && distance[p.first][p.second - 1] == INT_MAX) {
+                        distance[p.first][p.second - 1] = depth;
+                        q.push({ p.first, p.second - 1 });
+                    }
+                    if (p.second < n - 1 && distance[p.first][p.second + 1] == INT_MAX) {
+                        distance[p.first][p.second + 1] = depth;
+                        q.push({ p.first, p.second + 1 });
+                    }
+                }
+            }
+            return distance;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #567
 // @Date: 2021/2/23
 // @Algorithm: Simple Algorithm
@@ -5162,6 +5275,67 @@ namespace s617 {
             t1->left = mergeTrees(t1->left, t2->left);
             t1->right = mergeTrees(t1->right, t2->right);
             return t1;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #623
+// @Date: 2021/2/28
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s623 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* addOneRow(TreeNode* root, int v, int d) {
+            int i = 0, k = 0, num = 0;
+            if (d == 1) {
+                TreeNode* p = new TreeNode(v);
+                p->left = root;
+                p->right = nullptr;
+                root = p;
+            }
+            else {
+                queue<TreeNode*> q;
+                q.push(root);
+                for (k = 2; k < d; k++) {
+                    num = q.size();
+                    if (num == 0)
+                        return root;
+                    for (i = 0; i < num; i++) {
+                        TreeNode* p = q.front();
+                        q.pop();
+                        if (p->left)
+                            q.push(p->left);
+                        if (p->right)
+                            q.push(p->right);
+                    }
+                }
+                num = q.size();
+                for (i = 0; i < num; i++) {
+                    TreeNode* p = q.front();
+                    q.pop();
+                    TreeNode* t = new TreeNode(v);
+                    t->left = p->left;
+                    t->right = nullptr;
+                    p->left = t;
+                    t = new TreeNode(v);
+                    t->left = nullptr;
+                    t->right = p->right;
+                    p->right = t;
+                }
+            }
+            return root;
         }
     };
 }
@@ -5273,6 +5447,35 @@ namespace s649 {
                 dire.pop();
             }
             return !radiant.empty() ? "Radiant" : "Dire";
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #650
+// @Date: 2021/2/28
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s650 {
+    class Solution {
+    public:
+        int minSteps(int n) {
+            if (n <= 1)
+                return 0;
+            int num = 0;
+            for (int i = 2; i <= int(sqrt(n)); i++) {
+                while (n % i == 0) {
+                    num += i;
+                    n /= i;
+                    if (n <= 1)
+                        return num;
+                }
+            }
+            num += n;
+            return num;
         }
     };
 }
