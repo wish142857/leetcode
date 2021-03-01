@@ -601,6 +601,27 @@ namespace s26 {
 
 
 //---------------------------------------------
+// @ID: #27
+// @Date: 2021/3/1
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s27 {
+    class Solution {
+    public:
+        int removeElement(vector<int>& nums, int val) {
+            int i = 0, j = 0, n = nums.size();
+            for (j = 0; j < n; j++)
+                if (nums[j] != val)
+                    nums[i++] = nums[j];
+            return i;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #31
 // @Date: 2020/11/10
 // @Algorithm: Simple Algorithm
@@ -795,6 +816,40 @@ namespace s39 {
     };
 
 
+}
+
+
+//---------------------------------------------
+// @ID: #42
+// @Date: 2021/3/1
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s42 {
+    class Solution {
+    public:
+        int trap(vector<int>& height) {
+            if (height.size() == 0)
+                return 0;
+            int i = 0, n = height.size(), maxHeight = height[0], sum = 0;
+            vector<int> ans(n, 0);
+            for (i = 1; i < n - 1; i++) {
+                ans[i] = maxHeight;
+                maxHeight = max(maxHeight, height[i]);
+            }
+            maxHeight = height[n - 1];
+            for (i = n - 2; i >= 1; i--) {
+                ans[i] = min(ans[i], maxHeight);
+                maxHeight = max(maxHeight, height[i]);
+            }
+            for (i = 1; i < n - 1; i++) {
+                if (ans[i] > height[i])
+                    sum += ans[i] - height[i];
+            }
+            return sum;
+        }
+    };
 }
 
 
@@ -1369,6 +1424,36 @@ namespace s86 {
             else {
                 return pGeHead;
             }
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #88
+// @Date: 2021/3/1
+// @Algorithm: Two Points Algorithm
+// @Time: O(m+n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s88 {
+    class Solution {
+    public:
+        void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+            int i = m - 1, j = n - 1, k = m + n - 1;
+            while (i >= 0 && j >= 0) {
+                if (nums1[i] >= nums2[j])
+                    nums1[k--] = nums1[i--];
+                else
+                    nums1[k--] = nums2[j--];
+            }
+            while (i >= 0) {
+                nums1[k--] = nums1[i--];
+            }
+            while (j >= 0) {
+                nums1[k--] = nums2[j--];
+            }
+            return;
         }
     };
 }
@@ -3651,6 +3736,30 @@ namespace s283 {
 
 
 //---------------------------------------------
+// @ID: #287
+// @Date: 2021/3/1
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s287 {
+    class Solution {
+    public:
+        int findDuplicate(vector<int>& nums) {
+            int num = nums[0], tmp = 0;
+            while (true) {
+                tmp = nums[num];
+                if (num == tmp)
+                    return num;
+                nums[num] = num;
+                num = tmp;
+            }
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #290
 // @Date: 2020/11/1
 // @Algorithm: Simple Algorithm
@@ -4256,6 +4365,67 @@ namespace s343 {
             for (int j = 1; j <= n / 2; j++)
                 dp[n] = max(dp[n], dp[j] * dp[n - j]);
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #344
+// @Date: 2021/3/1
+// @Algorithm: String Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s344 {
+    class Solution {
+    public:
+        void reverseString(vector<char>& s) {
+            char t;
+            int i = 0, n = s.size();
+            for (; i < n / 2; i++) {
+                t = s[i];
+                s[i] = s[n - i - 1];
+                s[n - i - 1] = t;
+            }
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #345
+// @Date: 2021/3/1
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s345 {
+    class Solution {
+    public:
+        string reverseVowels(string s) {
+            char t;
+            int i = 0, j = s.length() - 1;
+            while (i < j) {
+                while (i < j && !check(s[i]))
+                    i++;
+                while (i < j && !check(s[j]))
+                    j--;
+                if (i < j) {
+                    t = s[i];
+                    s[i] = s[j];
+                    s[j] = t;
+                }
+                i++;
+                j--;
+            }
+            return s;
+        }
+    private:
+        bool check(char c) {
+            return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' 
+                || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
         }
     };
 }
@@ -6952,6 +7122,32 @@ namespace s877 {
 }
 
 
+//---------------------------------------------
+// @ID: #881
+// @Date: 2021/3/1
+// @Algorithm: Greedy Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s881 {
+    class Solution {
+    public:
+        int numRescueBoats(vector<int>& people, int limit) {
+            int n = people.size(), i = 0, j = n - 1, ans = 0;
+            sort(people.begin(), people.end());
+            while (i <= j) {
+                if (people[i] + people[j] <= limit)
+                    i++, j--;
+                else
+                    j--;
+                ans++;
+            }
+            return ans;
+        }
+    };
+}
+
+
 namespace s887 {
     class Solution {
     public:
@@ -7296,6 +7492,38 @@ namespace s973 {
             }
 
             return ans; 
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #977
+// @Date: 2021/3/1
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s977 {
+    class Solution {
+    public:
+        vector<int> sortedSquares(vector<int>& nums) {
+            int n = nums.size(), i = 0, j = n - 1, k = n - 1;
+            vector<int> ans(n, 0);
+            while (i < j) {
+                int a = nums[i] * nums[i];
+                int b = nums[j] * nums[j];
+                if (a > b) {
+                    ans[k--] = a;
+                    i++;
+                }
+                else {
+                    ans[k--] = b;
+                    j--;
+                }
+            }
+            ans[k--] = nums[i] * nums[i];
+            return ans;
         }
     };
 }
