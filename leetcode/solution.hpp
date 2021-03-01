@@ -1018,6 +1018,48 @@ namespace s57 {
 
 
 //---------------------------------------------
+// @ID: #61
+// @Date: 2021/3/1
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s61 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* rotateRight(ListNode* head, int k) {
+            if (!head)
+                return nullptr;
+            int n = 0;
+            ListNode* h = nullptr, * t = nullptr, * q = head, * p = head;
+            while (p) {
+                n++;
+                q = p;
+                p = p->next;
+            }
+            k %= n;
+            p = q->next = head;
+            for (int i = 0; i < n - k; i++) {
+                q = p;
+                p = p->next;
+            }
+            head = p;
+            q->next = nullptr;
+            return head;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #62
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -2920,6 +2962,98 @@ namespace s154 {
 
 
 //---------------------------------------------
+// @ID: #155
+// @Date: 2021/2/28
+// @Algorithm: Stack Algorithm
+// @Time: O(l)
+// @Space: O(?)
+//---------------------------------------------
+namespace s155 {
+    class MinStack {
+    public:
+        MinStack() { }
+
+        void push(int x) {
+            if (s.empty())
+                s.push({ x, x });
+            else
+                s.push({ x, min(x, s.top().second) });
+        }
+
+        void pop() {
+            s.pop();
+        }
+
+        int top() {
+            return s.top().first;
+        }
+
+        int getMin() {
+            return s.top().second;
+        }
+    private:
+        stack<pair<int, int>> s;
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #160
+// @Date: 2021/2/28
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s160 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+            ListNode* p1 = headA, * p2 = headB;
+            while (p1 && p2) {
+                p1 = p1->next;
+                p2 = p2->next;
+            }
+            if (p1) {
+                p2 = headA;
+                while (p1 && p2) {
+                    p1 = p1->next;
+                    p2 = p2->next;
+                }
+                p1 = headB;
+                while (p1 && p2) {
+                    if (p1 == p2)
+                        return p1;
+                    p1 = p1->next;
+                    p2 = p2->next;
+                }
+            }
+            else {
+                p1 = headB;
+                while (p1 && p2) {
+                    p1 = p1->next;
+                    p2 = p2->next;
+                }
+                p2 = headA;
+                while (p1 && p2) {
+                    if (p1 == p2)
+                        return p1;
+                    p1 = p1->next;
+                    p2 = p2->next;
+                }
+            }
+            return nullptr;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #167
 // @Date: 2020/7/20 
 // @Algorithm: Two Pointers Algorithm
@@ -2941,6 +3075,56 @@ namespace s167 {
                     return { l + 1, r + 1 };
             }
             return { 0, 0 };
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #168
+// @Date: 2021/2/28
+// @Algorithm: Math Algorithm
+// @Time: O(logn)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s168 {
+    class Solution {
+    public:
+        string convertToTitle(int n) {
+            stack<char> s;
+            string ans;
+            while (n) {
+                n--;
+                s.push('A' + (n % 26));
+                n /= 26;
+            }
+            while (!s.empty()) {
+                ans.append(1, s.top());
+                s.pop();
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #171
+// @Date: 2021/2/28
+// @Algorithm: Math Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s171 {
+    class Solution {
+    public:
+        int titleToNumber(string s) {
+            int n = s.length(), ans = 0;
+            for (int i = 0; i < n; i++) {
+                ans *= 26;
+                ans += s[i] - 'A' + 1;
+            }
+            return ans;
         }
     };
 }
@@ -3374,6 +3558,13 @@ namespace s264 {
 }
 
 
+//---------------------------------------------
+// @ID: #278
+// @Date: 2020/8/2
+// @Algorithm: Binary Search Algorithm
+// @Time: O(logn)
+// @Space: O(1)
+//---------------------------------------------
 namespace s278 {
     // The API isBadVersion is defined for you.
     // bool isBadVersion(int version);
@@ -6845,6 +7036,35 @@ namespace s896 {
 
 
 //---------------------------------------------
+// @ID: #904
+// @Date: 2021/2/28
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s904 {
+    class Solution {
+    public:
+        int totalFruit(vector<int>& tree) {
+            int n = tree.size(), i = 0, j = 0, ans = INT_MIN;
+            unordered_map<int, int> m;
+            while (j < n) {
+                m[tree[j++]]++;
+                while (i < j && m.size() > 2) {
+                    m[tree[i]]--;
+                    if (m[tree[i]] <= 0)
+                        m.erase(tree[i]);
+                    i++;
+                }
+                ans = max(ans, j - i);
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #922
 // @Date: 2020/11/12
 // @Algorithm: Simple Algorithm
@@ -7012,6 +7232,36 @@ namespace s941 {
             while (i < n && A[i] < A[i - 1])
                 i++;
             return i >= n;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #948
+// @Date: 2021/3/1
+// @Algorithm: Greedy Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s948 {
+    class Solution {
+    public:
+        int bagOfTokensScore(vector<int>& tokens, int P) {
+            sort(tokens.begin(), tokens.end());
+            int n = tokens.size(), i = 0, sum = 0, tmp = 0, ans = 0;
+            if (n == 0 || P < tokens[0])
+                return 0;
+            for (i = 0; i < n; i++)
+                sum += tokens[i];
+            i = n;
+            while (i > 0 && tmp + P < sum - tmp)
+                tmp += tokens[--i];
+            tmp = 2 * tmp + P - sum;
+            ans = 2 * i - n;
+            while (i < n && tmp >= tokens[i])
+                tmp -= tokens[i], i++, ans++;
+            return ans;
         }
     };
 }
