@@ -820,6 +820,41 @@ namespace s39 {
 
 
 //---------------------------------------------
+// @ID: #41
+// @Date: 2021/3/2
+// @Algorithm: Other Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s41 {
+    class Solution {
+    public:
+        int firstMissingPositive(vector<int>& nums) {
+            int n = nums.size(), i = 0, top = n + 1;
+            // ensure: ans <= n + 1
+            while (i < n) {
+                if (nums[i] == i + 1) {
+                    i++;
+                }
+                else if (nums[i] >= n + 1 || nums[i] <= 0 || nums[i] == nums[nums[i] - 1]) {
+                    int t = nums[n - 1];
+                    nums[n - 1] = nums[i];
+                    nums[i] = t;
+                    n--;
+                }
+                else {
+                    int t = nums[nums[i] - 1];
+                    nums[nums[i] - 1] = nums[i];
+                    nums[i] = t;
+                }
+            }
+            return n + 1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #42
 // @Date: 2021/3/1
 // @Algorithm: Greedy Algorithm
@@ -1763,6 +1798,7 @@ namespace s99 {
         }
     };
 }
+
 
 //---------------------------------------------
 // @ID: #100
