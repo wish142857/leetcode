@@ -4517,6 +4517,60 @@ namespace s349 {
 
 
 //---------------------------------------------
+// @ID: #354
+// @Date: 2021/3/4
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(nlogn)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s354 {
+    class Solution {
+    public:
+        int maxEnvelopes(vector<vector<int>>& envelopes) {
+            int n = envelopes.size(), m = 0;
+            vector<int> dp;
+            qsort(envelopes, 0, n - 1);
+            for (int i = 0; i < n; i++) {
+                int l = 0, r = m - 1;
+                while (l < r) {
+                    int mid = l + ((r - l) >> 1);
+                    if (dp[mid] < envelopes[i][1])
+                        l = mid + 1;
+                    else
+                        r = mid;
+                }
+                if (m > 0 && dp[l] >= envelopes[i][1])
+                    dp[l] = envelopes[i][1];
+                else
+                    dp.push_back(envelopes[i][1]), m++;
+            }
+            return m;
+        }
+
+    private:
+        void qsort(vector<vector<int>>& envelopes, int l, int r) {
+            if (l >= r)
+                return;
+            int i = l, j = r;
+            vector<int> key = envelopes[i];
+            while (i < j) {
+                while (i < j && (envelopes[j][0] > key[0] || (envelopes[j][0] == key[0] && envelopes[j][1] <= key[1])))
+                    j--;
+                envelopes[i] = envelopes[j];
+                while (i < j && (envelopes[i][0] < key[0] || (envelopes[i][0] == key[0] && envelopes[i][1] >= key[1])))
+                    i++;
+                envelopes[j] = envelopes[i];
+            }
+            envelopes[i] = key;
+            qsort(envelopes, l, i - 1);
+            qsort(envelopes, i + 1, r);
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #368
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
@@ -5111,6 +5165,34 @@ namespace s441 {
             return m;
         }
     };   
+}
+
+
+//---------------------------------------------
+// @ID: #455
+// @Date: 2021/3/3
+// @Algorithm: Greedy Algorithm
+// @Time: O(nlogn)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s455 {
+    class Solution {
+    public:
+        int findContentChildren(vector<int>& g, vector<int>& s) {
+            int m = g.size(), n = s.size(), i = 0, j = 0, ans = 0;
+            sort(g.begin(), g.end());
+            sort(s.begin(), s.end());
+            for (i = 0; i < m; i++) {
+                while (j < n && s[j] < g[i])
+                    j++;
+                if (j >= n)
+                    return ans;
+                ans++;
+                j++;
+            }
+            return ans;
+        }
+    };
 }
 
 
@@ -7724,6 +7806,52 @@ namespace s978 {
                 }
             }
             return maxSize;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #989
+// @Date: 2021/3/3
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s989 {
+    class Solution {
+    public:
+        vector<int> addToArrayForm(vector<int>& A, int K) {
+            vector<int> B;
+            int m = 0, n = A.size(), i = n - 1, x = 0, y = 0;
+            while (K && i >= 0) {
+                x = A[i] + K % 10 + y;
+                B.push_back(x % 10);
+                y = x / 10;
+                K /= 10;
+                i--;
+            }
+            while (K) {
+                x = K % 10 + y;
+                B.push_back(x % 10);
+                y = x / 10;
+                K /= 10;
+            }
+            while (i >= 0) {
+                x = A[i] + y;
+                B.push_back(x % 10);
+                y = x / 10;
+                i--;
+            }
+            if (y)
+                B.push_back(y);
+            m = B.size();
+            for (i = 0; i < m / 2; i++) {
+                int t = B[i];
+                B[i] = B[m - i - 1];
+                B[m - i - 1] = t;
+            }
+            return B;
         }
     };
 }
