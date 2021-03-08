@@ -3520,6 +3520,61 @@ namespace s221 {
 
 
 //---------------------------------------------
+// @ID: #232
+// @Date: 2021/3/5
+// @Algorithm: Stack Algorithm
+// @Time: O(1)
+// @Space: O(?)
+//---------------------------------------------
+namespace s232 {
+    class MyQueue {
+    public:
+        /** Initialize your data structure here. */
+        MyQueue() { }
+
+        /** Push element x to the back of queue. */
+        void push(int x) {
+            sBack.push(x);
+            return;
+        }
+
+        /** Removes the element from in front of queue and returns that element. */
+        int pop() {
+            if (sFront.empty())
+                this->translate();
+            int e = sFront.top();
+            sFront.pop();
+            return e;
+        }
+
+        /** Get the front element. */
+        int peek() {
+            if (sFront.empty())
+                this->translate();
+            return sFront.top();
+        }
+
+        /** Returns whether the queue is empty. */
+        bool empty() {
+            return sFront.empty() && sBack.empty();
+        }
+    private:
+        stack<int> sFront, sBack;
+
+        void translate() {
+            int e = 0;
+            while (!sBack.empty()) {
+                e = sBack.top();
+                sBack.pop();
+                sFront.push(e);
+            }
+            return;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #234
 // @Date: 2020/10/23
 // @Algorithm: Two Points Algorithm
@@ -5169,6 +5224,79 @@ namespace s441 {
 
 
 //---------------------------------------------
+// @ID: #445
+// @Date: 2021/3/5
+// @Algorithm: Linked List Algorithm
+// @Time: O(max(m,n))
+// @Space: O(max(m,n))
+//---------------------------------------------
+namespace s445 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+            int x = 0, y = 0, ret = 0;
+            ListNode* h = nullptr, * p = nullptr;
+            stack<int> s1, s2, s3;
+            p = l1;
+            while (p) {
+                s1.push(p->val);
+                p = p->next;
+            }
+            p = l2;
+            while (p) {
+                s2.push(p->val);
+                p = p->next;
+            }
+            while (!s1.empty() && !s2.empty()) {
+                x = s1.top();
+                y = s2.top();
+                s1.pop();
+                s2.pop();
+                ret += (x + y);
+                s3.push(ret % 10);
+                ret /= 10;
+            }
+            while (!s1.empty()) {
+                x = s1.top();
+                s1.pop();
+                ret += x;
+                s3.push(ret % 10);
+                ret /= 10;
+            }
+            while (!s2.empty()) {
+                x = s2.top();
+                s2.pop();
+                ret += x;
+                s3.push(ret % 10);
+                ret /= 10;
+            }
+            if (ret)
+                s3.push(ret);
+            while (!s3.empty()) {
+                if (h) {
+                    p = p->next = new ListNode(s3.top());
+                    s3.pop();
+                }
+                else {
+                    h = p = new ListNode(s3.top());
+                    s3.pop();
+                }
+            }
+            if (p)
+                p->next = nullptr;
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #455
 // @Date: 2021/3/3
 // @Algorithm: Greedy Algorithm
@@ -5674,6 +5802,51 @@ namespace s522 {
 
 
 //---------------------------------------------
+// @ID: #524
+// @Date: 2021/3/8
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s524 {
+    class Solution {
+    public:
+        string findLongestWord(string s, vector<string>& dictionary) {
+            int n = dictionary.size(), i = 0, maxLen = 0, maxStr = 0;
+            for (i = 0; i < n; i++) {
+                if (dictionary[i].length() < maxLen)
+                    continue;
+                if (check(s, dictionary[i])) {
+                    if (dictionary[i].length() > maxLen) {
+                        maxLen = dictionary[i].length();
+                        maxStr = i;
+                    }
+                    else if (dictionary[i] < dictionary[maxStr]) {
+                        maxStr = i;
+                    }
+                }
+            }
+            return maxLen > 0 ? dictionary[maxStr] : "";
+
+        }
+
+    private:
+        bool check(string& s, string& d) {
+            int m = s.length(), n = d.length(), i = 0, j = 0;
+            for (j = 0; j < n; j++) {
+                while (i < m && s[i] != d[j])
+                    i++;
+                if (i >= m)
+                    return false;
+                i++;
+            }
+            return true;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #528
 // @Date: 2020/7/19 
 // @Algorithm: Random Algorithm
@@ -5755,6 +5928,34 @@ namespace s530 {
             lastVal = root->val;
             inorderBST(root->right);
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #532
+// @Date: 2020/3/8
+// @Algorithm: Two Points Algorithm
+// @Time: O(nlogn)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s532 {
+    class Solution {
+    public:
+        int findPairs(vector<int>& nums, int k) {
+            int n = nums.size(), i = 0, j = 0, ans = 0;
+            sort(nums.begin(), nums.end());
+            while (j < n) {
+                while (j < n - 1 && nums[j] == nums[j + 1])
+                    j++;
+                while (i < j && nums[j] - nums[i] > k)
+                    i++;
+                if (i < j && nums[j] - nums[i] == k)
+                    ans++;
+                j++;
+            }
+            return ans;
         }
     };
 }
@@ -6330,6 +6531,33 @@ namespace s710 {
         int pick() {
             int k = rand() % l;
             return m.count(k) ? m[k] : k;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #713
+// @Date: 2021/3/8
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s713 {
+    class Solution {
+    public:
+        int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+            int n = nums.size(), i = 0, j = 0, ans = 0;
+            long product = 1;
+            for (i = 0; i < n; i++) {
+                if (j <= i)
+                    product *= nums[j++];
+                while (product < k && j < n)
+                    product *= nums[j++];
+                ans += product < k ? j - i : j - i - 1;
+                product /= nums[i];
+            }
+            return ans;
         }
     };
 }
@@ -8469,6 +8697,39 @@ namespace s1227 {
 
 
 //---------------------------------------------
+// @ID: #1234
+// @Date: 2021/3/8
+// @Algorithm: Two Points Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1234 {
+	class Solution {
+	public:
+		int balancedString(string s) {
+			int n = s.length(), i = 0, j = 0, minLength = INT_MAX;
+			map<char, int> charNum, charSatNum;
+			charSatNum['Q'] = charSatNum['W'] = charSatNum['E'] = charSatNum['R'] = -n / 4;
+			for (const char c : s)
+				charSatNum[c]++;
+			if (!charSatNum['Q'] && !charSatNum['W'] && !charSatNum['E'] && !charSatNum['R'])
+				return 0;
+			while (i < n) {
+				while (j < n && (charNum['Q'] < charSatNum['Q'] || charNum['W'] < charSatNum['W'] || charNum['E'] < charSatNum['E'] || charNum['R'] < charSatNum['R']))
+					charNum[s[j++]]++;
+                if (!(charNum['Q'] < charSatNum['Q'] || charNum['W'] < charSatNum['W'] || charNum['E'] < charSatNum['E'] || charNum['R'] < charSatNum['R']))
+                    minLength = min(minLength, j - i);
+                else
+                    break;
+				charNum[s[i++]]--;
+			}
+			return minLength;
+		}
+	};
+}
+
+
+//---------------------------------------------
 // @ID: #1267
 // @Date: 2020/9/28
 // @Algorithm: Simple Algorithm
@@ -8500,6 +8761,59 @@ namespace s1267 {
                 }
             }
             return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1305
+// @Date: 2021/3/5
+// @Algorithm: Simple Algorithm
+// @Time: O(m+n)
+// @Space: O(m+n)
+//---------------------------------------------
+namespace s1305 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    class Solution {
+    public:
+        vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
+            vector<int> v1, v2, v3;
+            midTraversal(v1, root1);
+            midTraversal(v2, root2);
+            merge(v1, v2, v3);
+            return v3;
+        }
+
+    private:
+        void midTraversal(vector<int>& v, TreeNode* p) {
+            if (p) {
+                midTraversal(v, p->left);
+                v.push_back(p->val);
+                midTraversal(v, p->right);
+            }
+            return;
+        }
+
+        void merge(vector<int>& v1, vector<int>& v2, vector<int>& v3) {
+            int i = 0, j = 0, m = v1.size(), n = v2.size();
+            while (i < m && j < n)
+                if (v1[i] <= v2[j])
+                    v3.push_back(v1[i++]);
+                else
+                    v3.push_back(v2[j++]);
+            while (i < m)
+                v3.push_back(v1[i++]);
+            while (j < n)
+                v3.push_back(v2[j++]);
+            return;
+
         }
     };
 }
@@ -8925,6 +9239,70 @@ namespace s1594 {
 
 
 //---------------------------------------------
+// @ID: #1604
+// @Date: 2021/3/6
+// @Algorithm: Two Points Algorithm
+// @Time: O(nlogn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1604 {
+    class Solution {
+    public:
+        vector<string> alertNames(vector<string>& keyName, vector<string>& keyTime) {
+            int i = 0, j = 0, n = keyName.size(), t = 0;
+            unordered_map<string, int> keyTimeMap;
+            set<string> warnNameSet;
+            vector<string> warnNameList;
+            if (n == 0)
+                return { };
+            qsort(keyName, keyTime, 0, n - 1);
+            for (j = 0; j < n; j++) {
+                t = getTimeStamp(keyTime[j]);
+                while (i < j && getTimeStamp(keyTime[i]) < t - 60) {
+                    keyTimeMap[keyName[i]]--;
+                    i++;
+                }
+                keyTimeMap[keyName[j]]++;
+                if (keyTimeMap[keyName[j]] >= 3)
+                    warnNameSet.insert(keyName[j]);
+            }
+            for (const string& s : warnNameSet)
+                warnNameList.push_back(s);
+            sort(warnNameList.begin(), warnNameList.end());
+            return warnNameList;
+        }
+
+    private:
+        void qsort(vector<string>& keyName, vector<string>& keyTime, int l, int r) {
+            if (l >= r)
+                return;
+            int i = l, j = r;
+            string key = keyTime[i], tmp = keyName[i];
+            while (i < j) {
+                while (i < j && getTimeStamp(keyTime[j]) >= getTimeStamp(key))
+                    j--;
+                keyName[i] = keyName[j];
+                keyTime[i] = keyTime[j];
+                while (i < j && getTimeStamp(keyTime[i]) <= getTimeStamp(key))
+                    i++;
+                keyName[j] = keyName[i];
+                keyTime[j] = keyTime[i];
+            }
+            keyName[i] = tmp;
+            keyTime[i] = key;
+            qsort(keyName, keyTime, l, i - 1);
+            qsort(keyName, keyTime, i + 1, r);
+            return;
+        }
+
+        int getTimeStamp(string& s) {
+            return ((s[0] - '0') * 10 + s[1] - '0') * 60 + (s[3] - '0') * 10 + s[4] - '0';
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1616
 // @Date: 2021/3/2
 // @Algorithm: Greedy Algorithm
@@ -8994,6 +9372,34 @@ namespace s1658 {
                 }
             }
             return minNum == INT_MAX ? -1 : minNum;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1695
+// @Date: 2021/3/5
+// @Algorithm: Sliding Window Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1695 {
+    class Solution {
+    public:
+        int maximumUniqueSubarray(vector<int>& nums) {
+            int n = nums.size(), i = 0, j = 0, point = 0, maxPoint = 0;
+            unordered_set<int> s;
+            while (j < n) {
+                while (i < j && s.find(nums[j]) != s.end()) {
+                    s.erase(nums[i]);
+                    point -= nums[i++];
+                }
+                s.insert(nums[j]);
+                point += nums[j++];
+                maxPoint = max(maxPoint, point);
+            }
+            return maxPoint;
         }
     };
 }
