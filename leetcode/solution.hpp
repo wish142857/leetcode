@@ -8419,6 +8419,29 @@ namespace s1038 {
 }
 
 
+//---------------------------------------------
+// @ID: #1047
+// @Date: 2021/3/9
+// @Algorithm: Stack Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1047 {
+    class Solution {
+    public:
+        string removeDuplicates(string S) {
+            string s;
+            for (const char c : S)
+                if (!s.empty() && s.back() == c)
+                    s.pop_back();
+                else
+                    s.push_back(c);
+            return s;
+        }
+    };
+}
+
+
 // TODO
 namespace s1048 {
     class Solution {
