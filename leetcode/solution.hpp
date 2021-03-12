@@ -2595,6 +2595,55 @@ namespace s134 {
 
 
 //---------------------------------------------
+// @ID: #138
+// @Date: 2021/3/9
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s138 {
+    class Node {
+    public:
+        int val;
+        Node* next;
+        Node* random;
+        Node(int _val) {
+            val = _val;
+            next = NULL;
+            random = NULL;
+        }
+    };
+
+    class Solution {
+    public:
+        Node* copyRandomList(Node* head) {
+            Node* p = head, * h = nullptr, * t = nullptr, * q = nullptr;
+            unordered_map<Node*, Node*> m;
+            m[nullptr] = nullptr;
+            while (p) {
+                if (m.find(p) != m.end())
+                    q = m[p];
+                else
+                    q = m[p] = new Node(p->val);
+                if (m.find(p->random) != m.end())
+                    q->random = m[p->random];
+                else
+                    q->random = m[p->random] = new Node(p->random->val);
+                if (h)
+                    t = t->next = q;
+                else
+                    h = t = q;
+                p = p->next;
+            }
+            if (t)
+                t->next = nullptr;
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #139
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -4260,6 +4309,48 @@ namespace s329 {
 
 
 //---------------------------------------------
+// @ID: #331
+// @Date: 2021/3/12
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s331 {
+    class Solution {
+    public:
+        bool isValidSerialization(string preorder) {
+            vector<bool> formatPreorder;
+            int i = 0, n = preorder.size();
+            while (i < n) {
+                if (preorder[i++] == '#') {
+                    formatPreorder.push_back(false);
+                }
+                else {
+                    formatPreorder.push_back(true);
+                    while (i < n && preorder[i] != ',')
+                        i++;
+                }
+                i++;
+            }
+            return getTree(formatPreorder, 0) == formatPreorder.size() - 1;
+        }
+    private:
+        int getTree(vector<bool>& preorder, int i) {
+            if (i >= int(preorder.size()))
+                return -1;
+            if (!preorder[i])
+                return i;
+            if ((i = getTree(preorder, i + 1)) == -1)
+                return -1;
+            if ((i = getTree(preorder, i + 1)) == -1)
+                return -1;
+            return i;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #336
 // @Date: 2020/8/6
 // @Algorithm: Tree Algorithm | Manacher Algorithm
@@ -5814,10 +5905,10 @@ namespace s524 {
         string findLongestWord(string s, vector<string>& dictionary) {
             int n = dictionary.size(), i = 0, maxLen = 0, maxStr = 0;
             for (i = 0; i < n; i++) {
-                if (dictionary[i].length() < maxLen)
+                if (int(dictionary[i].length()) < maxLen)
                     continue;
                 if (check(s, dictionary[i])) {
-                    if (dictionary[i].length() > maxLen) {
+                    if (int(dictionary[i].length()) > maxLen) {
                         maxLen = dictionary[i].length();
                         maxStr = i;
                     }
@@ -9466,6 +9557,45 @@ namespace s1711 {
 
 
 //---------------------------------------------
+// @ID: #1721
+// @Date: 2021/3/9
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1721 {
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode *next) : val(x), next(next) {}
+    };
+    
+    class Solution {
+    public:
+        ListNode* swapNodes(ListNode* head, int k) {
+            int t = 0;
+            ListNode* p1 = nullptr, * p2 = nullptr;
+            ListNode* slow = head, * fast = head;
+            for (int i = 0; i < k - 1; i++)
+                fast = fast->next;
+            p1 = fast;
+            while (fast && fast->next)
+                slow = slow->next, fast = fast->next;
+            p2 = slow;
+            if (p1 && p2) {
+                t = p1->val;
+                p1->val = p2->val;
+                p2->val = t;
+            }
+            return head;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1750
 // @Date: 2021/3/2
 // @Algorithm: Two Points Algorithm
@@ -10517,6 +10647,55 @@ namespace o32_1 {
 
 
 //---------------------------------------------
+// @ID: #o35
+// @Date: 2021/3/9
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace o35 {
+    class Node {
+    public:
+        int val;
+        Node* next;
+        Node* random;
+        Node(int _val) {
+            val = _val;
+            next = NULL;
+            random = NULL;
+        }
+    };
+
+    class Solution {
+    public:
+        Node* copyRandomList(Node* head) {
+            Node* p = head, * h = nullptr, * t = nullptr, * q = nullptr;
+            unordered_map<Node*, Node*> m;
+            m[nullptr] = nullptr;
+            while (p) {
+                if (m.find(p) != m.end())
+                    q = m[p];
+                else
+                    q = m[p] = new Node(p->val);
+                if (m.find(p->random) != m.end())
+                    q->random = m[p->random];
+                else
+                    q->random = m[p->random] = new Node(p->random->val);
+                if (h)
+                    t = t->next = q;
+                else
+                    h = t = q;
+                p = p->next;
+            }
+            if (t)
+                t->next = nullptr;
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #o42
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
@@ -10937,6 +11116,54 @@ namespace i01_05 {
 
 
 //---------------------------------------------
+// @ID: #i02_01
+// @Date: 2021/3/9
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace i02_01 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* removeDuplicateNodes(ListNode* head) {
+            ListNode* p = head, * q = nullptr, * h = nullptr, * t = nullptr;
+            while (p) {
+                bool isNew = true;
+                q = h;
+                while (q) {
+                    if (q->val == p->val) {
+                        isNew = false;
+                        break;
+                    }
+                    q = q->next;
+                }
+                if (isNew) {
+                    if (h)
+                        t = t->next = p;
+                    else
+                        h = t = p;
+                    p = p->next;
+                    t->next = nullptr;
+                }
+                else {
+                    q = p;
+                    p = p->next;
+                    delete q;
+                }
+            }
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #i02_04
 // @Date: 2021/3/2
 // @Algorithm: Linked List Algorithm
@@ -10985,6 +11212,64 @@ namespace i02_04 {
                 pLHead = pGeHead;
             }
             return pLHead;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i02_05
+// @Date: 2021/3/9
+// @Algorithm: Linked List Algorithm
+// @Time: O(m+n)
+// @Space: O(m+n)
+//---------------------------------------------
+namespace i02_05 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(NULL) {}
+        
+    };
+
+    class Solution {
+    public:
+        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+            ListNode* p = l1, * q = l2, * r = NULL, * t = NULL;
+            int n = 0;
+            r = new ListNode(p->val + q->val);
+            t = r;
+            p = p->next;
+            q = q->next;
+            while (p != NULL && q != NULL) {
+                t->next = new ListNode(p->val + q->val);
+                t = t->next;
+                p = p->next;
+                q = q->next;
+            }
+            while (p != NULL) {
+                t->next = new ListNode(p->val);
+                t = t->next;
+                p = p->next;
+            }
+            while (q != NULL) {
+                t->next = new ListNode(q->val);
+                t = t->next;
+                q = q->next;
+            }
+            t = r;
+            while (true) {
+                t->val = t->val + n;
+                n = t->val / 10;
+                t->val = t->val % 10;
+                if (t->next == NULL) {
+                    if (n > 0)
+                        t->next = new ListNode(n);
+                    break;
+                }
+                t = t->next;
+            }
+            return r;
         }
     };
 }
