@@ -1428,6 +1428,90 @@ namespace s80 {
 
 
 //---------------------------------------------
+// @ID: #82
+// @Date: 2021/3/12
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s82 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* deleteDuplicates(ListNode* head) {
+            if (!head)
+                return head;
+            ListNode* h = nullptr, * t = nullptr, * q = nullptr, * p = head;
+            while (p) {
+                if (!p->next || p->val != p->next->val) {
+                    if (h)
+                        t = t->next = p;
+                    else
+                        h = t = p;
+                    p = p->next;
+                }
+                else {
+                    q = p->next->next;
+                    while (q && q->val == p->val)
+                        q = q->next;
+                    p = q;
+                }
+            }
+            if (t)
+                t->next = nullptr;
+            return h;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #83
+// @Date: 2021/3/12
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s83 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* deleteDuplicates(ListNode* head) {
+            if (!head)
+                return head;
+            ListNode* q = head, * p = head->next;
+            while (p) {
+                if (p->val == q->val) {
+                    q->next = p->next;
+                    delete p;
+                    p = q->next;
+                }
+                else {
+                    q = p;
+                    p = p->next;
+                }
+            }
+            return head;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #86
 // @Date: 2021/2/23
 // @Algorithm: Linked List Algorithm
@@ -6590,6 +6674,32 @@ namespace s704 {
             }
             return nums[i] == target ? i : -1;
         }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #705
+// @Date: 2021/3/13
+// @Algorithm:  Hash Algorithm
+// @Time: O(1)
+// @Space: O(?)
+//---------------------------------------------
+namespace s705 {
+    class MyHashSet {
+    public:
+        /** Initialize your data structure here. */
+        MyHashSet() { }
+
+        void add(int key) { s.insert(key); }
+
+        void remove(int key) { s.erase(key); }
+
+        /** Returns true if this set contains the specified element */
+        bool contains(int key) { return s.find(key) != s.end(); }
+
+    private:
+        unordered_set<int> s;
     };
 }
 
