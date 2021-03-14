@@ -6705,6 +6705,33 @@ namespace s705 {
 
 
 //---------------------------------------------
+// @ID: #706
+// @Date: 2021/3/14
+// @Algorithm:  Hash Algorithm
+// @Time: O(1)
+// @Space: O(?)
+//---------------------------------------------
+namespace s706 {
+    class MyHashMap {
+    public:
+        /** Initialize your data structure here. */
+        MyHashMap() { }
+
+        /** value will always be non-negative. */
+        void put(int key, int value) { m[key] = value; }
+
+        /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+        int get(int key) { return m.find(key) == m.end() ? -1 : m[key]; }
+
+        /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+        void remove(int key) { m.erase(key); }
+    private:
+        unordered_map<int, int> m;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #710
 // @Date: 2020/7/20
 // @Algorithm:  Blacklist Sampling Algorithm
