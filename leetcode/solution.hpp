@@ -1008,6 +1008,49 @@ namespace s53 {
 
 
 //---------------------------------------------
+// @ID: #54
+// @Date: 2021/3/15
+// @Algorithm: Simple Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s54 {
+    class Solution {
+    public:
+        vector<int> spiralOrder(vector<vector<int>>& matrix) {
+            if (matrix.size() == 0 || matrix[0].size() == 0)
+                return {};
+            int m = matrix.size(), n = matrix[0].size(), i = 0, j = 0;
+            vector<int> ans;
+            while (m > 0 && n > 0) {
+                for (int k = 0; k < n; k++)
+                    ans.push_back(matrix[i][j + k]);
+                j = j + n - 1;
+                for (int k = 1; k < m; k++)
+                    ans.push_back(matrix[i + k][j]);
+                i = i + m - 1;
+                if (m > 1) {
+                    for (int k = 1; k < n; k++)
+                        ans.push_back(matrix[i][j - k]);
+                }
+                j = j - n + 1;
+                if (n > 1) {
+                    for (int k = 1; k < m - 1; k++)
+                        ans.push_back(matrix[i - k][j]);
+                }
+                i = i - m + 1;
+                i++;
+                j++;
+                m -= 2;
+                n -= 2;
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #55
 // @Date: 2020/7/21
 // @Algorithm: Greedy Algorithm
