@@ -2268,6 +2268,36 @@ namespace s114 {
 
 
 //---------------------------------------------
+// @ID: #115
+// @Date: 2021/3/17
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s115 {
+    class Solution {
+    public:
+        int numDistinct(string s, string t) {
+            int m = s.length(), n = t.length(), i = 0, j = 0;
+            if (m == 0 || n == 0)
+                return 0;
+            vector<vector<long>> dp(m + 1, vector<long>(n + 1, 0));
+            dp[0][0] = (s[0] == t[0] ? 1 : 0);
+            for (int i = 1; i <= m; i++)
+                dp[i][0] = 1;
+            for (int j = 1; j <= n; j++)
+                for (int i = 1; i <= m; i++)
+                    if (s[i - 1] == t[j - 1])
+                        dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];
+                    else
+                        dp[i][j] = dp[i - 1][j];
+            return dp[m][n];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #116
 // @Date: 2020/9/28
 // @Algorithm: Linked List Algorithm
