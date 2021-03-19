@@ -577,6 +577,50 @@ namespace s21 {
 
 
 //---------------------------------------------
+// @ID: #24
+// @Date: 2021/3/17
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s24 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* swapPairs(ListNode* head) {
+            ListNode* q = nullptr, * p1 = nullptr, * p2 = nullptr;
+            if (head && head->next) {
+                p1 = head, p2 = head->next;
+                p1->next = p2->next;
+                p2->next = p1;
+                head = p2;
+                q = p1;
+                p1 = q->next;
+            }
+            while (p1) {
+                p2 = p1->next;
+                if (!p2)
+                    break;
+                p1->next = p2->next;
+                p2->next = p1;
+                q->next = p2;
+                q = p1;
+                p1 = q->next;
+            }
+            return head;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #26
 // @Date: 2021/2/23
 // @Algorithm: Two Points Algorithm
@@ -1698,6 +1742,46 @@ namespace s91 {
                 }
             }
             return dp2;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #92
+// @Date: 2021/3/18
+// @Algorithm: Linked List Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s92 {
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    class Solution {
+    public:
+        ListNode* reverseBetween(ListNode* head, int left, int right) {
+            head = new ListNode(0, head);
+            ListNode* h = head, * t = nullptr, * p = nullptr;
+            stack<ListNode*> s;
+            for (int i = 1; i < left; i++)
+                h = h->next;
+            p = h->next;
+            for (int i = left; i <= right; i++)
+                s.push(p), p = p->next;
+            t = p;
+            p = h;
+            while (!s.empty()) {
+                p = p->next = s.top();
+                s.pop();
+            }
+            p->next = t;
+            return head->next;
         }
     };
 }
@@ -9591,6 +9675,29 @@ namespace s1594 {
             return dp_p[m - 1][n - 1] % 1000000007;
 
         }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1603
+// @Date: 2021/3/19
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1603 {
+    class ParkingSystem {
+    public:
+        ParkingSystem(int big, int medium, int small) {
+            places[1] = big, places[2] = medium, places[3] = small;
+        }
+
+        bool addCar(int carType) {
+            return places[carType]-- > 0;
+        }
+    private:
+        int places[4] = { 0 };
     };
 }
 
