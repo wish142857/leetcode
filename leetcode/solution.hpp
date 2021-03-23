@@ -4855,6 +4855,72 @@ namespace s338 {
 
 
 //---------------------------------------------
+// @ID: #341
+// @Date: 2021/3/23
+// @Algorithm: Data Structure Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s341 {
+    /**
+     * // This is the interface that allows for creating nested lists.
+     * // You should not implement it, or speculate about its implementation
+     * class NestedInteger {
+     *   public:
+     *     // Return true if this NestedInteger holds a single integer, rather than a nested list.
+     *     bool isInteger() const;
+     *
+     *     // Return the single integer that this NestedInteger holds, if it holds a single integer
+     *     // The result is undefined if this NestedInteger holds a nested list
+     *     int getInteger() const;
+     *
+     *     // Return the nested list that this NestedInteger holds, if it holds a nested list
+     *     // The result is undefined if this NestedInteger holds a single integer
+     *     const vector<NestedInteger> &getList() const;
+     * };
+     */
+    class NestedInteger {
+    public:
+        bool isInteger() const { return true; }
+        int getInteger() const { return 0; }
+        const vector<NestedInteger>& getList() const { return {}; }
+    };
+
+
+    class NestedIterator {
+    public:
+        NestedIterator(vector<NestedInteger>& nestedList) {
+            s.push({ nestedList , 0 });
+            return;
+        }
+
+        int next() {
+            return s.top().first[s.top().second++].getInteger();
+        }
+
+        bool hasNext() {
+            while (!s.empty()) {
+                if (s.top().second < s.top().first.size()) {
+                    if (s.top().first[s.top().second].isInteger())
+                        return true;
+                    else
+                        s.push({ s.top().first[s.top().second].getList(), 0 });
+                }
+                else {
+                    s.pop();
+                    if (!s.empty())
+                        s.top().second++;
+                }
+            }
+            return false;
+        }
+    private:
+        stack<pair<const vector<NestedInteger>&, int>> s;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #343
 // @Date: 2020/7/30
 // @Algorithm: Dynamic Programming Algorithm
