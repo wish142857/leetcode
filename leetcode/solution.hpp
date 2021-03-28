@@ -3629,6 +3629,61 @@ namespace s171 {
 
 
 //---------------------------------------------
+// @ID: #173
+// @Date: 2021/3/28
+// @Algorithm: Stack Algorithm
+// @Time: O(1)
+// @Space: O(n)
+//---------------------------------------------
+namespace s173 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+    };
+
+    union BSTValue {
+        int i;
+        TreeNode* t;
+    };
+
+    class BSTIterator {
+    public:
+        BSTIterator(TreeNode* root) {
+            if (root)
+                v.t = root, s.push({ BSTValue(v), false });
+        }
+
+        int next() {
+            while (!s.empty()) {
+                pair<BSTValue, bool> p = s.top();
+                s.pop();
+                if (p.second)
+                    return p.first.i;
+                if (p.first.t->right)
+                    v.t = p.first.t->right, s.push({ BSTValue(v), false });
+                v.i = p.first.t->val, s.push({ BSTValue(v), true });
+                if (p.first.t->left)
+                    v.t = p.first.t->left, s.push({ BSTValue(v), false });
+            }
+            return 0;
+        }
+
+        bool hasNext() {
+            return !s.empty();
+        }
+
+    private:
+        BSTValue v;
+        stack<pair<BSTValue, bool>> s;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #174
 // @Date: 2020/9/22
 // @Algorithm: Dynamic Programming Algorithm
