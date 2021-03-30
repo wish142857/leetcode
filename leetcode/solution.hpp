@@ -1522,6 +1522,32 @@ namespace s73 {
 
 
 //---------------------------------------------
+// @ID: #74
+// @Date: 2021/3/30
+// @Algorithm: Binary Search Algorithm
+// @Time: O(logn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s74 {
+    class Solution {
+    public:
+        bool searchMatrix(vector<vector<int>>& matrix, int target) {
+            int m = matrix.size(), n = matrix[0].size();
+            int l = 0, r = m * n - 1;
+            while (l < r) {
+                int mid = l + ((r - l) >> 1);
+                if (matrix[mid / n][mid % n] < target)
+                    l = mid + 1;
+                else
+                    r = mid;
+            }
+            return matrix[l / n][l % n] == target;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #75
 // @Date: 2020/7/26
 // @Algorithm: Two Points Algorithm
@@ -3714,6 +3740,29 @@ namespace s174 {
             }
 
             return dp[0][0];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #190
+// @Date: 2021/3/29
+// @Algorithm: Bit Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s190 {
+    class Solution {
+    public:
+        uint32_t reverseBits(uint32_t n) {
+            uint32_t m = 0;
+            for (int i = 0; i < 32; i++) {
+                m <<= 1;
+                m |= n & 1;
+                n >>= 1;
+            }
+            return m;
         }
     };
 }
