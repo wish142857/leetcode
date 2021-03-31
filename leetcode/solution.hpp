@@ -1779,6 +1779,41 @@ namespace s88 {
 
 
 //---------------------------------------------
+// @ID: #90
+// @Date: 2021/3/31
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(?)
+// @Space: O(?)
+//---------------------------------------------
+namespace s90 {
+    class Solution {
+    public:
+        vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+            int i = 0, n = nums.size(), m = 0, k = 0, t = 0;
+            vector<vector<int>> ans;
+            sort(nums.begin(), nums.end());
+            ans.push_back(vector<int>());
+            while (i < n) {
+                t = nums[i];
+                k = 0;
+                while (i < n && nums[i] == t)
+                    k++, i++;
+                m = ans.size();
+                for (int x = 0; x < m; x++) {
+                    for (int y = 1; y <= k; y++) {
+                        ans.push_back(ans[x]);
+                        for (int z = 0; z < y; z++)
+                            ans.back().push_back(t);
+                    }
+                }
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #91
 // @Date: 2020/8/1
 // @Algorithm: Dynamic Programming Algorithm
