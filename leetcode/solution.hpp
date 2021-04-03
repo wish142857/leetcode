@@ -3714,9 +3714,11 @@ namespace s173 {
     class BSTIterator {
     public:
         BSTIterator(TreeNode* root) {
+            v.i = 0;
             if (root)
                 v.t = root, s.push({ BSTValue(v), false });
         }
+
 
         int next() {
             while (!s.empty()) {
@@ -5039,7 +5041,7 @@ namespace s341 {
 
         bool hasNext() {
             while (!s.empty()) {
-                if (s.top().second < s.top().first.size()) {
+                if (s.top().second < int(s.top().first.size())) {
                     if (s.top().first[s.top().second].isInteger())
                         return true;
                     else
@@ -8864,6 +8866,50 @@ namespace s1004 {
 
 
 //---------------------------------------------
+// @ID: #1006
+// @Date: 2021/4/2
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s1006 {
+    class Solution {
+    public:
+        int clumsy(int N) {
+            if (N <= 0)
+                return 0;
+            long ans = 0, tmp = 0;
+            if (N) {
+                tmp = N--;
+                if (N) {
+                    tmp *= N--;
+                    if (N) {
+                        tmp /= N--;
+                    }
+                }
+            }
+            ans += tmp;
+            while (N) {
+                ans += N--;
+                tmp = 0;
+                if (N) {
+                    tmp = N--;
+                    if (N) {
+                        tmp *= N--;
+                        if (N) {
+                            tmp /= N--;
+                        }
+                    }
+                }
+                ans -= tmp;
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1024
 // @Date: 2020/10/24
 // @Algorithm: Greedy Algorithm
@@ -9299,6 +9345,33 @@ namespace s1137 {
                 x = z - x - y;
             }
             return z;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1143
+// @Date: 2021/4/3
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(mn)
+// @Space: O(mn)
+//---------------------------------------------
+namespace s1143 {
+    class Solution {
+    public:
+        int longestCommonSubsequence(string text1, string text2) {
+            int m = text1.size(), n = text2.size();
+            vector<vector<int>> dp(m, vector<int>(n, 0));
+            dp[0][0] = text1[0] == text2[0];
+            for (int i = 1; i < m; i++)
+                dp[i][0] = dp[i - 1][0] || text1[i] == text2[0];
+            for (int j = 1; j < n; j++)
+                dp[0][j] = dp[0][j - 1] || text1[0] == text2[j];
+            for (int i = 1; i < m; i++)
+                for (int j = 1; j < n; j++)
+                    dp[i][j] = text1[i] == text2[j] ? dp[i - 1][j - 1] + 1 : max(dp[i][j - 1], dp[i - 1][j]);
+            return dp[m - 1][n - 1];
         }
     };
 }
@@ -12427,6 +12500,40 @@ namespace i17_18 {
                 i++;
             }
             return minLength == INT_MAX ? vector<int> { } : vector<int>{ ansI, ansJ - 1 };
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #i17_21
+// @Date: 2021/4/2
+// @Algorithm: Greedy Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace i17_21 {
+    class Solution {
+    public:
+        int trap(vector<int>& height) {
+            if (height.size() == 0)
+                return 0;
+            int i = 0, n = height.size(), maxHeight = height[0], sum = 0;
+            vector<int> ans(n, 0);
+            for (i = 1; i < n - 1; i++) {
+                ans[i] = maxHeight;
+                maxHeight = max(maxHeight, height[i]);
+            }
+            maxHeight = height[n - 1];
+            for (i = n - 2; i >= 1; i--) {
+                ans[i] = min(ans[i], maxHeight);
+                maxHeight = max(maxHeight, height[i]);
+            }
+            for (i = 1; i < n - 1; i++) {
+                if (ans[i] > height[i])
+                    sum += ans[i] - height[i];
+            }
+            return sum;
         }
     };
 }
