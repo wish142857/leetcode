@@ -7572,6 +7572,32 @@ namespace s779 {
 
 
 //---------------------------------------------
+// @ID: #781
+// @Date: 2021/4/5 
+// @Algorithm: Greedy Algorithm
+// @Time: O(nlogn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s781 {
+    class Solution {
+    public:
+        int numRabbits(vector<int>& answers) {
+            int i = 0, j = 0, n = answers.size(), s = 0;
+            sort(answers.begin(), answers.end());
+            while (i < n) {
+                j = i + 1;
+                while (j < n && answers[j] == answers[i])
+                    j++;
+                s += ((j - i - 1) / (answers[i] + 1) + 1) * (answers[i] + 1);
+                i = j;
+            }
+            return s;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #783
 // @Date: 2020/8/8 
 // @Algorithm: Tree Algorithm | Recursion Algorithm
