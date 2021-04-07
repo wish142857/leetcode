@@ -1613,6 +1613,86 @@ namespace s80 {
 
 
 //---------------------------------------------
+// @ID: #81
+// @Date: 2021/4/7
+// @Algorithm: Binary Search Algorithm
+// @Time: O(n)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s81 {
+    class Solution {
+    public:
+        int search(vector<int>& nums, int target) {
+            return recursionSearch(nums, 0, nums.size() - 1, target) != -1;
+        }
+
+    private:
+        int recursionSearch(vector<int>& nums, int left, int right, int target) {
+            if (left + 1 == right)
+                return nums[left] == target || nums[right] == target ? left : -1;
+            if (left >= right)
+                return nums[right] == target ? left : -1;
+            int ans = 0;
+            int mid = left + ((right - left) >> 1);
+            if (nums[mid] > target) {
+                if (nums[mid] > nums[right]) {
+                    if ((ans = binarySearch(nums, left, mid - 1, target)) != -1)
+                        return ans;
+                    return recursionSearch(nums, mid + 1, right, target);
+                }
+                else if (nums[mid] < nums[right]) {
+                    return recursionSearch(nums, left, mid - 1, target);
+                }
+                else if (nums[left] != nums[mid]) {
+                    return recursionSearch(nums, left, mid - 1, target);
+                }
+                else {
+                    if ((ans = recursionSearch(nums, left, mid - 1, target)) != -1)
+                        return ans;
+                    return recursionSearch(nums, mid + 1, right, target);
+                }
+            }
+            else if (nums[mid] < target) {
+                if (nums[mid] > nums[right]) {
+                    return recursionSearch(nums, mid + 1, right, target);
+                }
+                else if (nums[mid] < nums[right]) {
+                    if ((ans = binarySearch(nums, mid + 1, right, target)) != -1)
+                        return ans;
+                    return recursionSearch(nums, left, mid - 1, target);
+                }
+                else if (nums[left] != nums[mid]) {
+                    return recursionSearch(nums, left, mid - 1, target);
+                }
+                else {
+                    if ((ans = recursionSearch(nums, left, mid - 1, target)) != -1)
+                        return ans;
+                    return recursionSearch(nums, mid + 1, right, target);
+                }
+            }
+            else {
+                return mid;
+            }
+        }
+
+        int binarySearch(vector<int>& nums, int left, int right, int target) {
+            int i = left, j = right;
+            while (i < j) {
+                int mid = i + ((j - i) >> 1);
+                if (nums[mid] < target)
+                    i = mid + 1;
+                else if (nums[mid] > target)
+                    j = mid - 1;
+                else
+                    return mid;
+            }
+            return nums[i] == target ? i : -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #82
 // @Date: 2021/3/12
 // @Algorithm: Linked List Algorithm
@@ -4247,6 +4327,30 @@ namespace s264 {
                     i++;
             }
             return dp[n];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #274
+// @Date: 2021/4/6
+// @Algorithm: Count Sort Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s274 {
+    class Solution {
+    public:
+        int hIndex(vector<int>& citations) {
+            int n = citations.size(), s = 0;
+            vector<int> counter(n + 1, 0);
+            for (const int& c : citations)
+                counter[c > n ? n : c]++;
+            for (int i = n; i >= 1; i--)
+                if ((s += counter[i]) >= i)
+                    return i;
+            return 0;
         }
     };
 }
@@ -9598,6 +9702,33 @@ namespace s1305 {
                 v3.push_back(v2[j++]);
             return;
 
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1347
+// @Date: 2021/4/6
+// @Algorithm: Simple Algorithm
+// @Time: O(n)
+// @Space: O(n)
+//---------------------------------------------
+namespace s1347 {
+    class Solution {
+    public:
+        int minSteps(string s, string t) {
+            int ans = 0;
+            unordered_map<char, int> m;
+            for (const char& c : s)
+                m[c]++;
+            for (const char& c : t)
+                m[c]--;
+            for (const pair<char, int>& p : m) {
+                if (p.second > 0)
+                    ans += p.second;
+            }
+            return ans;
         }
     };
 }
