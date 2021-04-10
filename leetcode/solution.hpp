@@ -10446,6 +10446,49 @@ namespace s1750 {
 
 
 //---------------------------------------------
+// @ID: #1819
+// @Date: 2021/4/10
+// @Algorithm: Math Algorithm
+// @Time: O(nk)
+// @Space: O(k)
+//---------------------------------------------
+namespace s1819 {
+    class Solution {
+    public:
+        int countDifferentSubsequenceGCDs(vector<int>& nums) {
+            int ans = 0;
+            int g[200001] = { 0 };
+            for (const int n : nums) {
+                for (int i = 1; i * i <= n; i++) {
+                    if (n % i == 0) {
+                        int t = n / i;
+                        if (g[i])
+                            g[i] = gcd(n, g[i]);
+                        else
+                            g[i] = n;
+                        if (t != i) {
+                            if (g[t])
+                                g[t] = gcd(n, g[t]);
+                            else
+                                g[t] = n;
+                        }
+                    }
+                }
+            }
+            for (int i = 1; i < 200001; i++)
+                if (g[i] == i)
+                    ans++;
+            return ans;
+        }
+    private:
+        int gcd(int x, int y) {
+            return x % y ? gcd(y, x % y) : y;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #LCP_01
 // @Date: 2020/7/29
 // @Algorithm: Simple Algorithm
