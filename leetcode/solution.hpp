@@ -2,15 +2,16 @@
 #include <algorithm>
 #include <ctime>
 #include <iostream>
-#include <queue>
-#include <random>
-#include <stack>
-#include <vector>
 #include <map>
 #include <numeric>
-#include <unordered_map>
+#include <queue>
+#include <random>
 #include <set>
+#include <sstream>
+#include <stack>
+#include <unordered_map>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 
@@ -3857,6 +3858,38 @@ namespace s174 {
             }
 
             return dp[0][0];
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #179
+// @Date: 2021/4/12
+// @Algorithm: Greedy Algorithm
+// @Time: O(nlogn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s179 {
+    class Solution {
+    public:
+        string largestNumber(vector<int>& nums) {
+            sort(nums.begin(), nums.end(), cmp);
+            string ans;
+            if (nums[0] == 0)
+                return "0";
+            for (const int n : nums)
+                ans += std::to_string(n);
+            return ans;
+        }
+    private:
+        static bool cmp(const int x, const int y) {
+            long a = 10, b = 10;
+            while (a <= x)
+                a *= 10;
+            while (b <= y)
+                b *= 10;
+            return x * b + y > y * a + x;
         }
     };
 }
