@@ -4045,6 +4045,56 @@ namespace s207 {
 
 
 //---------------------------------------------
+// @ID: #208
+// @Date: 2021/4/14
+// @Algorithm: Tree Algorithm 
+// @Time: O(logn)
+// @Space: O(n)
+//---------------------------------------------
+namespace s208 {
+    struct TrieNode {
+        map<char, TrieNode*> m;
+    };
+    class Trie {
+    public:
+        /** Initialize your data structure here. */
+        Trie() { t = new TrieNode(); }
+
+        /** Inserts a word into the trie. */
+        void insert(string word) {
+            int i = 0;
+            TrieNode* p = this->t;
+            while (i < word.length() && p->m.find(word[i]) != p->m.end())
+                p = p->m[word[i]], i++;
+            while (i < word.length())
+                p = p->m[word[i]] = new TrieNode(), i++;
+            p->m[' '] = new TrieNode();
+        }
+
+        /** Returns if the word is in the trie. */
+        bool search(string word) {
+            int i = 0;
+            TrieNode* p = this->t;
+            while (i < word.length() && p->m.find(word[i]) != p->m.end())
+                p = p->m[word[i]], i++;
+            return word == "" || i >= word.length() && p->m.find(' ') != p->m.end();
+        }
+
+        /** Returns if there is any word in the trie that starts with the given prefix. */
+        bool startsWith(string prefix) {
+            int i = 0;
+            TrieNode* p = this->t;
+            while (i < prefix.length() && p->m.find(prefix[i]) != p->m.end())
+                p = p->m[prefix[i]], i++;
+            return prefix == "" || i >= prefix.length();
+        }
+    private:
+        TrieNode* t;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #213
 // @Date: 2020/8/2
 // @Algorithm: Dynamic Programming Algorithm
