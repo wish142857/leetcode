@@ -1830,6 +1830,55 @@ namespace s86 {
 
 
 //---------------------------------------------
+// @ID: #87
+// @Date: 2021/4/16
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n^4)
+// @Space: O(n^3)
+//---------------------------------------------
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        memset(b, 0, sizeof(b));
+        return check(s1, s2, 0, 0, s1.length());
+    }
+private:
+    char b[30][30][31];
+    bool check(string& s1, string& s2, int i, int j, int l) {
+        if (b[i][j][l])
+            return b[i][j][l] == 1;
+        if (l == 1 && s1[i] == s2[j]) {
+            b[i][j][l] = 1;
+            return true;
+        }
+        {
+            map<char, int>  s, r;
+            for (int k = 1; k < l; k++) {
+                if (++s[s1[i + k - 1]] == 0)
+                    s.erase(s1[i + k - 1]);
+                if (--s[s2[j + k - 1]] == 0)
+                    s.erase(s2[j + k - 1]);
+                if (s.size() == 0 && check(s1, s2, i, j, k) && check(s1, s2, i + k, j + k, l - k)) {
+                    b[i][j][l] = 1;
+                    return true;
+                }
+                if (++r[s1[i + k - 1]] == 0)
+                    r.erase(s1[i + k - 1]);
+                if (--r[s2[j + l - k]] == 0)
+                    r.erase(s2[j + l - k]);
+                if (r.size() == 0 && check(s1, s2, i, j + l - k, k) && check(s1, s2, i + k, j, l - k)) {
+                    b[i][j][l] = 1;
+                    return true;
+                }
+            }
+        }
+        b[i][j][l] = -1;
+        return false;
+    }
+};
+
+
+//---------------------------------------------
 // @ID: #88
 // @Date: 2021/3/1
 // @Algorithm: Two Points Algorithm
