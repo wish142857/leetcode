@@ -667,6 +667,36 @@ namespace s27 {
 
 
 //---------------------------------------------
+// @ID: #28
+// @Date: 2021/4/20
+// @Algorithm: String Algorithm
+// @Time: O(mn)
+// @Space: O(1)
+//---------------------------------------------
+namespace s28 {
+    class Solution {
+    public:
+        int strStr(string haystack, string needle) {
+            int n = haystack.size(), m = needle.size();
+            for (int i = 0; i + m <= n; i++) {
+                bool flag = true;
+                for (int j = 0; j < m; j++) {
+                    if (haystack[i + j] != needle[j]) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #31
 // @Date: 2020/11/10
 // @Algorithm: Simple Algorithm
@@ -4113,9 +4143,9 @@ namespace s208 {
         void insert(string word) {
             int i = 0;
             TrieNode* p = this->t;
-            while (i < word.length() && p->m.find(word[i]) != p->m.end())
+            while (i < int(word.length()) && p->m.find(word[i]) != p->m.end())
                 p = p->m[word[i]], i++;
-            while (i < word.length())
+            while (i < int(word.length()))
                 p = p->m[word[i]] = new TrieNode(), i++;
             p->m[' '] = new TrieNode();
         }
@@ -4124,18 +4154,18 @@ namespace s208 {
         bool search(string word) {
             int i = 0;
             TrieNode* p = this->t;
-            while (i < word.length() && p->m.find(word[i]) != p->m.end())
+            while (i < int(word.length()) && p->m.find(word[i]) != p->m.end())
                 p = p->m[word[i]], i++;
-            return word == "" || i >= word.length() && p->m.find(' ') != p->m.end();
+            return word == "" || i >= int(word.length()) && p->m.find(' ') != p->m.end();
         }
 
         /** Returns if there is any word in the trie that starts with the given prefix. */
         bool startsWith(string prefix) {
             int i = 0;
             TrieNode* p = this->t;
-            while (i < prefix.length() && p->m.find(prefix[i]) != p->m.end())
+            while (i < int(prefix.length()) && p->m.find(prefix[i]) != p->m.end())
                 p = p->m[prefix[i]], i++;
-            return prefix == "" || i >= prefix.length();
+            return prefix == "" || i >= int(prefix.length());
         }
     private:
         TrieNode* t;
