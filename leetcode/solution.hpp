@@ -2570,6 +2570,89 @@ namespace s105 {
 
 
 //---------------------------------------------
+// @ID: #112
+// @Date: 2021/4/23
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s112 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        bool hasPathSum(TreeNode* root, int targetSum) {
+            return root && _hasPathSum(root, targetSum);
+        }
+    private:
+        bool _hasPathSum(TreeNode* root, int targetSum) {
+            return (!root->left && !root->right) ? root->val == targetSum : (root->left && _hasPathSum(root->left, targetSum - root->val)) || (root->right && _hasPathSum(root->right, targetSum - root->val));
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #113
+// @Date: 2021/4/23
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(?)
+//---------------------------------------------
+namespace s113 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+            if (root) {
+                s.push_back(root->val);
+                checkPathSum(root, targetSum);
+            }
+            return ans;
+        }
+
+    private:
+        void checkPathSum(TreeNode* root, int targetSum) {
+            if (!root->left && !root->right) {
+                if (root->val == targetSum)
+                    ans.push_back(s);
+            }
+            else {
+                if (root->left) {
+                    s.push_back(root->left->val);
+                    checkPathSum(root->left, targetSum - root->val);
+                    s.pop_back();
+                }
+                if (root->right) {
+                    s.push_back(root->right->val);
+                    checkPathSum(root->right, targetSum - root->val);
+                    s.pop_back();
+                }
+            }
+            return;
+        }
+        vector<int> s;
+        vector<vector<int>> ans;
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #114
 // @Date: 2020/8/2
 // @Algorithm: Tree Algorithm | Recursive Algorithm
@@ -3463,6 +3546,90 @@ namespace s145 {
             return v;
         }
     };
+}
+
+
+//---------------------------------------------
+// @ID: #146
+// @Date: 2021/4/23
+// @Algorithm: Linked List Algorithm
+// @Time: O(1)
+// @Space: O(n)
+//---------------------------------------------
+namespace s146 {
+    struct DoubleLinkedList {
+        DoubleLinkedList* last, * next;
+        int key, value;
+        DoubleLinkedList(DoubleLinkedList* last, DoubleLinkedList* next, int key, int value) : last(last), next(next), key(key), value(value) { }
+    };
+
+    class LRUCache {
+    public:
+        LRUCache(int capacity) : num(0), capacity(capacity) {
+            h = t = new DoubleLinkedList(nullptr, nullptr, -1, -1);
+            m.reserve(capacity);
+        }
+
+        int get(int key) {
+            if (m.find(key) != m.end()) {
+                DoubleLinkedList* p = m[key];
+                if (p != h->next) {
+                    if (p != t) {
+                        p->last->next = p->next;
+                        p->next->last = p->last;
+                    }
+                    else {
+                        p->last->next = nullptr;
+                        t = p->last;
+                    }
+                    p->last = h;
+                    p->next = h->next;
+                    h->next->last = p;
+                    h->next = p;
+                }
+                return p->value;
+            }
+            else {
+                return -1;
+            }
+        }
+
+        void put(int key, int value) {
+            if (get(key) != -1) {
+                m[key]->value = value;
+            }
+            else {
+                if (num >= capacity) {
+                    DoubleLinkedList* q = t;
+                    m.erase(q->key);
+                    q->last->next = nullptr;
+                    t = q->last;
+                    delete q;
+                }
+                else {
+                    num++;
+                }
+                DoubleLinkedList* p = m[key] = new DoubleLinkedList(h, h->next, key, value);
+                if (h->next)
+                    h->next->last = p;
+                else
+                    t = p;
+                h->next = p;
+
+            }
+        }
+    private:
+        int num, capacity;
+        DoubleLinkedList* h, * t;
+        unordered_map<int, DoubleLinkedList*> m;
+    };
+
+    /**
+     * Your LRUCache object will be instantiated and called as such:
+     * LRUCache* obj = new LRUCache(capacity);
+     * int param_1 = obj->get(key);
+     * obj->put(key,value);
+     */
 }
 
 
