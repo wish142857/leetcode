@@ -8812,6 +8812,51 @@ namespace s896 {
 
 
 //---------------------------------------------
+// @ID: #897
+// @Date: 2021/4/25
+// @Algorithm: Tree Algorithm
+// @Time: O(n)
+// @Space: O(logn)
+//---------------------------------------------
+namespace s897 {
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+    };
+
+    class Solution {
+    public:
+        TreeNode* increasingBST(TreeNode* root) {
+            h = p = nullptr;
+            _increasingBST(root);
+            if (p)
+                p->right = nullptr;
+            return h;
+        }
+    private:
+        TreeNode* h, * p;
+
+        void _increasingBST(TreeNode* node) {
+            if (!node)
+                return;
+            _increasingBST(node->left);
+            node->left = nullptr;
+            if (!h)
+                h = p = node;
+            else
+                p = p->right = node;
+            _increasingBST(node->right);
+        }
+
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #904
 // @Date: 2021/2/28
 // @Algorithm: Sliding Window Algorithm
