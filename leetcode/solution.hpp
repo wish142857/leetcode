@@ -9443,6 +9443,37 @@ namespace s1006 {
 
 
 //---------------------------------------------
+// @ID: #1011
+// @Date: 2021/4/26
+// @Algorithm: Binary Search Algorithm
+// @Time: O((len(weights))*log(sum(weights)))
+// @Space: O(1)
+//---------------------------------------------
+namespace s1011 {
+    class Solution {
+    public:
+        int shipWithinDays(vector<int>& weights, int D) {
+            int left = *max_element(weights.begin(), weights.end()), right = accumulate(weights.begin(), weights.end(), 0);
+            while (left < right) {
+                int mid = left + ((right - left) >> 1);
+                int d = 1, s = 0;
+                for (const int w : weights)
+                    if (s + w <= mid)
+                        s += w;
+                    else
+                        s = w, d++;
+                if (d <= D)
+                    right = mid;
+                else
+                    left = mid + 1;
+            }
+            return left;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1024
 // @Date: 2020/10/24
 // @Algorithm: Greedy Algorithm
