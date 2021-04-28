@@ -7286,6 +7286,33 @@ namespace s623 {
 
 
 //---------------------------------------------
+// @ID: #633
+// @Date: 2021/4/28
+// @Algorithm: Two Points Algorithm
+// @Time: O(c^0.5)
+// @Space: O(1)
+//---------------------------------------------
+namespace s633 {
+    class Solution {
+    public:
+        bool judgeSquareSum(int c) {
+            long a = 0, b = sqrt(c), s = 0;
+            while (a <= b) {
+                s = a * a + b * b;
+                if (s < c)
+                    a++;
+                else if (s > c)
+                    b--;
+                else
+                    return true;
+            }
+            return false;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #637
 // @Date: 2020/10/30
 // @Algorithm: Tree Algorithm
@@ -8680,6 +8707,35 @@ namespace s870 {
             qsort(C, l, i - 1);
             qsort(C, i + 1, r);
             return;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #875
+// @Date: 2021/4/26
+// @Algorithm: Binary Search Algorithm
+// @Time: O(log(max(piles)))
+// @Space: O(1)
+//---------------------------------------------
+namespace s875 {
+    class Solution {
+    public:
+        int minEatingSpeed(vector<int>& piles, int h) {
+            int n = piles.size();
+            int left = 1, right = *max_element(piles.begin(), piles.end());
+            while (left < right) {
+                int mid = left + ((right - left) >> 1);
+                int m = 0;
+                for (const int& pile : piles)
+                    m += (pile - 1) / mid + 1;
+                if (m <= h)
+                    right = mid;
+                else
+                    left = mid + 1;
+            }
+            return left;
         }
     };
 }
