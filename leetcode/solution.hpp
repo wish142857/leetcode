@@ -3212,6 +3212,32 @@ namespace s134 {
 
 
 //---------------------------------------------
+// @ID: #137
+// @Date: 2021/4/30
+// @Algorithm: Bit Algorithm
+// @Time: O(n)
+// @Space: O(1)
+//---------------------------------------------
+namespace s137 {
+    class Solution {
+    public:
+        int singleNumber(vector<int>& nums) {
+            int ans = 0;
+            for (int i = 0; i < 32; i++) {
+                int mask = 1 << i;
+                int sum = 0;
+                for (int num : nums)
+                    sum += bool(num & mask);
+                if (sum % 3)
+                    ans |= mask;
+            }
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #138
 // @Date: 2021/3/9
 // @Algorithm: Linked List Algorithm
