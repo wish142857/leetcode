@@ -7575,6 +7575,44 @@ namespace s688 {
 
 
 //---------------------------------------------
+// @ID: #690
+// @Date: 2021/5/1
+// @Algorithm: Simple Algorithm
+// @Time: O(?)
+// @Space: O(n)
+//---------------------------------------------
+namespace s690 {
+    class Employee {
+    public:
+        int id;
+        int importance;
+        vector<int> subordinates;
+    };
+
+    class Solution {
+    public:
+        int getImportance(vector<Employee*> employees, int id) {
+            for (Employee* e : employees)
+                m[e->id] = e;
+            return getImportance(id);
+        }
+    private:
+        unordered_map<int, Employee*> m;
+
+        int getImportance(int id) {
+            if (m.find(id) == m.end())
+                return 0;
+            Employee* e = m[id];
+            int importance = e->importance;
+            for (int s : e->subordinates)
+                importance += getImportance(s);
+            return importance;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #696
 // @Date: 2020/8/10
 // @Algorithm: Simple Algorithm
