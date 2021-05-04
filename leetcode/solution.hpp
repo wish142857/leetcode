@@ -7322,7 +7322,7 @@ namespace s633 {
     class Solution {
     public:
         bool judgeSquareSum(int c) {
-            long a = 0, b = sqrt(c), s = 0;
+            long a = 0, b = long(sqrt(c)), s = 0;
             while (a <= b) {
                 s = a * a + b * b;
                 if (s < c)
@@ -10494,6 +10494,78 @@ namespace s1456 {
                 maxNum = max(maxNum, num);
             }
             return maxNum;
+        }
+    };
+}
+
+
+//---------------------------------------------
+// @ID: #1473
+// @Date: 2021/5/4
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(m*n^2*target)
+// @Space: O(n^2*target)
+//---------------------------------------------
+namespace s1473 {
+    class Solution {
+    public:
+        int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int target) {
+            vector<map<int, int>> dp1(n, map<int, int>());
+            vector<map<int, int>> dp2(n, map<int, int>());
+            vector<map<int, int>>& dpP = dp1, & dpC = dp2, & dpT = dp1;
+            int lP, rP, lC, rC;
+            if (houses[0])
+                dpP[houses[0] - 1][0] = 0;
+            else
+                for (int c = 0; c < n; c++)
+                    dpP[c][0] = cost[0][c];
+            for (int i = 1; i < m; i++) {
+                if (houses[i - 1])
+                    lP = rP = houses[i - 1] - 1;
+                else
+                    lP = 0, rP = n - 1;
+                if (houses[i])
+                    lC = rC = houses[i] - 1;
+                else
+                    lC = 0, rC = n - 1;
+                for (int p = lP; p <= rP; p++) {
+                    for (int c = lC; c <= rC; c++) {
+                        if (p == c) {
+                            for (const pair<int, int>& p : dpP[p]) {
+                                int tCost = p.second + (houses[i] ? 0 : cost[i][c]);
+                                if (dpC[c].find(p.first) == dpC[c].end())
+                                    dpC[c][p.first] = tCost;
+                                else
+                                    dpC[c][p.first] = min(dpC[c][p.first], tCost);
+
+                            }
+                        }
+                        else {
+                            for (const pair<int, int>& p : dpP[p]) {
+                                int tCost = p.second + (houses[i] ? 0 : cost[i][c]);
+                                if (dpC[c].find(p.first + 1) == dpC[c].end())
+                                    dpC[c][p.first + 1] = tCost;
+                                else
+                                    dpC[c][p.first + 1] = min(dpC[c][p.first + 1], tCost);
+                            }
+                        }
+                    }
+                }
+                dpT = dpP;
+                dpP = dpC;
+                dpC = dpT;
+                dpC.clear();
+                dpC.resize(n);
+            }
+            if (houses[m - 1])
+                return dpP[houses[m - 1] - 1].find(target - 1) == dpP[houses[m - 1] - 1].end() ? -1 : dpP[houses[m - 1] - 1][target - 1];
+            else {
+                int minCost = INT_MAX;
+                for (int c = 0; c < n; c++)
+                    if (dpP[c].find(target - 1) != dpP[c].end())
+                        minCost = min(minCost, dpP[c][target - 1]);
+                return minCost == INT_MAX ? -1 : minCost;
+            }
         }
     };
 }
