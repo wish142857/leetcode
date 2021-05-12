@@ -10262,6 +10262,30 @@ namespace s1305 {
 
 
 //---------------------------------------------
+// @ID: #1310
+// @Date: 2021/5/12
+// @Algorithm: Bit Algorithm
+// @Time: O(n+m)
+// @Space: O(n+m)
+//---------------------------------------------
+namespace s1310 {
+    class Solution {
+    public:
+        vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+            int n = arr.size(), m = queries.size();
+            vector<int> buf(n + 1), ans(m);
+            buf[n - 1] = arr[n - 1];
+            for (int i = n - 2; i >= 0; i--)
+                buf[i] = arr[i] ^ buf[i + 1];
+            for (int i = 0; i < m; i++)
+                ans[i] = buf[queries[i][0]] ^ buf[queries[i][1] + 1];
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1347
 // @Date: 2021/4/6
 // @Algorithm: Simple Algorithm
