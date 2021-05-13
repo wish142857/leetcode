@@ -10209,6 +10209,41 @@ namespace s1267 {
 
 
 //---------------------------------------------
+// @ID: #1269
+// @Date: 2021/5/13
+// @Algorithm: Dynamic Programming Algorithm
+// @Time: O(n*min(n/2,m))
+// @Space: O(min(n/2,m))
+//---------------------------------------------
+namespace s1269 {
+    class Solution {
+    public:
+        int numWays(int steps, int arrLen) {
+            int top = min(arrLen, steps / 2 + 1);
+            vector<int> dp1(top), dp2(top);
+            vector<int>& dpA = dp1, & dpB = dp2, & dpT = dp1;
+            dpA[0] = 1;
+            if (top == 1)
+                return 1;
+            for (int i = 1; i <= steps; i++) {
+                dpB[0] = (dpA[0] + dpA[1]) % 1000000007;
+                int right = min(top, i + 1);
+                for (int j = 1; j < right - 1; j++) {
+                    dpB[j] = (dpA[j - 1] + dpA[j]) % 1000000007;
+                    dpB[j] = (dpB[j] + dpA[j + 1]) % 1000000007;
+                }
+                dpB[right - 1] = (dpA[right - 2] + dpA[right - 1]) % 1000000007;
+                if (right < top)
+                    dpB[right - 1] = (dpB[right - 1] + dpA[right]) % 1000000007;
+                dpT = dpA, dpA = dpB, dpB = dpT;
+            }
+            return dpA[0];
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #1305
 // @Date: 2021/3/5
 // @Algorithm: Simple Algorithm
