@@ -6424,6 +6424,26 @@ namespace s455 {
 
 
 //---------------------------------------------
+// @ID: #461
+// @Date: 2021/5/27
+// @Algorithm: Simple Algorithm
+// @Time: O(1)
+// @Space: O(1)
+//---------------------------------------------
+namespace s461 {
+    class Solution {
+    public:
+        int hammingDistance(int x, int y) {
+            int z = x ^ y, ans = 0;
+            while (z)
+                ans += z & 1, z >>= 1;
+            return ans;
+        }
+    };
+}
+
+
+//---------------------------------------------
 // @ID: #463
 // @Date: 2020/10/30
 // @Algorithm: Simple Algorithm
